@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  height: 100vh;
+  background-color: #9ab9df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formulario {
+  display: flex;
+  background-color: #373e6a;
+  width: 1000px;
+  height: 700px;
+  border-radius: 15px;
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+}
+
+.divImg {
+  background-image: url("../images/backiee-108393-landscape.jpg");
+  background-size: cover;
+  background-position: center;
+  width: 500px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.divIniciarSesion {
+  width: 500px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  text-align: center;
+}
+
+.titulo {
+  font-size: 2rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
