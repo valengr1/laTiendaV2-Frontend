@@ -1,0 +1,110 @@
+.main{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.divPrincipal{
+  height: 100%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.h1{
+  color: #000;
+  font-size: 2.5rem;
+  margin-top: 20px;
+  font-family: 'Caudex', serif;
+  font-weight: 100;
+}
+
+.barraConsulta{
+  background-color: rgba(0, 0, 0, .5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  gap: 4rem;
+  padding: 15px 0 15px 0;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
+.form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.labelCodigo{
+  color: white;
+  font-size: 1.2rem;
+  font-family: 'Caudex', serif;
+  font-weight: 100;
+}
+
+.inputCodigo{
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  font-size: 1.1rem;
+}
+
+.btnConsultarStock{
+  background-color: #fff;
+  color: #000;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition: all .3s ease;
+  font-family: 'Caudex', serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 150px;
+  height: 30px;
+}
+
+.btnConsultarStock:hover{
+  background-color: rgb(13, 15, 18);
+  color: #fff;
+}
+
+.carritoCompra
+{
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  transition: all .3s ease;
+}
+
+.carritoCompra:hover{
+  background-color: rgba(255, 255, 255, .8);
+  color: #000;
+}
+
+.divArticuloYTabla{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin-top: 10px;
+  gap: 100px
+}
+

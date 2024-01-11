@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./../styles/IniciarSesion.module.css";
+import toast, { Toaster } from "react-hot-toast";
 function IniciarSesion() {
   const [vendedor, setVendedor] = useState({
     legajo: 0,
@@ -17,20 +18,22 @@ function IniciarSesion() {
       })
       .then((response) => {
         if (response.data === "Usuario y/o contraseña incorrecto/a") {
-          alert(response.data);
+          toast.error(response.data);
         } else {
-          alert(response.data);
-          navigate("/inicio");
+          toast.success(response.data);
+          setTimeout(() => {
+            navigate("/inicio");
+          }, 2000);
         }
       });
   };
   return (
     <main className={styles.main}>
+      <Toaster />
       <form onSubmit={handleSubmit} className={styles.formulario}>
-        <div className={styles.divImg}></div>
         <div className={styles.divIniciarSesion}>
           <h1 className={styles.titulo}>Iniciar sesión</h1>
-          <div>
+          <div className={styles.divLegajo}>
             <label className={styles.labelLegajo}>Legajo</label>
             <input
               required
@@ -42,7 +45,7 @@ function IniciarSesion() {
               className={styles.inputLegajo}
             />
           </div>
-          <div>
+          <div className={styles.divContraseña}>
             <label className={styles.labelContraseña}>Contraseña</label>
             <input
               required
@@ -54,7 +57,7 @@ function IniciarSesion() {
               className={styles.inputContraseña}
             />
           </div>
-          <button className={styles.buttonIniciarSesion}>Iniciar sesión</button>
+          <button className={styles.buttonIniciarSesion}>Ingresar</button>
         </div>
       </form>
     </main>
