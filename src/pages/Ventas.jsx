@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import style from "../styles/Ventas.module.css";
 
 function Ventas() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
   const [articulo, setArticulo] = useState({
     categoria: {
@@ -111,10 +111,6 @@ function Ventas() {
       alert(res.data);
     });
   };
-
-  const handleNavigateToCarrito = () => {
-    navigate("/carrito");
-  };
   return (
     <main className={style.main}>
       <div className={style.divPrincipal}>
@@ -133,12 +129,6 @@ function Ventas() {
             />
             <button className={style.btnConsultarStock}>Consultar stock</button>
           </form>
-          <div
-            className={style.carritoCompra}
-            onClick={handleNavigateToCarrito}
-          >
-            <i className="fa-solid fa-cart-shopping" />
-          </div>
         </div>
         {articulo ? (
           <div className={style.divArticuloYTabla}>
@@ -161,7 +151,7 @@ function Ventas() {
               </h4>
             </div>
             {stock.length > 0 ? (
-              <table>
+              <table className={style.table}>
                 <thead>
                   <tr>
                     <th>Talle</th>
@@ -190,11 +180,13 @@ function Ventas() {
                 </tbody>
               </table>
             ) : (
-              <p>No hay stock</p>
+              <div className={style.divNoHayStock}>
+                <p className={style.pNoHayStock}>No hay stock</p>
+              </div>
             )}
           </div>
         ) : (
-          <p>Artículo inexistente</p>
+          <p className={style.pArticuloInexistente}>Artículo inexistente</p>
         )}
       </div>
     </main>
