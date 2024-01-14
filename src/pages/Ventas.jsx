@@ -2,9 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import style from "../styles/Ventas.module.css";
+import { useNavigate } from "react-router-dom";
 
 function Ventas() {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
   const [articulo, setArticulo] = useState({
     categoria: {
@@ -21,7 +22,6 @@ function Ventas() {
     margenGanancia: 0,
     precio: 0,
   });
-
   const [stock, setStock] = useState([
     {
       articulo: {
@@ -51,43 +51,27 @@ function Ventas() {
       cantidad: 0,
     },
   ]);
+  const [arrayStocks, setArrayStocks] = useState([]);
 
-  const [linea, setLineaVenta] = useState({
-    stock: {
-      id: 0,
-      articulo: {
-        codigo: 0,
-        descripcion: "",
-        costo: 0.0,
-        margenGanancia: 0.0,
-        marca: {
-          id: 0,
-          descripcion: "",
-        },
-        categoria: {
-          id: 0,
-          descripcion: " ",
-        },
-        precio: 0.0,
-      },
-      color: {
-        id: 0,
-        descripcion: "",
-      },
-      talle: {
-        id: 0,
-        descripcion: "",
-      },
-      cantidad: 0,
-    },
-    cantidad: 0,
-  });
+  const getSubtotal = () => {
+    let subtotal = 0;
+    arrayStocks.forEach((item) => {
+      subtotal = subtotal + item.articulo.precio;
+    });
+    return subtotal;
+  };
+
+  let subtotal = getSubtotal();
+
+  const handleQuitarArticulo = (id) => {
+    setArrayStocks(arrayStocks.filter((item) => item.id !== id));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .get("http://localhost:8080/articulo", { params: { codigo: codigo } })
       .then((response) => {
-        console.log(response.data);
         setArticulo(response.data);
       })
       .catch(() => {
@@ -96,20 +80,8 @@ function Ventas() {
     axios
       .get("http://localhost:8080/stock", { params: { codigo: codigo } })
       .then((response) => {
-        console.log(response.data);
         setStock(response.data);
       });
-  };
-
-  const handleClick = (item) => {
-    const lineaVenta = {
-      stock: item,
-      cantidad: 1,
-    };
-    setLineaVenta(lineaVenta);
-    axios.post("http://localhost:8080/agregarLineaVenta", linea).then((res) => {
-      alert(res.data);
-    });
   };
   return (
     <main className={style.main}>
@@ -130,6 +102,7 @@ function Ventas() {
             <button className={style.btnConsultarStock}>Consultar stock</button>
           </form>
         </div>
+
         {articulo ? (
           <div className={style.divArticuloYTabla}>
             <div className={style.divArticulo}>
@@ -169,10 +142,10 @@ function Ventas() {
                       <td>
                         <button
                           onClick={() => {
-                            handleClick(item);
+                            setArrayStocks([...arrayStocks, item]);
                           }}
                         >
-                          <i className="fa-solid fa-cart-shopping" />
+                          <i className="fa-solid fa-cart-shopping"></i>
                         </button>
                       </td>
                     </tr>
@@ -188,6 +161,58 @@ function Ventas() {
         ) : (
           <p className={style.pArticuloInexistente}>Artículo inexistente</p>
         )}
+        {arrayStocks.length > 0 ? (
+          <div className={style.divTableCarrito}>
+            <table className={style.tableCarrito}>
+              <thead>
+                <tr>
+                  <th>Descripcion</th>
+                  <th>Marca</th>
+                  <th>Talle</th>
+                  <th>Color</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Quitar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {arrayStocks.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.articulo.descripcion}</td>
+                    <td>{item.articulo.marca.descripcion}</td>
+                    <td>{item.talle.descripcion}</td>
+                    <td>{item.color.descripcion}</td>
+                    <td>1</td>
+                    <td>{item.articulo.precio}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          handleQuitarArticulo(item.id);
+                        }}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p>Subtotal: {subtotal}</p>
+          </div>
+        ) : (
+          <p>No hay articulos en el carrito</p>
+        )}
+        <div className={style.divBotones}>
+          <button
+            className={style.btnCancelar}
+            onClick={() => {
+              navigate("/inicio");
+            }}
+          >
+            Cancelar
+          </button>
+          <button className={style.btnFinalizar}>Continuar venta</button>
+        </div>
       </div>
     </main>
   );
