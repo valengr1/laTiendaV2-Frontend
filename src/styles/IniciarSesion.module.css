@@ -29,7 +29,7 @@
   height: 350px;
   border-radius: 15px;
   backdrop-filter: blur(5px);
-  background-color: rgba(39, 37, 40,.2);
+  background-color: rgba(39, 37, 40, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -37,20 +37,20 @@
   font-size: 2rem;
   margin-top: 80px;
   margin-bottom: 25px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 100;
   color: #f5f5f5;
 }
 
-.divLegajo{
+.divLegajo {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Raleway", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 100;
 }
 
-.labelLegajo{
+.labelLegajo {
   font-size: 1.3rem;
   margin-top: 7px;
   margin-bottom: 7px;
@@ -58,13 +58,13 @@
   color: #f5f5f5;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.inputLegajo{
+.inputLegajo {
   width: 170px;
   height: 25px;
   border-radius: 5px;
@@ -76,23 +76,23 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #f5f5f5;
 }
 
-.divContraseña{
+.divContraseña {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 100;
 }
 
-.labelContraseña{
+.labelContraseña {
   font-size: 1.3rem;
   margin-top: 7px;
   margin-bottom: 7px;
   color: #f5f5f5;
 }
 
-.inputContraseña{
+.inputContraseña {
   width: 170px;
   height: 25px;
   border-radius: 5px;
@@ -104,7 +104,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #f5f5f5;
 }
 
-.buttonIniciarSesion{
+.buttonIniciarSesion {
   width: 120px;
   height: 35px;
   border-radius: 7px;
@@ -112,10 +112,10 @@ input[type=number]::-webkit-outer-spin-button {
   cursor: pointer;
   border: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  font-family: "Raleway", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 100;
   background-color: #f5f5f5;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   z-index: 1;
   overflow: hidden;
   display: inline-block;

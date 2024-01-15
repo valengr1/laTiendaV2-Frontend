@@ -38,6 +38,8 @@ function Ventas() {
         costo: 0,
         margenGanancia: 0,
         precio: 0,
+        cantidadRequerida: 0,
+        subtotal: 0,
       },
       color: {
         id: 0,
@@ -52,19 +54,39 @@ function Ventas() {
     },
   ]);
   const [arrayStocks, setArrayStocks] = useState([]);
+  const [total, setTotal] = useState(0);
 
-  const getSubtotal = () => {
-    let subtotal = 0;
-    arrayStocks.forEach((item) => {
-      subtotal = subtotal + item.articulo.precio;
-    });
-    return subtotal;
+  const agregarArticulo = (item) => {
+    if (arrayStocks.includes(item)) {
+      alert("El artículo ya está en el carrito");
+      return;
+    } else {
+      item.articulo.subtotal = item.articulo.precio * 1;
+      setArrayStocks([...arrayStocks, item]);
+    }
   };
 
-  let subtotal = getSubtotal();
-
   const handleQuitarArticulo = (id) => {
-    setArrayStocks(arrayStocks.filter((item) => item.id !== id));
+    let arrayStocksAux = arrayStocks.filter((item) => item.id !== id);
+    setArrayStocks(arrayStocksAux);
+    setTotal(0);
+  };
+
+  const handleCantidadChange = (e, item) => {
+    let cantidad = e.target.value;
+    let subtotal = cantidad * item.articulo.precio;
+    item.articulo.subtotal = subtotal;
+    //reload html table
+    getTotal();
+    setArrayStocks([...arrayStocks]);
+  };
+
+  const getTotal = () => {
+    let total = 0;
+    arrayStocks.forEach((item) => {
+      total += item.articulo.subtotal;
+    });
+    setTotal(total);
   };
 
   const handleSubmit = (e) => {
@@ -142,7 +164,7 @@ function Ventas() {
                       <td>
                         <button
                           onClick={() => {
-                            setArrayStocks([...arrayStocks, item]);
+                            agregarArticulo(item);
                           }}
                         >
                           <i className="fa-solid fa-cart-shopping"></i>
@@ -172,6 +194,7 @@ function Ventas() {
                   <th>Color</th>
                   <th>Cantidad</th>
                   <th>Precio</th>
+                  <th>Subtotal</th>
                   <th>Quitar</th>
                 </tr>
               </thead>
@@ -182,8 +205,18 @@ function Ventas() {
                     <td>{item.articulo.marca.descripcion}</td>
                     <td>{item.talle.descripcion}</td>
                     <td>{item.color.descripcion}</td>
-                    <td>1</td>
+                    <td>
+                      <input
+                        name="cantidad"
+                        type="number"
+                        defaultValue={1}
+                        onChange={(e) => {
+                          handleCantidadChange(e, item);
+                        }}
+                      />
+                    </td>
                     <td>{item.articulo.precio}</td>
+                    <td>{item.articulo.subtotal}</td>
                     <td>
                       <button
                         onClick={() => {
@@ -197,10 +230,10 @@ function Ventas() {
                 ))}
               </tbody>
             </table>
-            <p>Subtotal: {subtotal}</p>
+            {total ? <p className={style.pTotal}>Total: {total}</p> : <></>}
           </div>
         ) : (
-          <p>No hay articulos en el carrito</p>
+          <></>
         )}
         <div className={style.divBotones}>
           <button
@@ -212,6 +245,7 @@ function Ventas() {
             Cancelar
           </button>
           <button className={style.btnFinalizar}>Continuar venta</button>
+          <button onClick={getTotal}>Total</button>
         </div>
       </div>
     </main>
