@@ -1,11 +1,43 @@
 .main {
-  background: url("../images/david-werbrouck-VsejBFGkeyM-unsplash.jpg");
+  background: url("../images/martin-martz-xjd0WUkltQo-unsplash.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
+  text-align: center;
+}
+
+.main header {
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.btnCancelar {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+  position: absolute;
+  margin-right: 90%;
+}
+
+.btnCancelar:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
 }
 
 .divBienvenida {
@@ -13,8 +45,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: calc(100vh - 125px);
 }
 
 .h1Bienvenido {
@@ -23,9 +55,10 @@
   margin-bottom: 40px;
   font-family: "Montserrat", sans-serif;
 }
+
 .aNuevaVenta {
   background: #fff;
-  color: #000;
+  color: rgba(45, 53, 162, 1);
   padding: 1rem 2rem;
   border-radius: 10px;
   text-decoration: none;
@@ -39,7 +72,7 @@
 }
 
 .aNuevaVenta:hover {
-  background-color: rgb(13, 15, 18);
+  background-color: rgba(45, 53, 162, 1);
   color: #fff;
 }
 .aNuevaVenta::after {

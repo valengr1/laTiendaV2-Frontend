@@ -1,12 +1,12 @@
 .main {
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../images/david-werbrouck-VsejBFGkeyM-unsplash.jpg");
+  background-image: url("../images/martin-martz-xjd0WUkltQo-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .divPrincipal {
@@ -17,22 +17,84 @@
   align-items: center;
 }
 
+.divHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  text-align: center;
+  height: 60px;
+}
+
+.btnCancelar {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+  position: absolute;
+  margin-right: 90%;
+}
+
+.btnCancelar:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}
+
+.btnFinalizar {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+  position: absolute;
+  margin-left: 90%;
+}
+
+.btnFinalizar:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}
+
 .h1 {
   color: #fff;
   font-size: 2.5rem;
-  margin-top: 20px;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
 }
 
 .barraConsulta {
   backdrop-filter: blur(5px);
-  background-color: rgba(39, 37, 40, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  width: 100%;
   gap: 4rem;
   padding: 15px 0 15px 0;
   border-radius: 7px;
@@ -47,13 +109,209 @@
 
 .labelCodigo {
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
 }
 
 .inputCodigo {
   width: 150px;
+  height: 31px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+}
+
+.btnConsultarStock {
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.btnConsultarStock:hover {
+  background-color: #fff;
+  color: rgba(45, 53, 162, 1);
+  font-weight: 800;
+}
+
+.divArticuloYTabla {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+  gap: 50px;
+}
+
+.divArticulo {
+  text-align: center;
+  width: 50%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.subtituloH3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+}
+
+.divDatosArticulo {
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.datoArticuloH4 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  margin-bottom: 10px;
+}
+
+.divTable {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.h3StockDelArticulo {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 7px;
+  font-weight: 100;
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.table button {
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 7px 5px 5px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+.table button:hover {
+  background-color: #fff;
+  color: rgba(45, 53, 162, 1);
+}
+
+.divTableCarrito {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 7px;
+  overflow-x: auto;
+}
+
+.h3CarritoCompras {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+}
+
+.tableCarrito {
+  width: 100%;
+  border-collapse: collapse;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 7px;
+  font-weight: 100;
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+  font-size: 1.2rem;
+  overflow: scroll;
+  margin-top: 10px;
+}
+
+.tableCarrito button {
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 7px 5px 5px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.tableCarrito button:hover {
+  color: rgba(45, 53, 162, 1);
+  background-color: #fff;
+}
+
+.inputCantidad {
+  width: 6em;
   height: 30px;
   border-radius: 5px;
   border: none;
@@ -63,138 +321,8 @@
   padding-right: 7px;
   margin-left: 7px;
   font-size: 1.1rem;
-}
-
-.btnConsultarStock {
-  background-color: #fff;
-  color: #000;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  font-weight: 100;
-  transition: all 0.3s ease;
-  font-family: "Montserrat", sans-serif;
-  overflow: hidden;
-  margin-left: 10px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  width: 150px;
-  height: 30px;
-}
-
-.btnConsultarStock:hover {
-  background-color: rgb(13, 15, 18);
-  color: #fff;
-}
-
-.divArticuloYTabla {
-  display: flex;
-  justify-content: center;
-  width: 70%;
-  margin-top: 10px;
-  gap: 50px;
-}
-
-.divArticulo {
-  text-align: center;
-  width: 50%;
-  backdrop-filter: blur(10px);
-  background-color: rgba(39, 37, 40, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  border-radius: 7px;
-  padding-bottom: 10px;
-}
-
-.subtituloH3 {
-  color: #fff;
-  font-size: 1.5rem;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 100;
-  margin-top: 10px;
-}
-
-.datoArticuloH4 {
-  color: #fff;
-  font-size: 1.2rem;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 100;
-  margin-top: 10px;
-}
-
-.table {
-  width: 50%;
-  border-collapse: collapse;
-  backdrop-filter: blur(10px);
-  background-color: rgba(39, 37, 40, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  border-radius: 7px;
-  font-weight: 100;
-  font-family: "Montserrat", sans-serif;
-  color: #fff;
-  font-size: 1.2rem;
-}
-
-.table button {
-  background-color: #fff;
-  color: #000;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  font-weight: 100;
-  transition: all 0.3s ease;
-  font-family: "Montserrat", sans-serif;
-  overflow: hidden;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 5px 7px 5px 5px;
-}
-
-.table button:hover {
-  background-color: rgb(13, 15, 18);
-  color: #fff;
-}
-
-.divTableCarrito {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 70%;
-  margin-top: 10px;
-}
-
-.tableCarrito {
-  width: 100%;
-  border-collapse: collapse;
-  backdrop-filter: blur(10px);
-  background-color: rgba(39, 37, 40, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  border-radius: 7px;
-  font-weight: 100;
-  font-family: "Montserrat", sans-serif;
-  color: #fff;
-  font-size: 1.2rem;
-}
-
-.tableCarrito button {
-  background-color: #fff;
-  color: #000;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  font-weight: 100;
-  transition: all 0.3s ease;
-  font-family: "Montserrat", sans-serif;
-  overflow: hidden;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 5px 7px 5px 5px;
-}
-
-.tableCarrito button:hover {
-  background-color: rgb(13, 15, 18);
-  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: rgba(45, 53, 162, 1);
 }
 
 .divNoHayStock {
@@ -220,4 +348,33 @@
 
 .pTotal {
   color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  margin-top: 10px;
+}
+
+.btnTotal {
+  color: #fff;
+  background-color: rgba(45, 53, 162, 1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-top: 10px;
+  width: 6em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.btnTotal:hover {
+  background-color: #fff;
+  color: rgba(45, 53, 162, 1);
 }

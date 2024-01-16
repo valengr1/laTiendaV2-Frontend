@@ -3,7 +3,6 @@ import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import style from "../styles/Ventas.module.css";
 import { useNavigate } from "react-router-dom";
-
 function Ventas() {
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
@@ -108,7 +107,20 @@ function Ventas() {
   return (
     <main className={style.main}>
       <div className={style.divPrincipal}>
-        <h1 className={style.h1}>Nueva venta</h1>
+        <div className={style.divHeader}>
+          <button
+            className={style.btnCancelar}
+            onClick={() => {
+              navigate("/inicio");
+            }}
+          >
+            <i className="fa-regular fa-circle-left"></i>
+          </button>
+          <h1 className={style.h1}>Nueva venta</h1>
+          <button className={style.btnFinalizar}>
+            <i className="fa-brands fa-shopify"></i>
+          </button>
+        </div>
         <div className={style.barraConsulta}>
           <form className={style.form} onSubmit={handleSubmit}>
             <label className={style.labelCodigo} htmlFor="">
@@ -129,51 +141,56 @@ function Ventas() {
           <div className={style.divArticuloYTabla}>
             <div className={style.divArticulo}>
               <h3 className={style.subtituloH3}>Datos del articulo</h3>
-              <h4 className={style.datoArticuloH4}>
-                Codigo: {articulo.codigo}
-              </h4>
-              <h4 className={style.datoArticuloH4}>
-                Descripción: {articulo.descripcion}
-              </h4>
-              <h4 className={style.datoArticuloH4}>
-                Marca: {articulo.marca.descripcion}
-              </h4>
-              <h4 className={style.datoArticuloH4}>
-                Categoria: {articulo.categoria.descripcion}
-              </h4>
-              <h4 className={style.datoArticuloH4}>
-                Precio: {articulo.precio}
-              </h4>
+              <div className={style.divDatosArticulo}>
+                <h4 className={style.datoArticuloH4}>
+                  Codigo: {articulo.codigo}
+                </h4>
+                <h4 className={style.datoArticuloH4}>
+                  Descripción: {articulo.descripcion}
+                </h4>
+                <h4 className={style.datoArticuloH4}>
+                  Marca: {articulo.marca.descripcion}
+                </h4>
+                <h4 className={style.datoArticuloH4}>
+                  Categoria: {articulo.categoria.descripcion}
+                </h4>
+                <h4 className={style.datoArticuloH4}>
+                  Precio: {articulo.precio}
+                </h4>
+              </div>
             </div>
             {stock.length > 0 ? (
-              <table className={style.table}>
-                <thead>
-                  <tr>
-                    <th>Talle</th>
-                    <th>Color</th>
-                    <th>Cantidad disponible</th>
-                    <th>Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stock.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.talle.descripcion}</td>
-                      <td>{item.color.descripcion}</td>
-                      <td>{item.cantidad}</td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            agregarArticulo(item);
-                          }}
-                        >
-                          <i className="fa-solid fa-cart-shopping"></i>
-                        </button>
-                      </td>
+              <div className={style.divTable}>
+                <h3 className={style.h3StockDelArticulo}>Stock del artículo</h3>
+                <table className={style.table}>
+                  <thead>
+                    <tr>
+                      <th>Talle</th>
+                      <th>Color</th>
+                      <th>Cantidad disponible</th>
+                      <th>Acción</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {stock.map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.talle.descripcion}</td>
+                        <td>{item.color.descripcion}</td>
+                        <td>{item.cantidad}</td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              agregarArticulo(item);
+                            }}
+                          >
+                            <i className="fa-solid fa-cart-shopping"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <div className={style.divNoHayStock}>
                 <p className={style.pNoHayStock}>No hay stock</p>
@@ -185,6 +202,7 @@ function Ventas() {
         )}
         {arrayStocks.length > 0 ? (
           <div className={style.divTableCarrito}>
+            <h3 className={style.h3CarritoCompras}>Venta</h3>
             <table className={style.tableCarrito}>
               <thead>
                 <tr>
@@ -207,6 +225,7 @@ function Ventas() {
                     <td>{item.color.descripcion}</td>
                     <td>
                       <input
+                        className={style.inputCantidad}
                         name="cantidad"
                         type="number"
                         defaultValue={1}
@@ -230,23 +249,19 @@ function Ventas() {
                 ))}
               </tbody>
             </table>
-            {total ? <p className={style.pTotal}>Total: {total}</p> : <></>}
+            {total ? (
+              <p className={style.pTotal}>Total: ${total}</p>
+            ) : (
+              <>
+                <button className={style.btnTotal} onClick={getTotal}>
+                  Total
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <></>
         )}
-        <div className={style.divBotones}>
-          <button
-            className={style.btnCancelar}
-            onClick={() => {
-              navigate("/inicio");
-            }}
-          >
-            Cancelar
-          </button>
-          <button className={style.btnFinalizar}>Continuar venta</button>
-          <button onClick={getTotal}>Total</button>
-        </div>
       </div>
     </main>
   );
