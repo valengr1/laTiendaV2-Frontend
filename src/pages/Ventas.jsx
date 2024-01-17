@@ -23,33 +23,14 @@ function Ventas() {
   });
   const [stock, setStock] = useState([
     {
-      articulo: {
-        categoria: {
-          id: 0,
-          descripcion: "",
-        },
-        codigo: 0,
-        descripcion: "",
-        marca: {
-          id: 0,
-          descripcion: "",
-        },
-        costo: 0,
-        margenGanancia: 0,
-        precio: 0,
-        cantidadRequerida: 0,
-        subtotal: 0,
-      },
-      color: {
-        id: 0,
-        descripcion: "",
-      },
       id: 0,
-      talle: {
-        id: 0,
-        descripcion: "",
-      },
-      cantidad: 0,
+      talle: "",
+      color: "",
+      descripcionArticulo: "",
+      marca: "",
+      cantidadDisponible: 0,
+      precioVenta: 0.0,
+      subtotal: 0.0,
     },
   ]);
   const [arrayStocks, setArrayStocks] = useState([]);
@@ -60,7 +41,7 @@ function Ventas() {
       alert("El artículo ya está en el carrito");
       return;
     } else {
-      item.articulo.subtotal = item.articulo.precio * 1;
+      item.subtotal = item.precioVenta * 1;
       setArrayStocks([...arrayStocks, item]);
     }
   };
@@ -73,8 +54,8 @@ function Ventas() {
 
   const handleCantidadChange = (e, item) => {
     let cantidad = e.target.value;
-    let subtotal = cantidad * item.articulo.precio;
-    item.articulo.subtotal = subtotal;
+    let subtotal = cantidad * item.precioVenta;
+    item.subtotal = subtotal;
     //reload html table
     getTotal();
     setArrayStocks([...arrayStocks]);
@@ -83,7 +64,7 @@ function Ventas() {
   const getTotal = () => {
     let total = 0;
     arrayStocks.forEach((item) => {
-      total += item.articulo.subtotal;
+      total += item.subtotal;
     });
     setTotal(total);
   };
@@ -174,9 +155,9 @@ function Ventas() {
                   <tbody>
                     {stock.map((item) => (
                       <tr key={item.id}>
-                        <td>{item.talle.descripcion}</td>
-                        <td>{item.color.descripcion}</td>
-                        <td>{item.cantidad}</td>
+                        <td>{item.talle}</td>
+                        <td>{item.color}</td>
+                        <td>{item.cantidadDisponible}</td>
                         <td>
                           <button
                             onClick={() => {
@@ -219,10 +200,10 @@ function Ventas() {
               <tbody>
                 {arrayStocks.map((item) => (
                   <tr key={item.id}>
-                    <td>{item.articulo.descripcion}</td>
-                    <td>{item.articulo.marca.descripcion}</td>
-                    <td>{item.talle.descripcion}</td>
-                    <td>{item.color.descripcion}</td>
+                    <td>{item.descripcionArticulo}</td>
+                    <td>{item.marca}</td>
+                    <td>{item.talle}</td>
+                    <td>{item.color}</td>
                     <td>
                       <input
                         className={style.inputCantidad}
@@ -234,8 +215,8 @@ function Ventas() {
                         }}
                       />
                     </td>
-                    <td>{item.articulo.precio}</td>
-                    <td>{item.articulo.subtotal}</td>
+                    <td>{item.precioVenta}</td>
+                    <td>{item.subtotal}</td>
                     <td>
                       <button
                         onClick={() => {
