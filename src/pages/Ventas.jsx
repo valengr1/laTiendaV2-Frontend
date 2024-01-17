@@ -1,25 +1,19 @@
 import axios from "axios";
 import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import style from "../styles/Ventas.module.css";
 import { useNavigate } from "react-router-dom";
 function Ventas() {
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
   const [articulo, setArticulo] = useState({
-    categoria: {
-      id: 0,
-      descripcion: "",
-    },
     codigo: 0,
     descripcion: "",
-    marca: {
-      id: 0,
-      descripcion: "",
-    },
-    costo: 0,
-    margenGanancia: 0,
-    precio: 0,
+    marca: "",
+    categoria: "",
+    precio: 0.0,
+    tipoTalle: "",
   });
   const [stock, setStock] = useState([
     {
@@ -38,12 +32,22 @@ function Ventas() {
 
   const agregarArticulo = (item) => {
     if (arrayStocks.includes(item)) {
-      alert("El artículo ya está en el carrito");
+      toast.error("El artículo ya está en el carrito", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "errorAgregarArticulo",
+      });
       return;
     } else {
+      toast.success("Artículo agregado al carrito", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "agregarArticulo",
+      });
       item.subtotal = item.precioVenta * 1;
       setArrayStocks([...arrayStocks, item]);
     }
+    setTotal(0);
   };
 
   const handleQuitarArticulo = (id) => {
@@ -75,9 +79,6 @@ function Ventas() {
       .get("http://localhost:8080/articulo", { params: { codigo: codigo } })
       .then((response) => {
         setArticulo(response.data);
-      })
-      .catch(() => {
-        alert("Artículo con código " + codigo + " no encontrado");
       });
     axios
       .get("http://localhost:8080/stock", { params: { codigo: codigo } })
@@ -85,9 +86,11 @@ function Ventas() {
         setStock(response.data);
       });
   };
+
   return (
     <main className={style.main}>
       <div className={style.divPrincipal}>
+        <Toaster />
         <div className={style.divHeader}>
           <button
             className={style.btnCancelar}
@@ -130,13 +133,16 @@ function Ventas() {
                   Descripción: {articulo.descripcion}
                 </h4>
                 <h4 className={style.datoArticuloH4}>
-                  Marca: {articulo.marca.descripcion}
+                  Marca: {articulo.marca}
                 </h4>
                 <h4 className={style.datoArticuloH4}>
-                  Categoria: {articulo.categoria.descripcion}
+                  Categoria: {articulo.categoria}
                 </h4>
                 <h4 className={style.datoArticuloH4}>
-                  Precio: {articulo.precio}
+                  Precio: ${articulo.precio}
+                </h4>
+                <h4 className={style.datoArticuloH4}>
+                  Tipo de talle: {articulo.tipoTalle}
                 </h4>
               </div>
             </div>
@@ -173,9 +179,7 @@ function Ventas() {
                 </table>
               </div>
             ) : (
-              <div className={style.divNoHayStock}>
-                <p className={style.pNoHayStock}>No hay stock</p>
-              </div>
+              <p className={style.pArticuloInexistente}>No hay stock</p>
             )}
           </div>
         ) : (
@@ -215,7 +219,7 @@ function Ventas() {
                         }}
                       />
                     </td>
-                    <td>{item.precioVenta}</td>
+                    <td>${item.precioVenta}</td>
                     <td>{item.subtotal}</td>
                     <td>
                       <button
