@@ -54,6 +54,11 @@ function Ventas() {
     let arrayStocksAux = arrayStocks.filter((item) => item.id !== id);
     setArrayStocks(arrayStocksAux);
     setTotal(0);
+    toast.error("Artículo quitado del carrito", {
+      duration: 2000,
+      position: "bottom-right",
+      id: "quitarArticulo",
+    });
   };
 
   const handleCantidadChange = (e, item) => {
@@ -87,6 +92,29 @@ function Ventas() {
       });
   };
 
+  const goToPago = () => {
+    if (arrayStocks.length === 0) {
+      toast.error("No hay artículos en el carrito", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "errorPago",
+      });
+      return;
+    } else if (total === 0) {
+      toast.error("Debe calcular el total", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "errorPago",
+      });
+    } else {
+      //guardar arrayStocks en localStorage
+      localStorage.setItem("arrayStocks", JSON.stringify(arrayStocks));
+      //guardar total en localStorage
+      localStorage.setItem("total", total);
+      navigate("/pago", { state: { arrayStocks: arrayStocks, total: total } });
+    }
+  };
+
   return (
     <main className={style.main}>
       <div className={style.divPrincipal}>
@@ -101,17 +129,15 @@ function Ventas() {
             <i className="fa-regular fa-circle-left"></i>
           </button>
           <h1 className={style.h1}>Nueva venta</h1>
-          <button className={style.btnFinalizar}>
+          <button onClick={goToPago} className={style.btnFinalizar}>
             <i className="fa-brands fa-shopify"></i>
           </button>
         </div>
         <div className={style.barraConsulta}>
           <form className={style.form} onSubmit={handleSubmit}>
-            <label className={style.labelCodigo} htmlFor="">
-              Código
-            </label>
             <input
               className={style.inputCodigo}
+              placeholder="Código"
               type="number"
               required
               name="codigo"

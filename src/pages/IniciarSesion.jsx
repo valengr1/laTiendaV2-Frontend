@@ -17,10 +17,16 @@ function IniciarSesion() {
         params: { legajo: vendedor.legajo, contraseña: vendedor.contraseña },
       })
       .then((response) => {
-        if (response.data === "Usuario y/o contraseña incorrecto/a") {
-          toast.error(response.data);
+        if (response.data === "Usuario y/o contraseña incorrectos") {
+          toast.error(response.data, {
+            duration: 2000,
+            id: "error",
+          });
         } else {
-          toast.success(response.data);
+          toast.success(response.data, {
+            duration: 2000,
+            id: "bienvenido",
+          });
           setTimeout(() => {
             navigate("/inicio");
           }, 2000);
