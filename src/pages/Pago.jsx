@@ -17,7 +17,6 @@ function Pago() {
   });
   const [registro, setRegistro] = useState(false);
   const [select, setSelect] = useState("");
-
   useEffect(() => {
     setCliente(null);
   }, []);
@@ -55,8 +54,11 @@ function Pago() {
     setRegistro(false);
   };
 
+  var stocks = [];
   const handleSelection = (e) => {
     setSelect(e.target.value);
+    stocks = window.localStorage.getItem("arrayStocks");
+    console.log(stocks);
   };
   return (
     <main>
