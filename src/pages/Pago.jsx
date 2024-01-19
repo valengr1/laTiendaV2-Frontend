@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Pago() {
+  const navigate = useNavigate();
   const [dni, setDni] = useState("");
   const [cliente, setCliente] = useState({
     nombre: "",
@@ -17,8 +19,13 @@ function Pago() {
   });
   const [registro, setRegistro] = useState(false);
   const [select, setSelect] = useState("");
+  const [lineasVenta, setLineasVenta] = useState([]);
   useEffect(() => {
     setCliente(null);
+    const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
+    if (lineasVenta) {
+      setLineasVenta(lineasVenta);
+    }
   }, []);
 
   const buscarCliente = (e) => {
@@ -53,17 +60,22 @@ function Pago() {
   const cancelar = () => {
     setRegistro(false);
   };
-
-  var stocks = [];
   const handleSelection = (e) => {
     setSelect(e.target.value);
-    stocks = window.localStorage.getItem("arrayStocks");
-    console.log(stocks);
+  };
+
+  const cancelarVenta = () => {
+    window.localStorage.removeItem("arrayStocks");
+    window.localStorage.removeItem("total");
+    navigate("/ventas");
   };
   return (
     <main>
       <Toaster />
       <div>
+        <header>
+          <button onClick={cancelarVenta}>Salir</button>
+        </header>
         <div>
           <div>
             <h1>Cliente</h1>
@@ -155,19 +167,30 @@ function Pago() {
               <input type="date" id="fechaVencimiento" />
               <label htmlFor="codigoSeguridad">Código de seguridad</label>
               <input type="number" id="codigoSeguridad" />
-              <button>Validar tarjeta</button>
+              <div>
+                <button>Validar tarjeta</button>
+              </div>
             </div>
           ) : (
             <></>
           )}
-          {select === "efectivo" ? (
-            <div>
-              <h3>Total: {window.localStorage.getItem("total")}</h3>
-              <button>Realizar venta</button>
-            </div>
-          ) : (
-            <></>
-          )}
+        </div>
+        {lineasVenta.map((lineaVenta) => {
+          return (
+            <select key={lineaVenta.id}>
+              <option> {lineaVenta.marca}</option>
+              <option disabled>{lineaVenta.descripcionArticulo}</option>
+              <option disabled>Precio {lineaVenta.precioVenta}</option>
+              <option disabled>Cantidad: {lineaVenta.cantidad}</option>
+              <option disabled>Color: {lineaVenta.color}</option>
+              <option disabled>Talle: {lineaVenta.talle}</option>
+            </select>
+          );
+        })}
+        <div>
+          <h3>Total: {window.localStorage.getItem("total")}</h3>
+          <button>Realizar venta</button>
+          <button>Cancelar</button>
         </div>
       </div>
     </main>
