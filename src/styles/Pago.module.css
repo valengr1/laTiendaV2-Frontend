@@ -1,0 +1,490 @@
+.main {
+  background-color: red;
+  height: 100vh;
+}
+
+.divPrincipal {
+  background-image: url("../images/martin-martz-xjd0WUkltQo-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.header {
+  height: 60px;
+}
+
+.buttonHeader {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+}
+
+.buttonHeader:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}
+
+.divRegistroYVentaOuter {
+  display: flex;
+  justify-content: center;
+}
+
+.divRegistroYVenta {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  gap: 10px;
+  height: 100vh;
+}
+
+.divClienteYRegistro {
+  background-color: yellow;
+  width: 40%;
+  text-align: center;
+  padding: 10px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+}
+
+.H1Cliente {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  margin-top: 40px;
+}
+
+.formBuscarCliente {
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+}
+
+.formBuscarCliente input {
+  width: 200px;
+  height: 31px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+}
+
+.formBuscarCliente button {
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.1s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.formBuscarCliente button:hover {
+  /*color: rgba(45, 53, 162, 1);
+  background-color: #fff;*/
+  color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.divClienteEncontrado {
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px #00000033;
+  border-radius: 7px;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.divClienteEncontrado h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  margin-top: 8px;
+}
+
+.divRegistroCliente {
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px #00000033;
+  border-radius: 7px;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.divPares {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.divCondicionTributaria {
+  width: 200px;
+  height: 31px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+}
+
+.divBotonera {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.divFormaPago {
+  background-color: yellow;
+  width: 40%;
+  text-align: center;
+  padding: 10px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+}
+
+.divFormaPago h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  margin-top: 40px;
+}
+
+.divFormaPagoInner {
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+}
+
+.divSelección {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.divTarjeta {
+  width: 40%;
+  text-align: center;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  font-size: 1.15rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.divTarjeta:hover {
+  /*color: rgba(45, 53, 162, 1);
+  background-color: #fff;*/
+  color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.divEfectivo {
+  width: 40%;
+  text-align: center;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.15rem;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.divEfectivo:hover {
+  /*color: rgba(45, 53, 162, 1);
+  background-color: #fff;*/
+  color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.divEfectivo input {
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  font-size: 1.4rem;
+  width: 18px;
+  height: 18px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.divTarjeta input {
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  font-size: 1.4rem;
+  width: 18px;
+  height: 18px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.divEfectivo label {
+  color: #fff;
+  font-size: 1.15rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.divTarjeta label {
+  color: #fff;
+  font-size: 1.15rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.divValidarTarjeta {
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px #00000033;
+  border-radius: 7px;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.formValidarTarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.divParesTarjeta {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.divParesTarjeta input {
+  width: 200px;
+  height: 31px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+}
+
+.divFechaVencimiento {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.divFechaVencimiento label {
+  color: #fff;
+  font-size: 1.15rem;
+  margin-left: 5px;
+}
+
+.inputCodigoSeguridad {
+  margin-top: 20px;
+}
+
+.formValidarTarjeta button {
+  background-color: rgba(45, 53, 162, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.1s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.formValidarTarjeta button:hover {
+  /*color: rgba(45, 53, 162, 1);
+  background-color: #fff;*/
+  color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.divLineasVenta {
+  background-color: pink;
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px #00000033;
+  border-radius: 7px;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.divLineaVenta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.selectLineasVenta {
+  width: 80%;
+  height: 40px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+.divLineaVenta button {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition: all 0.1s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 7px 5px 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: rgb(59, 68, 189);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.divLineaVenta button:hover {
+  /*color: rgba(45, 53, 162, 1);
+  background-color: #fff;*/
+  scale: 1.1;
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}

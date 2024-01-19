@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/Pago.module.css";
 
 function Pago() {
   const navigate = useNavigate();
@@ -52,7 +53,8 @@ function Pago() {
       });
   };
 
-  const registrarCliente = () => {
+  const registrarCliente = (e) => {
+    e.preventDefault();
     setCliente(null);
     setRegistro(true);
   };
@@ -70,127 +72,183 @@ function Pago() {
     navigate("/ventas");
   };
   return (
-    <main>
+    <main className={styles.main}>
       <Toaster />
-      <div>
-        <header>
-          <button onClick={cancelarVenta}>Salir</button>
-        </header>
-        <div>
-          <div>
-            <h1>Cliente</h1>
-            <form onSubmit={buscarCliente}>
-              <input
-                onChange={(e) => setDni(e.target.value)}
-                type="number"
-                placeholder="DNI"
-                required
-                id="dni"
-              />
-              <button>Buscar</button>
-            </form>
-            <button onClick={registrarCliente}>Registrar cliente</button>
-            {cliente ? (
-              <div>
-                <h2>Nombre: {cliente.nombre}</h2>
-                <h2>Apellido: {cliente.apellido}</h2>
-                <h2>DNI: {cliente.dni}</h2>
-                <h2>Dirección: {cliente.direccion}</h2>
-                <h2>Teléfono: {cliente.telefono}</h2>
-                <h2>
-                  Condición tributaria:{" "}
-                  {cliente.condicionTributaria.descripcion}
-                </h2>
-              </div>
-            ) : (
-              <></>
-            )}
-            {registro ? (
-              <div>
-                <label htmlFor="">Nombre</label>
-                <input type="text" />
-                <label htmlFor="">Apellido</label>
-                <input type="text" />
-                <label htmlFor="">DNI</label>
-                <input type="number" />
-                <label htmlFor="">Dirección</label>
-                <input type="text" />
-                <label htmlFor="">Teléfono</label>
-                <input type="number" />
-                <label htmlFor="">Condición tributaria</label>
-                <select name="" id="">
-                  <option value="">Consumidor final</option>
-                  <option value="">Responsable inscripto</option>
-                  <option value="">Monotributista</option>
-                </select>
-                <div>
-                  <button onClick={cancelar}>Cancelar</button>
-                  <button>Registrar</button>
+      <div className={styles.divPrincipal}>
+        <div className={styles.divRegistroYVentaOuter}>
+          <header className={styles.header}>
+            <button className={styles.buttonHeader} onClick={cancelarVenta}>
+              <i className="fa-regular fa-circle-left"></i>
+            </button>
+          </header>
+          <div className={styles.divRegistroYVenta}>
+            <div className={styles.divClienteYRegistro}>
+              <h3 className={styles.H1Cliente}>Cliente</h3>
+              <form
+                className={styles.formBuscarCliente}
+                onSubmit={buscarCliente}
+              >
+                <input
+                  onChange={(e) => setDni(e.target.value)}
+                  type="number"
+                  placeholder="DNI"
+                  required
+                  id="dni"
+                />
+                <button>Buscar</button>
+                <button
+                  className={styles.btnRegistrarCliente}
+                  onClick={registrarCliente}
+                >
+                  Añadir
+                </button>
+                {cliente ? (
+                  <section className={styles.divClienteEncontrado}>
+                    <h3>Nombre: {cliente.nombre}</h3>
+                    <h3>Apellido: {cliente.apellido}</h3>
+                    <h3>DNI: {cliente.dni}</h3>
+                    <h3>Dirección: {cliente.direccion}</h3>
+                    <h3>Teléfono: {cliente.telefono}</h3>
+                    <h3>
+                      Condición tributaria:{" "}
+                      {cliente.condicionTributaria.descripcion}
+                    </h3>
+                  </section>
+                ) : (
+                  <></>
+                )}
+                {registro ? (
+                  <form className={styles.divRegistroCliente}>
+                    <div className={styles.divPares}>
+                      <input required placeholder="Nombre" type="text" />
+                      <input required placeholder="Apellido" type="text" />
+                    </div>
+                    <div className={styles.divPares}>
+                      <input required placeholder="DNI" type="number" />
+                      <input required placeholder="Dirección" type="text" />
+                    </div>
+                    <div className={styles.divPares}>
+                      <input required placeholder="Teléfono" type="number" />
+
+                      <select
+                        className={styles.divCondicionTributaria}
+                        name=""
+                        id=""
+                      >
+                        <option value="">Condición tributaria</option>
+                        <option value="">Consumidor final</option>
+                        <option value="">Responsable inscripto</option>
+                        <option value="">Monotributista</option>
+                      </select>
+                    </div>
+                    <div className={styles.divBotonera}>
+                      <button className={styles.btnCancelar} onClick={cancelar}>
+                        Cancelar
+                      </button>
+                      <button className={styles.btnRegistrar}>Registrar</button>
+                    </div>
+                  </form>
+                ) : (
+                  <> </>
+                )}
+              </form>
+            </div>
+            <div className={styles.divFormaPago}>
+              <h3>Pago</h3>
+              <div className={styles.divFormaPagoInner}>
+                <div className={styles.divSelección}>
+                  <div className={styles.divTarjeta}>
+                    <label htmlFor="tarjeta">Tarjeta</label>
+                    <input
+                      onChange={handleSelection}
+                      type="radio"
+                      name="pago"
+                      id="tarjeta"
+                      value={"tarjeta"}
+                    />
+                  </div>
+                  <div className={styles.divEfectivo}>
+                    <label htmlFor="efectivo">Efectivo</label>
+                    <input
+                      onChange={handleSelection}
+                      type="radio"
+                      name="pago"
+                      id="efectivo"
+                      value={"efectivo"}
+                      placeholder="Efectivo"
+                    />
+                  </div>
+                </div>
+                {select === "tarjeta" ? (
+                  <div className={styles.divValidarTarjeta}>
+                    <form className={styles.formValidarTarjeta}>
+                      <div className={styles.divParesTarjeta}>
+                        <input
+                          placeholder="Número de tarjeta"
+                          type="number"
+                          id="numeroTarjeta"
+                        />
+                        <input
+                          placeholder="Nombre del titular"
+                          type="text"
+                          id="nombreTitular"
+                        />
+                      </div>
+                      <div className={styles.divParesTarjeta}>
+                        <div className={styles.divFechaVencimiento}>
+                          <label htmlFor="">Fecha de vencimiento</label>
+                          <input
+                            className={styles.inputFechaVencimiento}
+                            placeholder="Fecha de vencimiento"
+                            type="date"
+                            id="fechaVencimiento"
+                          />
+                        </div>
+                        <input
+                          className={styles.inputCodigoSeguridad}
+                          placeholder="Código de seguridad"
+                          type="number"
+                          id="codigoSeguridad"
+                        />
+                      </div>
+                      <button>Validar tarjeta</button>
+                    </form>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <div className={styles.divLineasVenta}>
+                  {lineasVenta.map((lineaVenta) => {
+                    return (
+                      <div className={styles.divLineaVenta} key={lineaVenta.id}>
+                        <select className={styles.selectLineasVenta}>
+                          <option> {lineaVenta.descripcionArticulo}</option>
+                          <option disabled>{lineaVenta.marca}</option>
+
+                          <option disabled>
+                            Precio {lineaVenta.precioVenta}
+                          </option>
+                          <option disabled>
+                            Cantidad: {lineaVenta.cantidad}
+                          </option>
+                          <option disabled>Color: {lineaVenta.color}</option>
+                          <option disabled>Talle: {lineaVenta.talle}</option>
+                        </select>
+                        <button>
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={styles.divFinalizarVenta}>
+                  <h3>Total: {window.localStorage.getItem("total")}</h3>
+                  <button>Realizar venta</button>
+                  <button>Cancelar</button>
                 </div>
               </div>
-            ) : (
-              <> </>
-            )}
-          </div>
-        </div>
-        <div>
-          <h1>Forma de pago</h1>
-          <div>
-            <div>
-              <label htmlFor="tarjeta">Tarjeta</label>
-              <input
-                onChange={handleSelection}
-                type="radio"
-                name="pago"
-                id="tarjeta"
-                value={"tarjeta"}
-              />
-            </div>
-            <div>
-              <label htmlFor="efectivo">Efectivo</label>
-              <input
-                onChange={handleSelection}
-                type="radio"
-                name="pago"
-                id="efectivo"
-                value={"efectivo"}
-              />
             </div>
           </div>
-          {select === "tarjeta" ? (
-            <div>
-              <label htmlFor="numeroTarjeta">Número de tarjeta</label>
-              <input type="number" id="numeroTarjeta" />
-              <label htmlFor="nombreTitular">Nombre del titular</label>
-              <input type="text" id="nombreTitular" />
-              <label htmlFor="fechaVencimiento">Fecha de vencimiento</label>
-              <input type="date" id="fechaVencimiento" />
-              <label htmlFor="codigoSeguridad">Código de seguridad</label>
-              <input type="number" id="codigoSeguridad" />
-              <div>
-                <button>Validar tarjeta</button>
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-        {lineasVenta.map((lineaVenta) => {
-          return (
-            <select key={lineaVenta.id}>
-              <option> {lineaVenta.marca}</option>
-              <option disabled>{lineaVenta.descripcionArticulo}</option>
-              <option disabled>Precio {lineaVenta.precioVenta}</option>
-              <option disabled>Cantidad: {lineaVenta.cantidad}</option>
-              <option disabled>Color: {lineaVenta.color}</option>
-              <option disabled>Talle: {lineaVenta.talle}</option>
-            </select>
-          );
-        })}
-        <div>
-          <h3>Total: {window.localStorage.getItem("total")}</h3>
-          <button>Realizar venta</button>
-          <button>Cancelar</button>
         </div>
       </div>
     </main>
