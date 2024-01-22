@@ -15,18 +15,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #fff;
+}
+
+.divVentaOuter {
+  width: 100vw;
+  display: flex;
 }
 
 .divHeader {
+  height: calc(100vh - 20px);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  width: 100vw;
-  text-align: center;
-  height: 60px;
+  padding-right: 10px;
+  border-radius: 7px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-left: 10px;
+  margin-right: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 70px;
 }
 
-.btnCancelar {
+.btnVolverAInicio {
   background: transparent;
   color: #fff;
   border-radius: 7px;
@@ -35,7 +51,6 @@
   transition: all 0.3s ease;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
-  margin-left: 10px;
   border: none;
   outline: none;
   cursor: pointer;
@@ -44,11 +59,33 @@
   height: 40px;
   width: 40px;
   padding-top: 2px;
-  position: absolute;
-  margin-right: 90%;
 }
 
-.btnCancelar:hover {
+.btnVolverAInicio:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}
+
+.btnBuscarArticulo {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+}
+
+.btnBuscarArticulo:hover {
   color: #fff;
   text-shadow: #fff 0 0 8px;
 }
@@ -62,6 +99,36 @@
   transition: all 0.3s ease;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 40px;
+  padding-top: 2px;
+}
+
+.btnFinalizar:hover {
+  color: #fff;
+  text-shadow: #fff 0 0 8px;
+}
+
+.divICarritoCompra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnCarritoCompra {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
   margin-left: 10px;
   border: none;
   outline: none;
@@ -71,21 +138,17 @@
   height: 40px;
   width: 40px;
   padding-top: 2px;
-  position: absolute;
-  margin-left: 90%;
 }
 
-.btnFinalizar:hover {
+.btnCarritoCompra:hover {
   color: #fff;
   text-shadow: #fff 0 0 8px;
 }
 
 .cantidadCarrito {
-  color: #fff;
   background: transparent;
   color: #fff;
-  border-radius: 7px;
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 600;
   transition: all 0.3s ease;
   font-family: "Montserrat", sans-serif;
@@ -93,34 +156,89 @@
   border: none;
   outline: none;
   cursor: pointer;
-  margin-top: 15px;
-  margin-bottom: 10px;
-  height: 40px;
-  width: 40px;
-  padding-top: 2px;
-  position: absolute;
-  margin-left: 93.5%;
+  margin-top: 18px;
+  margin-right: 5px;
+}
+
+.divPaginaArticulo {
+  width: 100%;
+  height: calc(100vh - 20px);
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: none;
+  margin-top: 10px;
+  margin-right: 10px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.divPaginaArticulo::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.divPaginaArticulo::-webkit-scrollbar:vertical {
+  width: 10px;
+}
+
+.divPaginaArticulo::-webkit-scrollbar-button:increment,
+.contenedor::-webkit-scrollbar-button {
+  display: none;
+}
+
+.divPaginaArticulo::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.divPaginaArticulo::-webkit-scrollbar-thumb {
+  background-color: #f1f2f3;
+  border-radius: 7px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.divPaginaArticulo::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+.divConsultaYStock {
+  width: 100%;
+  border-top-left-radius: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .h1 {
   color: #fff;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
+  width: 60%;
+  padding: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .barraConsulta {
-  backdrop-filter: blur(5px);
+  text-align: center;
+  width: 60%;
+  padding: 10px;
+  margin-top: 5px;
   background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 4rem;
-  padding: 15px 0 15px 0;
   border-radius: 7px;
-  margin-top: 10px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 .form {
@@ -151,7 +269,7 @@
 }
 
 .btnConsultarStock {
-  background-color: rgba(45, 53, 162, 1);
+  background-color: rgba(45, 53, 162, 0.3);
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -178,32 +296,21 @@
 }
 
 .divArticuloYTabla {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 10px;
+  width: 60%;
+  margin-top: 5px;
   gap: 50px;
-}
-
-.divArticuloOuter {
-  text-align: center;
-  width: 50%;
-  height: 250px;
-  backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 7px;
-  padding: 10px;
 }
 
 .divArticulo {
   text-align: center;
-  width: 50%;
+  width: 100%;
   backdrop-filter: blur(10px);
   background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   padding: 10px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 .subtituloH3 {
@@ -234,9 +341,6 @@
   width: 100%;
   align-items: center;
   text-align: center;
-  backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 7px;
 }
@@ -250,6 +354,9 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 7px;
+  margin-top: 5px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 .h3StockDelArticulo {
@@ -275,7 +382,7 @@
 }
 
 .table button {
-  background-color: rgb(59, 68, 189);
+  background-color: rgba(45, 53, 162, 0.3);
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -301,7 +408,9 @@
 }
 
 .divTableCarrito {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
@@ -311,6 +420,10 @@
   padding: 10px;
   border-radius: 7px;
   overflow-x: auto;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .h3CarritoCompras {
@@ -318,22 +431,48 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
+  width: 80%;
+  padding: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  text-align: center;
 }
 
-.tableCarrito {
-  width: 100%;
+.divTableCarritoInner {
+  background-color: pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
   border-collapse: collapse;
   backdrop-filter: blur(10px);
   background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 0;
+  font-weight: 100;
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+  font-size: 1.2rem;
+  margin-top: 5px;
+  overflow: auto;
+  padding-top: 5px;
+}
+
+.tableCarrito {
+  width: 100%;
+  background: transparent;
   text-align: center;
   border-radius: 7px;
   font-weight: 100;
   font-family: "Montserrat", sans-serif;
   color: #fff;
   font-size: 1.2rem;
-  overflow: scroll;
-  margin-top: 10px;
+  overflow: auto;
 }
 
 .tableCarrito button {
@@ -377,25 +516,19 @@
   color: rgba(45, 53, 162, 1);
 }
 
-.divNoHayStock {
+.divTotal {
+  width: 80%;
+  margin-top: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
-  height: 100px;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(5px);
-  border: 1px solid red;
-  height: 250px;
-  border-radius: 7px;
-}
-
-.pNoHayStock {
-  color: red;
-  font-size: 2rem;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 100;
-  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(45, 53, 162, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .pTotal {
@@ -403,7 +536,6 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  margin-top: 10px;
 }
 
 .btnTotal {
@@ -421,7 +553,6 @@
   outline: none;
   cursor: pointer;
   padding: 5px;
-  margin-top: 10px;
   width: 6em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

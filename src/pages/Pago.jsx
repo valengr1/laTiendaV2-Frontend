@@ -44,11 +44,13 @@ function Pago() {
         if (response.data === "") {
           setCliente(null);
           toast.error("Cliente no encontrado", {
+            position: "bottom-right",
             duration: 2000,
             id: "error",
           });
         } else {
           toast.success("Cliente encontrado", {
+            position: "bottom-right",
             duration: 2000,
             id: "Cliente encontrado",
           });
@@ -129,8 +131,11 @@ function Pago() {
                   </button>
                   {cliente ? (
                     <section className={styles.divClienteEncontrado}>
-                      <h3>Nombre: {cliente.nombre}</h3>
-                      <h3>Apellido: {cliente.apellido}</h3>
+                      <h3>
+                        <b>
+                          {cliente.nombre} {cliente.apellido}
+                        </b>
+                      </h3>
                       <h3>DNI: {cliente.dni}</h3>
                       <h3>Dirección: {cliente.direccion}</h3>
                       <h3>Teléfono: {cliente.telefono}</h3>
@@ -252,7 +257,6 @@ function Pago() {
                     <></>
                   )}
                   <div className={styles.divLineasVenta}>
-                    <h3>Total: {window.localStorage.getItem("total")}</h3>
                     {lineasVenta.map((lineaVenta) => {
                       return (
                         <div
@@ -268,11 +272,13 @@ function Pago() {
                             <option disabled>Color: {lineaVenta.color}</option>
                             <option disabled>Talle: {lineaVenta.talle}</option>
                           </select>
-                          <h3>Cantidad: {lineaVenta.cantidad}</h3>
-                          <h3>
+                          <h2 className={styles.h3Cantidad}>
+                            Cantidad: {lineaVenta.cantidad}
+                          </h2>
+                          <h2 className={styles.h3Subtotal}>
                             Subtotal:{" "}
                             {lineaVenta.precioVenta * lineaVenta.cantidad}
-                          </h3>
+                          </h2>
 
                           <button>
                             <i className="fa-solid fa-trash"></i>
@@ -280,6 +286,9 @@ function Pago() {
                         </div>
                       );
                     })}
+                    <h2 className={styles.h2Total}>
+                      Total: {window.localStorage.getItem("total")}
+                    </h2>
                   </div>
                   <div className={styles.divFinalizarVenta}>
                     <button>Realizar venta</button>
