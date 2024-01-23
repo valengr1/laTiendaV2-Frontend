@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../images/martin-martz-xjd0WUkltQo-unsplash.jpg");
+  background-image: url("../images/luke-chesser-pJadQetzTkI-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -37,7 +37,6 @@
   margin-top: 10px;
   margin-bottom: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   width: 70px;
 }
@@ -165,7 +164,6 @@
   height: calc(100vh - 20px);
   text-align: center;
   padding: 10px;
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-top-left-radius: none;
   margin-top: 10px;
@@ -222,7 +220,6 @@
   width: 60%;
   padding: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -234,7 +231,6 @@
   width: 60%;
   padding: 10px;
   margin-top: 5px;
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -305,8 +301,8 @@
   text-align: center;
   width: 100%;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
   border-radius: 7px;
   padding: 10px;
   border-bottom-right-radius: 0px;
@@ -322,7 +318,6 @@
 
 .divDatosArticulo {
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   padding: 10px;
@@ -350,7 +345,6 @@
   align-items: center;
   text-align: center;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 7px;
@@ -370,7 +364,6 @@
   width: 100%;
   border-collapse: collapse;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   text-align: center;
   border-radius: 7px;
@@ -414,8 +407,7 @@
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-  backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
+
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 7px;
@@ -434,7 +426,6 @@
   width: 80%;
   padding: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -443,14 +434,11 @@
 }
 
 .divTableCarritoInner {
-  background-color: pink;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 80%;
   border-collapse: collapse;
-  backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   text-align: center;
   border-radius: 0;
@@ -527,7 +515,6 @@
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 

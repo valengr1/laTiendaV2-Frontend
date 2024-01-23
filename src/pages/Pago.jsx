@@ -18,6 +18,20 @@ function Pago() {
       id: 0,
     },
   });
+  const [clienteRegistro, setClienteRegistro] = useState({
+    dni: "",
+    nombre: "",
+    apellido: "",
+    direccion: "",
+    telefono: "",
+    condicionTributaria: {
+      descripcion: "",
+      id: 0,
+    },
+  });
+
+  const [condicionesTributarias, setCondicionesTributarias] = useState([]);
+
   const [paginaCliente, setPaginaCliente] = useState(false);
   const [paginaPago, setPaginaPago] = useState(false); // [false, true
   const [registro, setRegistro] = useState(false);
@@ -32,10 +46,26 @@ function Pago() {
     }
     setPaginaCliente(true);
     setPaginaPago(false);
+    const getCondicionesTributarias = () => {
+      axios
+        .get("http://localhost:8080/condicionesTributarias")
+        .then((response) => {
+          setCondicionesTributarias(response.data);
+        });
+    };
+    getCondicionesTributarias();
   }, []);
 
   const buscarCliente = (e) => {
     e.preventDefault();
+    if (dni.length < 8) {
+      toast.error("Ingrese un DNI válido", {
+        position: "bottom-right",
+        duration: 2000,
+        id: "error",
+      });
+      return;
+    }
     axios
       .get("http://localhost:8080/buscarCliente", {
         params: { DNI: dni },
@@ -88,6 +118,22 @@ function Pago() {
     setPaginaCliente(false);
     setPaginaPago(true);
   };
+
+  const registroCliente = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:8080/registrarCliente", clienteRegistro)
+      .then((response) => {
+        if (response.data === "Cliente registrado") {
+          toast.success("Cliente registrado", {
+            position: "bottom-right",
+            duration: 2000,
+            id: "Cliente registrado",
+          });
+          setRegistro(false);
+        }
+      });
+  };
   return (
     <main className={styles.main}>
       <Toaster />
@@ -111,10 +157,7 @@ function Pago() {
             {paginaCliente ? (
               <div className={styles.divClienteYRegistro}>
                 <h3 className={styles.H1Cliente}>Cliente</h3>
-                <form
-                  className={styles.formBuscarCliente}
-                  onSubmit={buscarCliente}
-                >
+                <div className={styles.formBuscarCliente}>
                   <input
                     onChange={(e) => setDni(e.target.value)}
                     type="number"
@@ -122,7 +165,12 @@ function Pago() {
                     required
                     id="dni"
                   />
-                  <button>Buscar</button>
+                  <button
+                    className={styles.btnBuscarCliente}
+                    onClick={buscarCliente}
+                  >
+                    Buscar
+                  </button>
                   <button
                     className={styles.btnRegistrarCliente}
                     onClick={registrarCliente}
@@ -148,45 +196,121 @@ function Pago() {
                     <></>
                   )}
                   {registro ? (
-                    <form className={styles.divRegistroCliente}>
-                      <div className={styles.divPares}>
-                        <input required placeholder="Nombre" type="text" />
-                        <input required placeholder="Apellido" type="text" />
-                      </div>
-                      <div className={styles.divPares}>
-                        <input required placeholder="DNI" type="number" />
-                        <input required placeholder="Dirección" type="text" />
-                      </div>
-                      <div className={styles.divPares}>
-                        <input required placeholder="Teléfono" type="number" />
-
-                        <select
-                          className={styles.divCondicionTributaria}
-                          name=""
-                          id=""
-                        >
-                          <option value="">Condición tributaria</option>
-                          <option value="">Consumidor final</option>
-                          <option value="">Responsable inscripto</option>
-                          <option value="">Monotributista</option>
-                        </select>
-                      </div>
-                      <div className={styles.divBotonera}>
-                        <button className={styles.btnRegistrar}>
-                          Registrar
-                        </button>
-                        <button
-                          className={styles.btnCancelar}
-                          onClick={cancelar}
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    </form>
+                    <div className={styles.divRegistroCliente}>
+                      <form onSubmit={registroCliente} action="">
+                        <div className={styles.divPares}>
+                          <input
+                            required
+                            placeholder="DNI"
+                            type="number"
+                            name="dni"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                dni: e.target.value,
+                              });
+                            }}
+                          />
+                          <input
+                            required
+                            placeholder="Nombre"
+                            type="text"
+                            name="nombre"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                nombre: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className={styles.divPares}>
+                          <input
+                            required
+                            placeholder="Apellido"
+                            type="text"
+                            name="apellido"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                apellido: e.target.value,
+                              });
+                            }}
+                          />
+                          <input
+                            required
+                            placeholder="Dirección"
+                            type="text"
+                            name="direccion"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                direccion: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className={styles.divPares}>
+                          <input
+                            required
+                            placeholder="Teléfono"
+                            type="number"
+                            name="telefono"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                telefono: e.target.value,
+                              });
+                            }}
+                          />
+                          <select
+                            className={styles.divCondicionTributaria}
+                            name="condicion_tributaria_id"
+                            id=""
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                condicionTributaria: {
+                                  id: e.target.value,
+                                  descripcion:
+                                    e.target.options[e.target.selectedIndex]
+                                      .text,
+                                },
+                              });
+                            }}
+                          >
+                            <option value="">Condición tributaria</option>
+                            {condicionesTributarias.map(
+                              (condicionTributaria) => {
+                                return (
+                                  <option
+                                    key={condicionTributaria.id}
+                                    value={condicionTributaria.id}
+                                  >
+                                    {condicionTributaria.descripcion}
+                                  </option>
+                                );
+                              }
+                            )}
+                          </select>
+                        </div>
+                        <div className={styles.divBotonera}>
+                          <button className={styles.btnRegistrar}>
+                            Registrar
+                          </button>
+                          <button
+                            className={styles.btnCancelar}
+                            onClick={cancelar}
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   ) : (
                     <> </>
                   )}
-                </form>
+                </div>
               </div>
             ) : (
               <></>

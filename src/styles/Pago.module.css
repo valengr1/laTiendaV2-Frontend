@@ -4,7 +4,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/martin-martz-xjd0WUkltQo-unsplash.jpg");
+  background-image: url("../images/luke-chesser-pJadQetzTkI-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -122,17 +122,72 @@
   background-color: rgb(228, 228, 231);
 }
 
-.formBuscarCliente button {
+.btnBuscarCliente {
   background: transparent;
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   font-size: 1rem;
   font-weight: 100;
-  transition: all 0.1s ease;
+  transition: all 0.2s ease;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
-  margin-left: 15px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  height: 36px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid #fff;
+  margin-left: 10px;
+}
+
+.btnBuscarCliente:hover {
+  color: rgba(45, 53, 162, 1);
+  background-color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.btnRegistrarCliente {
+  background: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 100;
+  transition: all 0.2s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  height: 36px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid #fff;
+  margin-left: 10px;
+}
+
+.btnRegistrarCliente:hover {
+  color: rgba(45, 53, 162, 1);
+  background-color: #fff;
+  scale: 1.03;
+  text-shadow: #fff 0 0 8px;
+  font-weight: 800;
+}
+
+.btnRegistrar {
+  background: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 100;
+  transition: all 0.2s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
   border: none;
   outline: none;
   cursor: pointer;
@@ -142,12 +197,38 @@
   border: 2px solid #fff;
 }
 
-.formBuscarCliente button:hover {
-  color: rgba(45, 53, 162, 1);
-  background-color: #fff;
-  scale: 1.03;
-  text-shadow: #fff 0 0 8px;
+.btnRegistrar:hover {
+  color: rgb(53, 62, 57);
+  background-color: rgb(70, 212, 131);
   font-weight: 800;
+  border: none;
+}
+
+.btnCancelar {
+  background: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 100;
+  transition: all 0.2s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  height: 36px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid #fff;
+  margin-left: 10px;
+}
+
+.btnCancelar:hover {
+  color: #fff;
+  background-color: rgb(245, 65, 128);
+  font-weight: 800;
+  border: none;
 }
 
 .divClienteEncontrado {
