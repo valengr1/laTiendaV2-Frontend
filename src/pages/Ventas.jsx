@@ -40,7 +40,7 @@ function Ventas() {
   const [paginaCarrito, setPaginaCarrito] = useState(false);
 
   const agregarArticulo = (item) => {
-    if (arrayStocks.includes(item)) {
+    if (arrayStocks.find((element) => element.id === item.id)) {
       toast.error("El artículo ya está en el carrito", {
         duration: 2000,
         position: "bottom-right",
@@ -62,7 +62,11 @@ function Ventas() {
       });
       item.cantidad = 1;
       item.subtotal = item.precioVenta * 1;
-      setArrayStocks([...arrayStocks, item]);
+      if (arrayStocks.length === 0) {
+        setArrayStocks([item]);
+      } else {
+        setArrayStocks([...arrayStocks, item]);
+      }
     }
     setTotal(0);
   };
@@ -76,6 +80,10 @@ function Ventas() {
       position: "bottom-right",
       id: "quitarArticulo",
     });
+    if (arrayStocksAux.length === 0) {
+      setPaginaCarrito(false);
+      setPaginaArticulo(true);
+    }
   };
 
   const handleCantidadChange = (e, item) => {

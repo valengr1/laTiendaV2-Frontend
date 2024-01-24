@@ -134,6 +134,59 @@ function Pago() {
         }
       });
   };
+
+  const validarTarjeta = (e) => {
+    e.preventDefault();
+    const numeroTarjeta = document.getElementById("numeroTarjeta").value;
+    const nombreTitular = document.getElementById("nombreTitular").value;
+    const fechaVencimiento = document.getElementById("fechaVencimiento").value;
+    const codigoSeguridad = document.getElementById("codigoSeguridad").value;
+    const dniTitular = document.getElementById("dniTitular").value;
+    const tarjeta = {
+      numeroTarjeta,
+      dniTitular,
+      nombreTitular,
+      fechaVencimiento,
+      codigoSeguridad,
+    };
+
+    console.log(tarjeta);
+    solicitarTokenPago(tarjeta);
+  };
+
+  const solicitarTokenPago = (tarjeta) => {
+    let fecha = tarjeta.fechaVencimiento;
+    let partes = fecha.split("-");
+    let year = partes[0];
+    let month = partes[1];
+
+    const request = {
+      card_number: tarjeta.numeroTarjeta,
+      card_expiration_month: month,
+      card_expiration_year: year,
+      security_code: tarjeta.codigoSeguridad,
+      card_holder_name: tarjeta.nombreTitular,
+      card_holder_identification: {
+        type: "dni",
+        number: tarjeta.dniTitular,
+      },
+    };
+
+    const headers = {
+      apikey: "b192e4cb99564b84bf5db5550112adea",
+      "Cache-Control": "no-cache",
+    };
+
+    axios
+      .post(
+        "https://developers.decidir.com/api/v2/tokens",
+        { request },
+        { headers }
+      )
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
   return (
     <main className={styles.main}>
       <Toaster />
@@ -341,23 +394,36 @@ function Pago() {
                   </div>
                   {select === "tarjeta" ? (
                     <div className={styles.divValidarTarjeta}>
-                      <form className={styles.formValidarTarjeta}>
+                      <form
+                        onSubmit={validarTarjeta}
+                        className={styles.formValidarTarjeta}
+                      >
                         <div className={styles.divParesTarjeta}>
                           <input
+                            required
                             placeholder="Número de tarjeta"
                             type="number"
                             id="numeroTarjeta"
                           />
                           <input
+                            required
+                            placeholder="DNI del titular"
+                            type="text"
+                            id="dniTitular"
+                          />
+                          <input
+                            required
                             placeholder="Nombre del titular"
                             type="text"
                             id="nombreTitular"
                           />
                         </div>
+
                         <div className={styles.divParesTarjeta}>
                           <div className={styles.divFechaVencimiento}>
                             <label htmlFor="">Fecha de vencimiento</label>
                             <input
+                              required
                               className={styles.inputFechaVencimiento}
                               placeholder="Fecha de vencimiento"
                               type="date"
@@ -365,6 +431,7 @@ function Pago() {
                             />
                           </div>
                           <input
+                            required
                             className={styles.inputCodigoSeguridad}
                             placeholder="Código de seguridad"
                             type="number"
