@@ -1,5 +1,5 @@
 .main {
-  background: url("../images/luke-chesser-pJadQetzTkI-unsplash.jpg");
+  background: url("../images/uran-wang-_TiHt6kYepU-unsplash.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -57,8 +57,8 @@
 }
 
 .aNuevaVenta {
-  background: #fff;
-  color: rgba(45, 53, 162, 1);
+  background: transparent;
+  color: #fff;
   padding: 1rem 2rem;
   border-radius: 10px;
   text-decoration: none;
@@ -69,30 +69,10 @@
   z-index: 1;
   overflow: hidden;
   display: inline-block;
+  border: 2px solid #fff;
 }
 
 .aNuevaVenta:hover {
-  background-color: rgba(45, 53, 162, 1);
-  color: #fff;
-}
-.aNuevaVenta::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  padding: 16px 20px;
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: -100%;
-  right: 100%;
-  -webkit-transition: all 0.35s;
-  transition: all 0.35s;
-}
-.aNuevaVenta:hover::after {
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  -webkit-transition: all 0.35s;
-  transition: all 0.35s;
+  background-color: #fff;
+  color: #000;
 }

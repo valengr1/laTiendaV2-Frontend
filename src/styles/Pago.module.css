@@ -1,10 +1,9 @@
 .main {
-  background-color: red;
   height: 100vh;
 }
 
 .divPrincipal {
-  background-image: url("../images/luke-chesser-pJadQetzTkI-unsplash.jpg");
+  background-image: url("../images/uran-wang-_TiHt6kYepU-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,7 +16,6 @@
   align-items: center;
   padding-right: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -26,6 +24,7 @@
   margin-right: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 70px;
 }
 
 .buttonHeader {
@@ -69,7 +68,6 @@
   height: calc(100vh - 20px);
   text-align: center;
   padding: 10px;
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-top-left-radius: none;
   margin-top: 10px;
@@ -78,6 +76,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
 
 .H1Cliente {
@@ -88,7 +88,6 @@
   width: 60%;
   padding: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -100,7 +99,7 @@
   width: 60%;
   padding: 10px;
   margin-top: 5px;
-  background-color: rgba(45, 53, 162, 0.3);
+
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -143,7 +142,7 @@
 }
 
 .btnBuscarCliente:hover {
-  color: rgba(45, 53, 162, 1);
+  color: rgb(0, 0, 0);
   background-color: #fff;
   scale: 1.03;
   text-shadow: #fff 0 0 8px;
@@ -171,7 +170,7 @@
 }
 
 .btnRegistrarCliente:hover {
-  color: rgba(45, 53, 162, 1);
+  color: rgb(0, 0, 0);
   background-color: #fff;
   scale: 1.03;
   text-shadow: #fff 0 0 8px;
@@ -194,12 +193,12 @@
   width: 100px;
   height: 36px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border: 2px solid #fff;
+  border: 2px solid rgb(0, 224, 97);
 }
 
 .btnRegistrar:hover {
   color: rgb(53, 62, 57);
-  background-color: rgb(70, 212, 131);
+  background-color: rgb(0, 224, 97);
   font-weight: 800;
   border: none;
 }
@@ -220,21 +219,21 @@
   width: 100px;
   height: 36px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border: 2px solid #fff;
+  border: 2px solid rgb(255, 0, 60);
   margin-left: 10px;
 }
 
 .btnCancelar:hover {
   color: #fff;
-  background-color: rgb(245, 65, 128);
+  background-color: rgb(255, 0, 60);
   font-weight: 800;
   border: none;
 }
 
 .divClienteEncontrado {
-  margin-top: 10px;
+  width: 60%;
+  margin-top: 5px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -252,9 +251,10 @@
 }
 
 .divRegistroCliente {
-  margin-top: 10px;
+  margin-top: 5px;
+  width: 60%;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
+
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -264,6 +264,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.divRegistroCliente form {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.divRegistroCliente form input {
+  width: 200px;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  outline: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  background-color: rgb(228, 228, 231);
 }
 
 .divPares {
@@ -298,6 +318,7 @@
   justify-content: center;
   gap: 4px;
   margin-right: 8px;
+  margin-top: 5px;
 }
 
 .divFormaPago {
@@ -305,7 +326,6 @@
   height: calc(100vh - 20px);
   text-align: center;
   padding: 10px;
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-top-left-radius: none;
   margin-top: 10px;
@@ -323,11 +343,10 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  background-color: purple;
   width: 60%;
-  padding: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
+
+  padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -340,7 +359,6 @@
   padding: 10px;
   margin-top: 5px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -380,10 +398,8 @@
 }
 
 .divTarjeta:hover {
-  color: rgba(45, 53, 162, 1);
+  color: rgb(0, 0, 0);
   background-color: #fff;
-  scale: 1.03;
-  text-shadow: #fff 0 0 8px;
   font-weight: 800;
 }
 
@@ -412,8 +428,7 @@
 
 .divEfectivo:hover {
   background-color: #fff;
-  color: rgba(45, 53, 162, 1);
-  scale: 1.03;
+  color: rgb(0, 0, 0);
   font-weight: 800;
 }
 
@@ -462,7 +477,7 @@
 .divValidarTarjeta {
   margin-top: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
+
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -524,33 +539,31 @@
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 100;
   transition: all 0.2s ease;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
-  border: none;
   outline: none;
   cursor: pointer;
   width: 150px;
   height: 36px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border: 2px solid #fff;
-  margin-top: 10px;
+  border: 2px solid rgb(0, 224, 97);
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .formValidarTarjeta button:hover {
-  color: rgba(45, 53, 162, 1);
-  background-color: #fff;
-  scale: 1.03;
-  text-shadow: #fff 0 0 8px;
+  color: rgb(51, 51, 51);
+  background-color: rgb(0, 224, 97);
   font-weight: 800;
 }
 
 .divLineasVenta {
   margin-top: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(45, 53, 162, 0.3);
+
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -591,7 +604,6 @@
 
 .h3Cantidad {
   color: #000;
-  background-color: violet;
   width: 30%;
   padding: 9px;
   font-weight: 600;
@@ -603,7 +615,6 @@
 
 .h3Subtotal {
   color: #000;
-  background-color: violet;
   width: 30%;
   padding: 9px;
   font-weight: 600;
@@ -614,27 +625,52 @@
 }
 
 .divLineaVenta button {
-  height: 40px;
-  width: 40px;
-  border-radius: 5px;
-  font-size: 1.2rem;
+  border-radius: 7px;
   font-weight: 100;
-  transition: all 0.1s ease;
+  font-size: 1.25rem;
+  width: 50px;
+  height: 40px;
+  transition: all 0.2s ease;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
   border: none;
   outline: none;
   cursor: pointer;
   padding: 5px 7px 5px 5px;
-  background-color: rgb(59, 68, 189);
+  background: transparent;
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgb(255, 0, 60);
 }
 
 .divLineaVenta button:hover {
-  /*color: rgba(45, 53, 162, 1);
-  background-color: #fff;*/
-  scale: 1.1;
+  background-color: rgb(255, 0, 60);
   color: #fff;
-  text-shadow: #fff 0 0 8px;
+}
+
+.btnRealizarVenta {
+  background: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 100;
+  transition: all 0.2s ease;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 150px;
+  height: 36px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgb(0, 224, 97);
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.btnRealizarVenta:hover {
+  color: rgb(51, 51, 51);
+  background-color: rgb(0, 224, 97);
+  font-weight: 800;
 }
