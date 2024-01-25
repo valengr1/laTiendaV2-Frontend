@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
+import { validaDNI } from "../helpers/validacionesCliente";
+import { registrarCliente } from "../services/clienteServices";
+import { solicitarTokenPago } from "../services/pagoServices";
 
 function Pago() {
   const navigate = useNavigate();
@@ -58,39 +61,10 @@ function Pago() {
 
   const buscarCliente = (e) => {
     e.preventDefault();
-    if (dni.length < 8) {
-      toast.error("Ingrese un DNI válido", {
-        position: "bottom-right",
-        duration: 2000,
-        id: "error",
-      });
-      return;
-    }
-    axios
-      .get("http://localhost:8080/buscarCliente", {
-        params: { DNI: dni },
-      })
-      .then((response) => {
-        if (response.data === "") {
-          setCliente(null);
-          toast.error("Cliente no encontrado", {
-            position: "bottom-right",
-            duration: 2000,
-            id: "error",
-          });
-        } else {
-          toast.success("Cliente encontrado", {
-            position: "bottom-right",
-            duration: 2000,
-            id: "Cliente encontrado",
-          });
-          setCliente(response.data);
-          setRegistro(false);
-        }
-      });
+    validaDNI(dni, setCliente, setRegistro);
   };
 
-  const registrarCliente = (e) => {
+  const mostrarRegistroCliente = (e) => {
     e.preventDefault();
     setCliente(null);
     setRegistro(true);
@@ -121,27 +95,16 @@ function Pago() {
 
   const registroCliente = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/registrarCliente", clienteRegistro)
-      .then((response) => {
-        if (response.data === "Cliente registrado") {
-          toast.success("Cliente registrado", {
-            position: "bottom-right",
-            duration: 2000,
-            id: "Cliente registrado",
-          });
-          setRegistro(false);
-        }
-      });
+    registrarCliente(clienteRegistro, setRegistro);
   };
 
   const validarTarjeta = (e) => {
     e.preventDefault();
-    const numeroTarjeta = document.getElementById("numeroTarjeta").value;
-    const nombreTitular = document.getElementById("nombreTitular").value;
-    const fechaVencimiento = document.getElementById("fechaVencimiento").value;
-    const codigoSeguridad = document.getElementById("codigoSeguridad").value;
-    const dniTitular = document.getElementById("dniTitular").value;
+    const numeroTarjeta = "4507990000004905"; //document.getElementById("numeroTarjeta").value;
+    const nombreTitular = "John Doe"; //document.getElementById("nombreTitular").value;
+    const fechaVencimiento = "24-08-20"; //document.getElementById("fechaVencimiento").value;
+    const codigoSeguridad = "123"; //document.getElementById("codigoSeguridad").value;
+    const dniTitular = "25123456"; //document.getElementById("dniTitular").value;
     const tarjeta = {
       numeroTarjeta,
       dniTitular,
@@ -149,44 +112,9 @@ function Pago() {
       fechaVencimiento,
       codigoSeguridad,
     };
-
-    console.log(tarjeta);
     solicitarTokenPago(tarjeta);
   };
 
-  const solicitarTokenPago = (tarjeta) => {
-    let fecha = tarjeta.fechaVencimiento;
-    let partes = fecha.split("-");
-    let year = partes[0];
-    let month = partes[1];
-
-    const request = {
-      card_number: tarjeta.numeroTarjeta,
-      card_expiration_month: month,
-      card_expiration_year: year,
-      security_code: tarjeta.codigoSeguridad,
-      card_holder_name: tarjeta.nombreTitular,
-      card_holder_identification: {
-        type: "dni",
-        number: tarjeta.dniTitular,
-      },
-    };
-
-    const headers = {
-      apikey: "b192e4cb99564b84bf5db5550112adea",
-      "Cache-Control": "no-cache",
-    };
-
-    axios
-      .post(
-        "https://developers.decidir.com/api/v2/tokens",
-        { request },
-        { headers }
-      )
-      .then((response) => {
-        console.log(response.data);
-      });
-  };
   return (
     <main className={styles.main}>
       <Toaster />
@@ -226,7 +154,7 @@ function Pago() {
                   </button>
                   <button
                     className={styles.btnRegistrarCliente}
-                    onClick={registrarCliente}
+                    onClick={mostrarRegistroCliente}
                   >
                     Añadir
                   </button>
@@ -400,19 +328,19 @@ function Pago() {
                       >
                         <div className={styles.divParesTarjeta}>
                           <input
-                            required
+                            //required
                             placeholder="Número de tarjeta"
                             type="number"
                             id="numeroTarjeta"
                           />
                           <input
-                            required
+                            //required
                             placeholder="DNI del titular"
                             type="text"
                             id="dniTitular"
                           />
                           <input
-                            required
+                            //required
                             placeholder="Nombre del titular"
                             type="text"
                             id="nombreTitular"
@@ -423,7 +351,7 @@ function Pago() {
                           <div className={styles.divFechaVencimiento}>
                             <label htmlFor="">Fecha de vencimiento</label>
                             <input
-                              required
+                              //required
                               className={styles.inputFechaVencimiento}
                               placeholder="Fecha de vencimiento"
                               type="date"
@@ -431,7 +359,7 @@ function Pago() {
                             />
                           </div>
                           <input
-                            required
+                            //required
                             className={styles.inputCodigoSeguridad}
                             placeholder="Código de seguridad"
                             type="number"
