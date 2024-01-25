@@ -1,5 +1,10 @@
 import axios from "axios";
-import toast from "react-hot-toast";
+import {
+  notificacionTarjetaValidada,
+  notificacionTarjetaNoValidada,
+  notificacionPagoRealizado,
+  notificacionPagoNoRealizado,
+} from "../helpers/notificaciones";
 
 export function solicitarTokenPago(tarjeta) {
   let fecha = tarjeta.fechaVencimiento;
@@ -33,18 +38,10 @@ function solicitudTokenPago(data, headers) {
     })
     .then((response) => {
       if (response.data.status === "active") {
-        toast.success("Tarjeta validada", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Tarjeta validada",
-        });
+        notificacionTarjetaValidada();
         realizarPago(response.data.id);
       } else {
-        toast.error("Tarjeta no validada", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Tarjeta no validada",
-        });
+        notificacionTarjetaNoValidada();
       }
     })
     .catch((error) => {
@@ -88,18 +85,10 @@ function solicitudRealizarPago(data, headers) {
     .then((response) => {
       console.log(response.data);
       if (response.data.status === "approved") {
-        toast.success("Pago realizado", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Pago realizado",
-        });
+        notificacionPagoRealizado();
         //realizarVenta();
       } else {
-        toast.error("Pago no realizado", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Pago no realizado",
-        });
+        notificacionPagoNoRealizado();
       }
     })
     .then((error) => {

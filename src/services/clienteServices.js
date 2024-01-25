@@ -1,5 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import { notificacionClienteRegistrado } from "../helpers/notificaciones";
 
 export function buscarClientePorDNI(dni, setCliente, setRegistro) {
   axios
@@ -26,18 +27,21 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
     });
 }
 
-export function registrarCliente(clienteRegistro, setRegistro) {
+export function registrarCliente(clienteRegistro) {
   //validar cliente
+
   axios
     .post("http://localhost:8080/registrarCliente", clienteRegistro)
     .then((response) => {
+      console.log(response.data);
       if (response.data === "Cliente registrado") {
-        toast.success("Cliente registrado", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Cliente registrado",
-        });
-        setRegistro(false);
+        notificacionClienteRegistrado();
       }
     });
 }
+
+export const getCondicionesTributarias = (setCondicionesTributarias) => {
+  axios.get("http://localhost:8080/condicionesTributarias").then((response) => {
+    setCondicionesTributarias(response.data);
+  });
+};

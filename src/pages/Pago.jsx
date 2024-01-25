@@ -1,11 +1,15 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
-import { validaDNI } from "../helpers/validacionesCliente";
-import { registrarCliente } from "../services/clienteServices";
+import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
+import {
+  buscarClientePorDNI,
+  getCondicionesTributarias,
+  registrarCliente,
+} from "../services/clienteServices";
 import { solicitarTokenPago } from "../services/pagoServices";
+import { notificacionDNIInvalido } from "../helpers/notificaciones";
 
 function Pago() {
   const navigate = useNavigate();
@@ -34,7 +38,6 @@ function Pago() {
   });
 
   const [condicionesTributarias, setCondicionesTributarias] = useState([]);
-
   const [paginaCliente, setPaginaCliente] = useState(false);
   const [paginaPago, setPaginaPago] = useState(false); // [false, true
   const [registro, setRegistro] = useState(false);
@@ -49,19 +52,16 @@ function Pago() {
     }
     setPaginaCliente(true);
     setPaginaPago(false);
-    const getCondicionesTributarias = () => {
-      axios
-        .get("http://localhost:8080/condicionesTributarias")
-        .then((response) => {
-          setCondicionesTributarias(response.data);
-        });
-    };
-    getCondicionesTributarias();
+    getCondicionesTributarias(setCondicionesTributarias);
   }, []);
 
   const buscarCliente = (e) => {
     e.preventDefault();
-    validaDNI(dni, setCliente, setRegistro);
+    if (validaDNI(dni)) {
+      buscarClientePorDNI(dni, setCliente, setRegistro);
+    } else {
+      notificacionDNIInvalido();
+    }
   };
 
   const mostrarRegistroCliente = (e) => {
@@ -93,11 +93,6 @@ function Pago() {
     setPaginaPago(true);
   };
 
-  const registroCliente = (e) => {
-    e.preventDefault();
-    registrarCliente(clienteRegistro, setRegistro);
-  };
-
   const validarTarjeta = (e) => {
     e.preventDefault();
     const numeroTarjeta = "4507990000004905"; //document.getElementById("numeroTarjeta").value;
@@ -113,6 +108,17 @@ function Pago() {
       codigoSeguridad,
     };
     solicitarTokenPago(tarjeta);
+  };
+
+  const registroCliente = (e) => {
+    e.preventDefault();
+    if (
+      validaDNI(clienteRegistro.dni) &&
+      validaTelefono(clienteRegistro.telefono)
+    ) {
+      registrarCliente(clienteRegistro, setCliente);
+      setRegistro(false);
+    }
   };
 
   return (
@@ -246,6 +252,7 @@ function Pago() {
                           }}
                         />
                         <select
+                          required
                           className={styles.divCondicionTributaria}
                           name="condicion_tributaria_id"
                           id=""

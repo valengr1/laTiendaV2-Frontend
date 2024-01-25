@@ -1,16 +1,19 @@
-import toast from "react-hot-toast";
-import { buscarClientePorDNI } from "../services/clienteServices";
+import {
+  notificacionDNIInvalido,
+  notificacionTelefonoInvalido,
+} from "./notificaciones";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
-export function validaDNI(dni, setCliente, setRegistro) {
+export function validaDNI(dni) {
   var ex_regular_dni;
   ex_regular_dni = /^\d{8}(?:[-\s]\d{4})?$/;
-  if (ex_regular_dni.test(dni) == true) {
-    buscarClientePorDNI(dni, setCliente, setRegistro);
+  return ex_regular_dni.test(dni) ? true : notificacionDNIInvalido();
+}
+
+export function validaTelefono(telefono) {
+  if (isValidPhoneNumber(telefono, "AR")) {
+    return true;
   } else {
-    toast.error("Ingrese un DNI válido", {
-      position: "bottom-right",
-      duration: 2000,
-      id: "error",
-    });
+    return notificacionTelefonoInvalido();
   }
 }
