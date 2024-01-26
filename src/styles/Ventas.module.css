@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
+  background-image: url("../images/david-marcu-78A265wPiO4-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,7 +15,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #fff;
 }
 
 .divVentaOuter {
@@ -28,8 +27,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 5%;
+  gap: 5px;
+  width: 70px;
   border-radius: 7px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -37,15 +36,14 @@
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 10px;
-  backdrop-filter: blur(10px);
-  background-color: rgba(8, 2, 38, 0.3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .btnVolverAInicio {
   background: transparent;
+  margin-top: 5px;
   color: #fff;
-  border-top-left-radius: 7px;
   font-size: 1.8rem;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -59,8 +57,7 @@
 }
 
 .btnVolverAInicio:hover {
-  color: #000;
-  background-color: #fff;
+  text-shadow: #fff 0 0 8px;
 }
 
 .btnBuscarArticulo {
@@ -81,8 +78,7 @@
 }
 
 .btnBuscarArticulo:hover {
-  color: #000;
-  background-color: #fff;
+  text-shadow: #fff 0 0 8px;
 }
 
 .btnFinalizar {
@@ -103,8 +99,7 @@
 }
 
 .btnFinalizar:hover {
-  color: #000;
-  background-color: #fff;
+  text-shadow: #fff 0 0 8px;
 }
 
 .divICarritoCompra {
@@ -115,7 +110,7 @@
 }
 
 .divICarritoCompra:hover {
-  background-color: #fff;
+  text-shadow: #fff 0 0 8px;
 }
 
 .btnCarritoCompra {
@@ -137,7 +132,7 @@
 }
 
 .btnCarritoCompra:hover {
-  color: #000;
+  text-shadow: #fff 0 0 8px;
 }
 
 .cantidadCarrito {
@@ -155,16 +150,19 @@
   margin-right: 5px;
 }
 
+.cantidadCarrito:hover {
+  text-shadow: #fff 0 0 8px;
+}
+
 .divPaginaArticulo {
   width: 100%;
   height: calc(100vh - 20px);
   text-align: center;
   padding: 10px;
-
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-top-left-radius: none;
-  margin-top: 10px;
-  margin-right: 10px;
+  margin-top: 5px;
+  margin-right: 5px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -218,7 +216,6 @@
   padding: 10px;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: rgba(8, 2, 38, 0.3);
 
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -230,7 +227,6 @@
   width: 60%;
   padding: 10px;
   margin-top: 5px;
-  background-color: rgba(8, 2, 38, 0.3);
 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
@@ -307,7 +303,6 @@
   padding: 10px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
-  backdrop-filter: blur(5px);
 }
 
 .subtituloH3 {
@@ -319,10 +314,10 @@
 
 .divDatosArticulo {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: rgba(8, 2, 38, 0.3);
   border-radius: 7px;
   padding: 10px;
   margin-top: 10px;
+  backdrop-filter: blur(10px);
 }
 
 .datoArticuloH4 {
@@ -345,7 +340,6 @@
   width: 100%;
   align-items: center;
   text-align: center;
-  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 7px;
@@ -366,7 +360,6 @@
   border-collapse: collapse;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: rgba(8, 2, 38, 0.3);
   text-align: center;
   border-radius: 7px;
   font-weight: 100;
@@ -427,7 +420,6 @@
   font-weight: 100;
   width: 80%;
   padding: 10px;
-  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -442,7 +434,7 @@
   width: 80%;
   border-collapse: collapse;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: rgba(8, 2, 38, 0.3);
+  backdrop-filter: blur(10px);
   text-align: center;
   border-radius: 0;
   font-weight: 100;

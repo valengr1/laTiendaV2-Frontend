@@ -3,7 +3,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/uran-wang-_TiHt6kYepU-unsplash.jpg");
+  background-image: url("../images/david-marcu-78A265wPiO4-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -87,7 +87,6 @@
   font-weight: 100;
   width: 60%;
   padding: 10px;
-  backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
@@ -99,7 +98,6 @@
   width: 60%;
   padding: 10px;
   margin-top: 5px;
-
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -344,7 +342,6 @@
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
   width: 60%;
-  backdrop-filter: blur(10px);
 
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -358,7 +355,6 @@
   width: 60%;
   padding: 10px;
   margin-top: 5px;
-  backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
