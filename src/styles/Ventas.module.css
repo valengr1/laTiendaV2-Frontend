@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../images/david-marcu-78A265wPiO4-unsplash.jpg");
+  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -401,7 +401,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
   border-collapse: collapse;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;

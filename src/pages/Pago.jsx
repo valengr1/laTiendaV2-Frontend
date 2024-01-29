@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
 import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
@@ -43,12 +43,17 @@ function Pago() {
   const [registro, setRegistro] = useState(false);
   const [select, setSelect] = useState("");
   const [lineasVenta, setLineasVenta] = useState([]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     setCliente(null);
     const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
     if (lineasVenta) {
       setLineasVenta(lineasVenta);
+    }
+    const total = localStorage.getItem("total");
+    if (total) {
+      setTotal(total);
     }
     setPaginaCliente(true);
     setPaginaPago(false);
@@ -78,9 +83,16 @@ function Pago() {
   };
 
   const cancelarVenta = () => {
-    window.localStorage.removeItem("arrayStocks");
-    window.localStorage.removeItem("total");
-    navigate("/ventas");
+    toast.error("Venta cancelada", {
+      duration: 1500,
+      position: "bottom-right",
+      id: "cancelarVenta",
+    });
+    setTimeout(() => {
+      window.localStorage.removeItem("arrayStocks");
+      window.localStorage.removeItem("total");
+      navigate("/ventas");
+    }, 2000);
   };
 
   const mostrarPaginaCliente = () => {
@@ -119,6 +131,35 @@ function Pago() {
       registrarCliente(clienteRegistro, setCliente);
       setRegistro(false);
     }
+  };
+
+  const handleQuitarArticulo = (id) => {
+    let arrayStocksAux = lineasVenta.filter((item) => item.id !== id);
+    setLineasVenta(arrayStocksAux);
+    toast.error("Artículo eliminado del carrito", {
+      duration: 2000,
+      position: "bottom-right",
+      id: "quitarArticulo",
+    });
+    setTotal(0);
+    if (arrayStocksAux.length === 0) {
+      toast.error("Venta cancelada", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "quitarArticulo",
+      });
+      setTimeout(() => {
+        cancelarVenta();
+      }, 1000);
+    }
+  };
+
+  const getTotal = () => {
+    let total = 0;
+    lineasVenta.forEach((item) => {
+      total += item.subtotal;
+    });
+    setTotal(total);
   };
 
   return (
@@ -379,45 +420,70 @@ function Pago() {
                   ) : (
                     <></>
                   )}
-                  <div className={styles.divLineasVenta}>
-                    {lineasVenta.map((lineaVenta) => {
-                      return (
-                        <div
-                          className={styles.divLineaVenta}
-                          key={lineaVenta.id}
-                        >
-                          <select className={styles.selectLineasVenta}>
-                            <option>{lineaVenta.descripcionArticulo}</option>
-                            <option disabled>{lineaVenta.marca}</option>
-                            <option disabled>
-                              Precio {lineaVenta.precioVenta}
-                            </option>
-                            <option disabled>Color: {lineaVenta.color}</option>
-                            <option disabled>Talle: {lineaVenta.talle}</option>
-                          </select>
-                          <h2 className={styles.h3Cantidad}>
-                            Cantidad: {lineaVenta.cantidad}
-                          </h2>
-                          <h2 className={styles.h3Subtotal}>
-                            Subtotal:{" "}
-                            {lineaVenta.precioVenta * lineaVenta.cantidad}
-                          </h2>
-
-                          <button>
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                        </div>
-                      );
-                    })}
-                    <h2 className={styles.h2Total}>
-                      Total: {window.localStorage.getItem("total")}
-                    </h2>
+                  <div className={styles.divTableCarritoInner}>
+                    <h3>Venta</h3>
+                    <table className={styles.tableCarrito}>
+                      <thead>
+                        <tr>
+                          <th>Descripcion</th>
+                          <th>Marca</th>
+                          <th>Talle</th>
+                          <th>Color</th>
+                          <th>Cantidad</th>
+                          <th>Precio</th>
+                          <th>Subtotal</th>
+                          <th>Quitar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {lineasVenta.map((item) => (
+                          <tr key={item.id}>
+                            <td>{item.descripcionArticulo}</td>
+                            <td>{item.marca}</td>
+                            <td>{item.talle}</td>
+                            <td>{item.color}</td>
+                            <td>{item.cantidad}</td>
+                            <td>${item.precioVenta}</td>
+                            <td>
+                              <b>${item.subtotal}</b>
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => {
+                                  handleQuitarArticulo(item.id);
+                                }}
+                              >
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {total ? (
+                      <div className={styles.divTotal}>
+                        <p className={styles.pTotal}>
+                          <b>Total: ${total}</b>
+                        </p>
+                      </div>
+                    ) : (
+                      <div className={styles.divTotal}>
+                        <button className={styles.btnTotal} onClick={getTotal}>
+                          Total
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div className={styles.divFinalizarVenta}>
                     <button className={styles.btnRealizarVenta}>
                       Realizar venta
                     </button>
-                    <button className={styles.btnCancelar}>Cancelar</button>
+                    <button
+                      onClick={cancelarVenta}
+                      className={styles.btnCancelar}
+                    >
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               </div>
