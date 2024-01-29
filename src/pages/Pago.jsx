@@ -14,6 +14,14 @@ import { notificacionDNIInvalido } from "../helpers/notificaciones";
 function Pago() {
   const navigate = useNavigate();
   const [dni, setDni] = useState("");
+  const [condicionesTributarias, setCondicionesTributarias] = useState([]);
+  const [paginaCliente, setPaginaCliente] = useState(false);
+  const [paginaPago, setPaginaPago] = useState(false); // [false, true
+  const [registro, setRegistro] = useState(false);
+  const [select, setSelect] = useState("");
+  const [lineasVenta, setLineasVenta] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [tablaVenta, setTablaVenta] = useState(false);
   const [cliente, setCliente] = useState({
     nombre: "",
     apellido: "",
@@ -37,14 +45,6 @@ function Pago() {
     },
   });
 
-  const [condicionesTributarias, setCondicionesTributarias] = useState([]);
-  const [paginaCliente, setPaginaCliente] = useState(false);
-  const [paginaPago, setPaginaPago] = useState(false); // [false, true
-  const [registro, setRegistro] = useState(false);
-  const [select, setSelect] = useState("");
-  const [lineasVenta, setLineasVenta] = useState([]);
-  const [total, setTotal] = useState(0);
-
   useEffect(() => {
     setCliente(null);
     const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
@@ -58,6 +58,8 @@ function Pago() {
     setPaginaCliente(true);
     setPaginaPago(false);
     getCondicionesTributarias(setCondicionesTributarias);
+    setTablaVenta(false);
+    setSelect("tarjeta");
   }, []);
 
   const buscarCliente = (e) => {
@@ -75,10 +77,11 @@ function Pago() {
     setRegistro(true);
   };
 
-  const cancelar = () => {
+  const ocultarRegistroCliente = () => {
     setRegistro(false);
   };
-  const handleSelection = (e) => {
+
+  const handleSelectionFormaPago = (e) => {
     setSelect(e.target.value);
   };
 
@@ -103,15 +106,17 @@ function Pago() {
   const mostrarPaginaPago = () => {
     setPaginaCliente(false);
     setPaginaPago(true);
+    setTablaVenta(false);
+    setSelect("tarjeta");
   };
 
   const validarTarjeta = (e) => {
     e.preventDefault();
-    const numeroTarjeta = "4507990000004905"; //document.getElementById("numeroTarjeta").value;
-    const nombreTitular = "John Doe"; //document.getElementById("nombreTitular").value;
-    const fechaVencimiento = "24-08-20"; //document.getElementById("fechaVencimiento").value;
-    const codigoSeguridad = "123"; //document.getElementById("codigoSeguridad").value;
-    const dniTitular = "25123456"; //document.getElementById("dniTitular").value;
+    const numeroTarjeta = document.getElementById("numeroTarjeta").value; // "4507990000004905"; //
+    const nombreTitular = document.getElementById("nombreTitular").value; //"John Doe";
+    const fechaVencimiento = document.getElementById("fechaVencimiento").value; // "24-08-20"; //
+    const codigoSeguridad = document.getElementById("codigoSeguridad").value; // "123"; //
+    const dniTitular = document.getElementById("dniTitular").value; // "25123456"; //
     const tarjeta = {
       numeroTarjeta,
       dniTitular,
@@ -143,11 +148,7 @@ function Pago() {
     });
     setTotal(0);
     if (arrayStocksAux.length === 0) {
-      toast.error("Venta cancelada", {
-        duration: 2000,
-        position: "bottom-right",
-        id: "quitarArticulo",
-      });
+      setTablaVenta(false);
       setTimeout(() => {
         cancelarVenta();
       }, 1000);
@@ -160,6 +161,10 @@ function Pago() {
       total += item.subtotal;
     });
     setTotal(total);
+  };
+
+  const mostrarTablaVenta = () => {
+    setTablaVenta(true);
   };
 
   return (
@@ -179,6 +184,9 @@ function Pago() {
             </button>
             <button className={styles.buttonHeader} onClick={mostrarPaginaPago}>
               <i className="fa-solid fa-money-check-dollar"></i>
+            </button>
+            <button className={styles.buttonHeader} onClick={mostrarTablaVenta}>
+              <i className="fa-solid fa-bag-shopping"></i>
             </button>
           </header>
           <div className={styles.divRegistroYVenta}>
@@ -327,7 +335,7 @@ function Pago() {
                         </button>
                         <button
                           className={styles.btnCancelar}
-                          onClick={cancelar}
+                          onClick={ocultarRegistroCliente}
                         >
                           Cancelar
                         </button>
@@ -347,9 +355,12 @@ function Pago() {
                 <div className={styles.divFormaPagoInner}>
                   <div className={styles.divSelección}>
                     <div className={styles.divTarjeta}>
-                      <label htmlFor="tarjeta">Tarjeta</label>
+                      <label className={styles.iconoLabel} htmlFor="tarjeta">
+                        <i className="fa-regular fa-credit-card"></i>
+                      </label>
+
                       <input
-                        onChange={handleSelection}
+                        onChange={handleSelectionFormaPago}
                         type="radio"
                         name="pago"
                         id="tarjeta"
@@ -357,9 +368,11 @@ function Pago() {
                       />
                     </div>
                     <div className={styles.divEfectivo}>
-                      <label htmlFor="efectivo">Efectivo</label>
+                      <label className={styles.iconoLabel} htmlFor="efectivo">
+                        <i className="fa-regular fa-money-bill-1"></i>
+                      </label>
                       <input
-                        onChange={handleSelection}
+                        onChange={handleSelectionFormaPago}
                         type="radio"
                         name="pago"
                         id="efectivo"
@@ -376,19 +389,19 @@ function Pago() {
                       >
                         <div className={styles.divParesTarjeta}>
                           <input
-                            //required
+                            required
                             placeholder="Número de tarjeta"
                             type="number"
                             id="numeroTarjeta"
                           />
                           <input
-                            //required
+                            required
                             placeholder="DNI del titular"
                             type="text"
                             id="dniTitular"
                           />
                           <input
-                            //required
+                            required
                             placeholder="Nombre del titular"
                             type="text"
                             id="nombreTitular"
@@ -399,7 +412,7 @@ function Pago() {
                           <div className={styles.divFechaVencimiento}>
                             <label htmlFor="">Fecha de vencimiento</label>
                             <input
-                              //required
+                              required
                               className={styles.inputFechaVencimiento}
                               placeholder="Fecha de vencimiento"
                               type="date"
@@ -407,7 +420,7 @@ function Pago() {
                             />
                           </div>
                           <input
-                            //required
+                            required
                             className={styles.inputCodigoSeguridad}
                             placeholder="Código de seguridad"
                             type="number"
@@ -420,71 +433,79 @@ function Pago() {
                   ) : (
                     <></>
                   )}
-                  <div className={styles.divTableCarritoInner}>
-                    <h3>Venta</h3>
-                    <table className={styles.tableCarrito}>
-                      <thead>
-                        <tr>
-                          <th>Descripcion</th>
-                          <th>Marca</th>
-                          <th>Talle</th>
-                          <th>Color</th>
-                          <th>Cantidad</th>
-                          <th>Precio</th>
-                          <th>Subtotal</th>
-                          <th>Quitar</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {lineasVenta.map((item) => (
-                          <tr key={item.id}>
-                            <td>{item.descripcionArticulo}</td>
-                            <td>{item.marca}</td>
-                            <td>{item.talle}</td>
-                            <td>{item.color}</td>
-                            <td>{item.cantidad}</td>
-                            <td>${item.precioVenta}</td>
-                            <td>
-                              <b>${item.subtotal}</b>
-                            </td>
-                            <td>
-                              <button
-                                onClick={() => {
-                                  handleQuitarArticulo(item.id);
-                                }}
-                              >
-                                <i className="fa-solid fa-trash"></i>
-                              </button>
-                            </td>
+
+                  {tablaVenta ? (
+                    <div className={styles.divTableCarritoInner}>
+                      <h4 className={styles.h4Venta}>Venta</h4>
+                      <table className={styles.tableCarrito}>
+                        <thead>
+                          <tr>
+                            <th>Descripcion</th>
+                            <th>Marca</th>
+                            <th>Talle</th>
+                            <th>Color</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Quitar</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {total ? (
-                      <div className={styles.divTotal}>
-                        <p className={styles.pTotal}>
-                          <b>Total: ${total}</b>
-                        </p>
-                      </div>
-                    ) : (
-                      <div className={styles.divTotal}>
-                        <button className={styles.btnTotal} onClick={getTotal}>
-                          Total
+                        </thead>
+                        <tbody>
+                          {lineasVenta.map((item) => (
+                            <tr key={item.id}>
+                              <td>{item.descripcionArticulo}</td>
+                              <td>{item.marca}</td>
+                              <td>{item.talle}</td>
+                              <td>{item.color}</td>
+                              <td>{item.cantidad}</td>
+                              <td>${item.precioVenta}</td>
+                              <td>
+                                <b>${item.subtotal}</b>
+                              </td>
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    handleQuitarArticulo(item.id);
+                                  }}
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {total ? (
+                        <div className={styles.divTotal}>
+                          <p className={styles.pTotal}>
+                            Total:<b> ${total}</b>
+                          </p>
+                        </div>
+                      ) : (
+                        <div className={styles.divTotal}>
+                          <button
+                            className={styles.btnTotal}
+                            onClick={getTotal}
+                          >
+                            Total
+                          </button>
+                        </div>
+                      )}
+                      <div className={styles.divFinalizarVenta}>
+                        <button className={styles.btnRealizarVenta}>
+                          Registrar venta
+                        </button>
+                        <button
+                          onClick={cancelarVenta}
+                          className={styles.btnCancelar}
+                        >
+                          Cancelar
                         </button>
                       </div>
-                    )}
-                  </div>
-                  <div className={styles.divFinalizarVenta}>
-                    <button className={styles.btnRealizarVenta}>
-                      Realizar venta
-                    </button>
-                    <button
-                      onClick={cancelarVenta}
-                      className={styles.btnCancelar}
-                    >
-                      Cancelar
-                    </button>
-                  </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             ) : (

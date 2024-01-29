@@ -10,12 +10,13 @@ export function solicitarTokenPago(tarjeta) {
   let fecha = tarjeta.fechaVencimiento;
   let partes = fecha.split("-");
   let year = partes[0];
+  let yearEnDosDigitos = year.slice(-2);
   let month = partes[1];
 
   const data = {
-    card_number: tarjeta.numeroTarjeta,
+    card_number: `${tarjeta.numeroTarjeta}`,
     card_expiration_month: month,
-    card_expiration_year: year,
+    card_expiration_year: yearEnDosDigitos,
     security_code: tarjeta.codigoSeguridad,
     card_holder_name: tarjeta.nombreTitular,
     card_holder_identification: {
@@ -55,7 +56,7 @@ export function realizarPago(id) {
   };
 
   const data = {
-    site_transaction_id: "3", //este id debe cambiar
+    site_transaction_id: "5", //este id debe cambiar
     payment_method_id: 1,
     token: `${id}`,
     bin: "450799",

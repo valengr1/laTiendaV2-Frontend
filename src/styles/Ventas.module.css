@@ -1,12 +1,12 @@
 .main {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
+  background-image: url("../images/david-marcu-78A265wPiO4-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
+  align-items: center;
 }
 
 .divPrincipal {
@@ -23,11 +23,11 @@
 }
 
 .divHeader {
-  height: calc(100vh - 20px);
+  height: calc(100vh - 10px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   width: 70px;
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -35,7 +35,7 @@
   margin-left: 5px;
   margin-right: 5px;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
 }
@@ -92,7 +92,6 @@
   border: none;
   outline: none;
   cursor: pointer;
-  margin-top: 10px;
   margin-bottom: 10px;
   height: 40px;
   width: 100%;
@@ -128,7 +127,6 @@
   cursor: pointer;
   height: 40px;
   width: 40px;
-  padding-top: 2px;
 }
 
 .btnCarritoCompra:hover {
