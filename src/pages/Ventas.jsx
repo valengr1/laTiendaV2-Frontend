@@ -38,6 +38,7 @@ function Ventas() {
   const [total, setTotal] = useState(0);
   const [paginaArticulo, setPaginaArticulo] = useState(false);
   const [paginaCarrito, setPaginaCarrito] = useState(false);
+  const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
 
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
@@ -126,7 +127,9 @@ function Ventas() {
         }
       });
     axios
-      .get("http://localhost:8080/stock", { params: { codigo: codigo } })
+      .get("http://localhost:8080/stockBySucursal", {
+        params: { codigoArticulo: codigo, legajoVendedor: legajoVendedor },
+      })
       .then((response) => {
         setStock(response.data);
         if (response.data.length === 0) {

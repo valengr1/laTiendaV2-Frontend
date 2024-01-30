@@ -23,6 +23,10 @@ function IniciarSesion() {
             id: "error",
           });
         } else {
+          localStorage.setItem(
+            "legajoVendedor",
+            JSON.stringify(vendedor.legajo)
+          );
           toast.success(response.data, {
             duration: 2000,
             id: "bienvenido",
