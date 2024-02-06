@@ -10,13 +10,13 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
     .then((response) => {
       if (response.data === "") {
         setCliente(null);
-        toast.error("Cliente no encontrado", {
+        toast.error("Cliente inexistente", {
           position: "bottom-right",
           duration: 2000,
           id: "error",
         });
       } else {
-        toast.success("Cliente encontrado", {
+        toast.success("Cliente existente", {
           position: "bottom-right",
           duration: 2000,
           id: "Cliente encontrado",
@@ -28,8 +28,6 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
 }
 
 export function registrarCliente(clienteRegistro) {
-  //validar cliente
-
   axios
     .post("http://localhost:8080/registrarCliente", clienteRegistro)
     .then((response) => {

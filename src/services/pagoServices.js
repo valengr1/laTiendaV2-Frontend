@@ -50,12 +50,21 @@ function solicitudTokenPago(data, headers) {
 }
 
 export function realizarPago(id, bin) {
+  if (sessionStorage.getItem("counter") == null)
+    sessionStorage.setItem("counter", Math.floor(Math.random() * 1000000) + 1);
+
+  let counterValue = Number(sessionStorage.getItem("counter"));
+  sessionStorage.setItem("counter", counterValue + 1);
+
+  console.log("Counter Value:", sessionStorage.getItem("counter"));
+
   const headers = {
     apikey: "566f2c897b5e4bfaa0ec2452f5d67f13",
   };
+
   //create a count for the site_transaction_id
   const data = {
-    site_transaction_id: "115", //este id debe cambiar
+    site_transaction_id: `${counterValue}`, //este id debe cambiar
     payment_method_id: 1,
     token: `${id}`,
     bin: bin,
@@ -73,7 +82,6 @@ export function realizarPago(id, bin) {
       },
     ],
   };
-
   solicitudRealizarPago(data, headers);
 }
 

@@ -427,7 +427,7 @@ function Pago() {
                             id="codigoSeguridad"
                           />
                         </div>
-                        <button>Validar tarjeta</button>
+                        <button>Realizar pago</button>
                       </form>
                     </div>
                   ) : (
