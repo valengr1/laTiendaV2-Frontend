@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  notificacionTarjetaValidada,
   notificacionTarjetaNoValidada,
   notificacionPagoRealizado,
   notificacionPagoNoRealizado,
@@ -38,9 +37,9 @@ function solicitudTokenPago(data, headers) {
       headers: headers,
     })
     .then((response) => {
+      console.log(response.data);
       if (response.data.status === "active") {
-        notificacionTarjetaValidada();
-        realizarPago(response.data.id);
+        realizarPago(response.data.id, response.data.bin);
       } else {
         notificacionTarjetaNoValidada();
       }
@@ -50,16 +49,16 @@ function solicitudTokenPago(data, headers) {
     });
 }
 
-export function realizarPago(id) {
+export function realizarPago(id, bin) {
   const headers = {
     apikey: "566f2c897b5e4bfaa0ec2452f5d67f13",
   };
-
+  //create a count for the site_transaction_id
   const data = {
-    site_transaction_id: "5", //este id debe cambiar
+    site_transaction_id: "115", //este id debe cambiar
     payment_method_id: 1,
     token: `${id}`,
-    bin: "450799",
+    bin: bin,
     amount: parseFloat(window.localStorage.getItem("total")),
     currency: "ARS",
     installments: 1,

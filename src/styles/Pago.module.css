@@ -64,7 +64,7 @@
 
 .divClienteYRegistro {
   width: 100%;
-  height: calc(100vh - 10px);
+  height: calc(100vh - 15px);
   text-align: center;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -517,6 +517,22 @@
 
 .inputCodigoSeguridad {
   margin-top: 20px;
+}
+
+@media (max-width: 1275px) {
+  .divParesTarjeta {
+    flex-direction: column;
+  }
+
+  .inputCodigoSeguridad {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 765px) {
+  .divFormaPagoInner {
+    width: 100%;
+  }
 }
 
 .formValidarTarjeta button {
