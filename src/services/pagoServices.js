@@ -7,15 +7,14 @@ import {
 
 export function solicitarTokenPago(tarjeta) {
   let fecha = tarjeta.fechaVencimiento;
-  let partes = fecha.split("-");
-  let year = partes[0];
-  let yearEnDosDigitos = year.slice(-2);
-  let month = partes[1];
+  let partes = fecha.split("/");
+  let year = partes[1];
+  let month = partes[0];
 
   const data = {
     card_number: `${tarjeta.numeroTarjeta}`,
     card_expiration_month: month,
-    card_expiration_year: yearEnDosDigitos,
+    card_expiration_year: year,
     security_code: tarjeta.codigoSeguridad,
     card_holder_name: tarjeta.nombreTitular,
     card_holder_identification: {

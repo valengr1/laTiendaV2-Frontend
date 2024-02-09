@@ -9,14 +9,17 @@ import {
   registrarCliente,
 } from "../services/clienteServices";
 import { solicitarTokenPago } from "../services/pagoServices";
-import { notificacionDNIInvalido } from "../helpers/notificaciones";
+import {
+  notificacionClienteSeleccionado,
+  notificacionDNIInvalido,
+} from "../helpers/notificaciones";
 
 function Pago() {
   const navigate = useNavigate();
   const [dni, setDni] = useState("");
   const [condicionesTributarias, setCondicionesTributarias] = useState([]);
   const [paginaCliente, setPaginaCliente] = useState(false);
-  const [paginaPago, setPaginaPago] = useState(false); // [false, true
+  const [paginaPago, setPaginaPago] = useState(false);
   const [registro, setRegistro] = useState(false);
   const [select, setSelect] = useState("");
   const [lineasVenta, setLineasVenta] = useState([]);
@@ -58,7 +61,7 @@ function Pago() {
     setPaginaCliente(true);
     setPaginaPago(false);
     getCondicionesTributarias(setCondicionesTributarias);
-    setTablaVenta(false);
+    setTablaVenta(true);
     setSelect("tarjeta");
   }, []);
 
@@ -103,13 +106,13 @@ function Pago() {
     setPaginaPago(false);
   };
 
-  const mostrarPaginaPago = () => {
-    setPaginaCliente(false);
-    setPaginaPago(true);
-    setTablaVenta(false);
-    setSelect("tarjeta");
-  };
-
+  // const mostrarPaginaPago = () => {
+  //   setPaginaCliente(false);
+  //   setPaginaPago(true);
+  //   setTablaVenta(false);
+  //   setSelect("tarjeta");
+  // };
+  //plantear si se puede realizar este proceso desde el backend mandando los datos necesarios.
   const validarTarjeta = (e) => {
     e.preventDefault();
     const numeroTarjeta = document.getElementById("numeroTarjeta").value; // "4507990000004905"; //
@@ -127,14 +130,14 @@ function Pago() {
     solicitarTokenPago(tarjeta);
   };
 
+  //desde el backend verificar si el cliente ya existe. Si existe, no se registra y se notifica. Si no existe, se registra y se notifica.
   const registroCliente = (e) => {
     e.preventDefault();
     if (
       validaDNI(clienteRegistro.dni) &&
       validaTelefono(clienteRegistro.telefono)
     ) {
-      registrarCliente(clienteRegistro, setCliente);
-      setRegistro(false);
+      registrarCliente(clienteRegistro, setRegistro);
     }
   };
 
@@ -163,8 +166,16 @@ function Pago() {
     setTotal(total);
   };
 
-  const mostrarTablaVenta = () => {
-    setTablaVenta(true);
+  // const mostrarTablaVenta = () => {
+  //   setTablaVenta(true);
+  // };
+
+  const seleccionarCliente = () => {
+    notificacionClienteSeleccionado();
+    setTimeout(() => {
+      setPaginaCliente(false);
+      setPaginaPago(true);
+    }, 2000);
   };
 
   return (
@@ -182,12 +193,12 @@ function Pago() {
             >
               <i className="fa-regular fa-user"></i>
             </button>
-            <button className={styles.buttonHeader} onClick={mostrarPaginaPago}>
+            {/* <button className={styles.buttonHeader} onClick={mostrarPaginaPago}>
               <i className="fa-solid fa-money-check-dollar"></i>
             </button>
             <button className={styles.buttonHeader} onClick={mostrarTablaVenta}>
               <i className="fa-solid fa-bag-shopping"></i>
-            </button>
+            </button> */}
           </header>
           <div className={styles.divRegistroYVenta}>
             {paginaCliente ? (
@@ -228,6 +239,12 @@ function Pago() {
                       Condición tributaria:{" "}
                       {cliente.condicionTributaria.descripcion}
                     </h3>
+                    <button
+                      onClick={seleccionarCliente}
+                      className={styles.btnSeleccionarCliente}
+                    >
+                      Seleccionar
+                    </button>
                   </section>
                 ) : (
                   <></>
@@ -414,8 +431,8 @@ function Pago() {
                             <input
                               required
                               className={styles.inputFechaVencimiento}
-                              placeholder="Fecha de vencimiento"
-                              type="date"
+                              placeholder="mm/aa"
+                              type="text"
                               id="fechaVencimiento"
                             />
                           </div>
@@ -436,9 +453,9 @@ function Pago() {
 
                   {tablaVenta ? (
                     <div className={styles.divTableCarritoInner}>
-                      <h4 className={styles.h4Venta}>Venta</h4>
+                      <h4 className={styles.h4Venta}>Artículos</h4>
                       <table className={styles.tableCarrito}>
-                        <thead>
+                        {/* <thead>
                           <tr>
                             <th>Descripcion</th>
                             <th>Marca</th>
@@ -449,7 +466,7 @@ function Pago() {
                             <th>Subtotal</th>
                             <th>Quitar</th>
                           </tr>
-                        </thead>
+                        </thead> */}
                         <tbody>
                           {lineasVenta.map((item) => (
                             <tr key={item.id}>

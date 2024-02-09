@@ -48,10 +48,26 @@ export function notificacionClienteRegistrado() {
   });
 }
 
+export function notificacionClienteYaRegistrado(response) {
+  toast.error(response.data, {
+    position: "bottom-right",
+    duration: 2000,
+    id: "Cliente registrado",
+  });
+}
+
 export function notificacionTelefonoInvalido() {
   toast.error("Ingrese un teléfono válido", {
     position: "bottom-right",
     duration: 2000,
     id: "error",
+  });
+}
+
+export function notificacionClienteSeleccionado() {
+  toast.success("Cliente seleccionado", {
+    position: "bottom-right",
+    duration: 2000,
+    id: "Cliente seleccionado",
   });
 }
