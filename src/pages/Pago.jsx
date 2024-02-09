@@ -8,7 +8,10 @@ import {
   getCondicionesTributarias,
   registrarCliente,
 } from "../services/clienteServices";
-import { solicitarTokenPago } from "../services/pagoServices";
+import {
+  determinarTipoComprobante,
+  solicitarTokenPago,
+} from "../services/pagoServices";
 import {
   notificacionClienteSeleccionado,
   notificacionDNIInvalido,
@@ -47,6 +50,7 @@ function Pago() {
       id: 0,
     },
   });
+  const [tipoComprobanteAEmitir, setTipoComprobanteAEmitir] = useState("");
 
   useEffect(() => {
     setCliente(null);
@@ -117,7 +121,7 @@ function Pago() {
     e.preventDefault();
     const numeroTarjeta = document.getElementById("numeroTarjeta").value; // "4507990000004905"; //
     const nombreTitular = document.getElementById("nombreTitular").value; //"John Doe";
-    const fechaVencimiento = document.getElementById("fechaVencimiento").value; // "24-08-20"; //
+    const fechaVencimiento = document.getElementById("fechaVencimiento").value; // "08/20"; //
     const codigoSeguridad = document.getElementById("codigoSeguridad").value; // "123"; //
     const dniTitular = document.getElementById("dniTitular").value; // "25123456"; //
     const tarjeta = {
@@ -127,7 +131,11 @@ function Pago() {
       fechaVencimiento,
       codigoSeguridad,
     };
-    solicitarTokenPago(tarjeta);
+    solicitarTokenPago(tarjeta, setSelect);
+    determinarTipoComprobante(
+      cliente.condicionTributaria.id,
+      setTipoComprobanteAEmitir
+    );
   };
 
   //desde el backend verificar si el cliente ya existe. Si existe, no se registra y se notifica. Si no existe, se registra y se notifica.
@@ -141,22 +149,22 @@ function Pago() {
     }
   };
 
-  const handleQuitarArticulo = (id) => {
-    let arrayStocksAux = lineasVenta.filter((item) => item.id !== id);
-    setLineasVenta(arrayStocksAux);
-    toast.error("Artículo eliminado del carrito", {
-      duration: 2000,
-      position: "bottom-right",
-      id: "quitarArticulo",
-    });
-    setTotal(0);
-    if (arrayStocksAux.length === 0) {
-      setTablaVenta(false);
-      setTimeout(() => {
-        cancelarVenta();
-      }, 1000);
-    }
-  };
+  // const handleQuitarArticulo = (id) => {
+  //   let arrayStocksAux = lineasVenta.filter((item) => item.id !== id);
+  //   setLineasVenta(arrayStocksAux);
+  //   toast.error("Artículo eliminado del carrito", {
+  //     duration: 2000,
+  //     position: "bottom-right",
+  //     id: "quitarArticulo",
+  //   });
+  //   setTotal(0);
+  //   if (arrayStocksAux.length === 0) {
+  //     setTablaVenta(false);
+  //     setTimeout(() => {
+  //       cancelarVenta();
+  //     }, 1000);
+  //   }
+  // };
 
   const getTotal = () => {
     let total = 0;
@@ -410,6 +418,8 @@ function Pago() {
                             placeholder="Número de tarjeta"
                             type="number"
                             id="numeroTarjeta"
+                            pattern=".{8,}"
+                            title="Eight or more characters"
                           />
                           <input
                             required
@@ -444,7 +454,7 @@ function Pago() {
                             id="codigoSeguridad"
                           />
                         </div>
-                        <button>Realizar pago</button>
+                        <button>Autorizar pago</button>
                       </form>
                     </div>
                   ) : (
@@ -453,7 +463,8 @@ function Pago() {
 
                   {tablaVenta ? (
                     <div className={styles.divTableCarritoInner}>
-                      <h4 className={styles.h4Venta}>Artículos</h4>
+                      <h4 className={styles.h4Venta}>Venta</h4>
+                      <h3>Comprobante: {tipoComprobanteAEmitir}</h3>
                       <table className={styles.tableCarrito}>
                         {/* <thead>
                           <tr>
@@ -479,7 +490,7 @@ function Pago() {
                               <td>
                                 <b>${item.subtotal}</b>
                               </td>
-                              <td>
+                              {/* <td>
                                 <button
                                   onClick={() => {
                                     handleQuitarArticulo(item.id);
@@ -487,7 +498,7 @@ function Pago() {
                                 >
                                   <i className="fa-solid fa-trash"></i>
                                 </button>
-                              </td>
+                              </td> */}
                             </tr>
                           ))}
                         </tbody>
@@ -509,9 +520,6 @@ function Pago() {
                         </div>
                       )}
                       <div className={styles.divFinalizarVenta}>
-                        <button className={styles.btnRealizarVenta}>
-                          Registrar venta
-                        </button>
                         <button
                           onClick={cancelarVenta}
                           className={styles.btnCancelar}

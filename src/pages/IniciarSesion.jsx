@@ -17,8 +17,8 @@ function IniciarSesion() {
         params: { legajo: vendedor.legajo, contraseña: vendedor.contraseña },
       })
       .then((response) => {
-        if (response.data === "Usuario y/o contraseña incorrectos") {
-          toast.error(response.data, {
+        if (response.data === "No autorizado") {
+          toast.error("Legajo y/o contraseña incorrecto/a", {
             duration: 2000,
             id: "error",
           });

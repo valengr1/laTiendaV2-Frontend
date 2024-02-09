@@ -3,7 +3,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/david-marcu-78A265wPiO4-unsplash.jpg");
+  background-image: url("../images/milad-fakurian-seA-FPPXL-M-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,7 +15,7 @@
   flex-direction: column;
   align-items: center;
   padding-right: 10px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
@@ -90,7 +90,6 @@
   border-radius: 7px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  backdrop-filter: blur(10px);
 }
 
 .formBuscarCliente {
@@ -256,7 +255,7 @@
 .divClienteEncontrado {
   width: 60%;
   margin-top: 5px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -276,7 +275,7 @@
 .divRegistroCliente {
   margin-top: 5px;
   width: 60%;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
 
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
@@ -514,7 +513,7 @@
 
 .divValidarTarjeta {
   margin-top: 10px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -645,7 +644,7 @@
   width: 100%;
   border-collapse: collapse;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   text-align: center;
   border-radius: 0;
   font-weight: 100;
@@ -669,7 +668,11 @@
   overflow: auto;
 }
 
-.tableCarrito button {
+.tableCarrito td {
+  padding: 10px;
+}
+
+/* .tableCarrito button {
   border-radius: 7px;
   font-weight: 100;
   font-size: 1.1rem;
@@ -694,7 +697,7 @@
   background-color: rgb(255, 0, 60);
 
   color: #fff;
-}
+} */
 
 .divTotal {
   font-family: "Montserrat", sans-serif;

@@ -16,8 +16,8 @@ export function notificacionTarjetaValidada() {
   });
 }
 
-export function notificacionTarjetaNoValidada() {
-  toast.error("Tarjeta no validada", {
+export function notificacionTarjetaNoValida() {
+  toast.error("Tarjeta no válida", {
     position: "bottom-right",
     duration: 2000,
     id: "Tarjeta no validada",
@@ -69,5 +69,13 @@ export function notificacionClienteSeleccionado() {
     position: "bottom-right",
     duration: 2000,
     id: "Cliente seleccionado",
+  });
+}
+
+export function notificacionDatosDeTarjetaInvalidos() {
+  toast.error("Ingrese datos de tarjeta válidos", {
+    position: "bottom-right",
+    duration: 2000,
+    id: "error",
   });
 }

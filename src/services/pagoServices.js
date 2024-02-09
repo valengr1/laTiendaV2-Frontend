@@ -1,36 +1,47 @@
 import axios from "axios";
 import {
-  notificacionTarjetaNoValidada,
   notificacionPagoRealizado,
   notificacionPagoNoRealizado,
+  notificacionDatosDeTarjetaInvalidos,
+  notificacionTarjetaNoValida,
 } from "../helpers/notificaciones";
 
-export function solicitarTokenPago(tarjeta) {
+export function solicitarTokenPago(tarjeta, setSelect) {
   let fecha = tarjeta.fechaVencimiento;
   let partes = fecha.split("/");
   let year = partes[1];
   let month = partes[0];
 
-  const data = {
-    card_number: `${tarjeta.numeroTarjeta}`,
-    card_expiration_month: month,
-    card_expiration_year: year,
-    security_code: tarjeta.codigoSeguridad,
-    card_holder_name: tarjeta.nombreTitular,
-    card_holder_identification: {
-      type: "dni",
-      number: tarjeta.dniTitular,
-    },
-  };
+  if (
+    tarjeta.fechaVencimiento.match(/^(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/) &&
+    tarjeta.numeroTarjeta.match(/^\d{16}$/) &&
+    tarjeta.codigoSeguridad.match(/^\d{3}$/) &&
+    tarjeta.dniTitular.match(/^\d{8}$/) &&
+    tarjeta.nombreTitular.match(/^[a-zA-Z\s]+$/)
+  ) {
+    const data = {
+      card_number: `${tarjeta.numeroTarjeta}`,
+      card_expiration_month: month,
+      card_expiration_year: year,
+      security_code: tarjeta.codigoSeguridad,
+      card_holder_name: tarjeta.nombreTitular,
+      card_holder_identification: {
+        type: "dni",
+        number: tarjeta.dniTitular,
+      },
+    };
 
-  const headers = {
-    apikey: "b192e4cb99564b84bf5db5550112adea",
-  };
+    const headers = {
+      apikey: "b192e4cb99564b84bf5db5550112adea",
+    };
 
-  solicitudTokenPago(data, headers);
+    solicitudTokenPago(data, headers, setSelect);
+  } else {
+    notificacionDatosDeTarjetaInvalidos();
+  }
 }
 
-function solicitudTokenPago(data, headers) {
+function solicitudTokenPago(data, headers, setSelect) {
   axios
     .post("https://developers.decidir.com/api/v2/tokens", data, {
       headers: headers,
@@ -38,9 +49,9 @@ function solicitudTokenPago(data, headers) {
     .then((response) => {
       console.log(response.data);
       if (response.data.status === "active") {
-        realizarPago(response.data.id, response.data.bin);
+        realizarPago(response.data.id, response.data.bin, setSelect);
       } else {
-        notificacionTarjetaNoValidada();
+        notificacionTarjetaNoValida();
       }
     })
     .catch((error) => {
@@ -48,9 +59,10 @@ function solicitudTokenPago(data, headers) {
     });
 }
 
-export function realizarPago(id, bin) {
-  if (sessionStorage.getItem("counter") == null)
+export function realizarPago(id, bin, setSelect) {
+  if (sessionStorage.getItem("counter") == null) {
     sessionStorage.setItem("counter", Math.floor(Math.random() * 1000000) + 1);
+  }
 
   let counterValue = Number(sessionStorage.getItem("counter"));
   sessionStorage.setItem("counter", counterValue + 1);
@@ -81,10 +93,10 @@ export function realizarPago(id, bin) {
       },
     ],
   };
-  solicitudRealizarPago(data, headers);
+  solicitudRealizarPago(data, headers, setSelect);
 }
 
-function solicitudRealizarPago(data, headers) {
+function solicitudRealizarPago(data, headers, setSelect) {
   axios
     .post("https://developers.decidir.com/api/v2/payments", data, {
       headers: headers,
@@ -93,12 +105,32 @@ function solicitudRealizarPago(data, headers) {
       console.log(response.data);
       if (response.data.status === "approved") {
         notificacionPagoRealizado();
+        setTimeout(() => {
+          setSelect("efectivo");
+        }, 2000);
         //realizarVenta();
       } else {
         notificacionPagoNoRealizado();
       }
     })
-    .then((error) => {
+    .catch((error) => {
       console.log(error);
+      notificacionTarjetaNoValida();
+      notificacionPagoNoRealizado();
+    });
+}
+
+export function determinarTipoComprobante(
+  idCondicionTributaria,
+  setTipoComprobanteAEmitir
+) {
+  axios
+    .get("http://localhost:8080/determinarTipoComprobanteAEmitir", {
+      params: {
+        idCondicionTributariaCliente: idCondicionTributaria,
+      },
+    })
+    .then((res) => {
+      setTipoComprobanteAEmitir(res.data);
     });
 }
