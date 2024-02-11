@@ -376,7 +376,7 @@ function Pago() {
             )}
             {paginaPago ? (
               <div className={styles.divFormaPago}>
-                <h3>Pago</h3>
+                <h3 className={styles.h3Pago}>Pago</h3>
                 <div className={styles.divFormaPagoInner}>
                   <div className={styles.divSelección}>
                     <div className={styles.divTarjeta}>
@@ -464,7 +464,7 @@ function Pago() {
                   {tablaVenta ? (
                     <div className={styles.divTableCarritoInner}>
                       <h4 className={styles.h4Venta}>Venta</h4>
-                      <h3>Comprobante: {tipoComprobanteAEmitir}</h3>
+
                       <table className={styles.tableCarrito}>
                         {/* <thead>
                           <tr>
@@ -519,6 +519,9 @@ function Pago() {
                           </button>
                         </div>
                       )}
+                      <h3 className={styles.h3Comprobante}>
+                        Comprobante: {tipoComprobanteAEmitir}
+                      </h3>
                       <div className={styles.divFinalizarVenta}>
                         <button
                           onClick={cancelarVenta}
