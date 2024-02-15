@@ -1,5 +1,5 @@
 .main {
-  background: url("../images/milad-fakurian-seA-FPPXL-M-unsplash.jpg");
+  background: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -73,6 +73,28 @@
 }
 
 .aNuevaVenta:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.aGestionarArticulos {
+  background: transparent;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Caudex", serif;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+  border: 2px solid #fff;
+  margin-left: 10px;
+}
+
+.aGestionarArticulos:hover {
   background-color: #fff;
   color: #000;
 }

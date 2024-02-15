@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import style from "../styles/Ventas.module.css";
 import { useNavigate } from "react-router-dom";
+import { modalConfirmacion } from "../helpers/modales";
 function Ventas() {
   useEffect(() => {
     setArticulo(null);
@@ -185,18 +186,31 @@ function Ventas() {
     setPaginaCarrito(false);
   };
 
+  const volverAInicio = (e) => {
+    e.preventDefault();
+    const datos = {
+      titulo: "Volver a inicio",
+      texto: "Se perderán los datos de la venta",
+      textoBotonConfirmacion: "Volver a inicio",
+      textoBotonCancelar: "Cancelar",
+    };
+
+    const accion = () => {
+      setTimeout(() => {
+        navigate("/inicio");
+      }, 200);
+    };
+
+    modalConfirmacion(datos, accion);
+  };
+
   return (
     <main className={style.main}>
       <div className={style.divPrincipal}>
         <Toaster />
         <div className={style.divVentaOuter}>
           <div className={style.divHeader}>
-            <button
-              className={style.btnVolverAInicio}
-              onClick={() => {
-                navigate("/inicio");
-              }}
-            >
+            <button className={style.btnVolverAInicio} onClick={volverAInicio}>
               <i className="fa-regular fa-circle-left"></i>
             </button>
             <button

@@ -79,3 +79,19 @@ export function notificacionDatosDeTarjetaInvalidos() {
     id: "error",
   });
 }
+
+export function articuloEliminadoCorrectamente() {
+  toast.error("Artículo eliminado correctamente", {
+    position: "bottom-right",
+    duration: 2000,
+    id: "articulo eliminado",
+  });
+}
+
+export function notificacionArticuloInexistente() {
+  toast.error("Artículo inexistente", {
+    position: "bottom-right",
+    duration: 2000,
+    id: "articulo eliminado",
+  });
+}

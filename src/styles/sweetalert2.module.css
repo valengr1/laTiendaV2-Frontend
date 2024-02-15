@@ -1,0 +1,9 @@
+.class {
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+  border-radius: 10px;
+  width: 500;
+  background: rgba(70, 110, 145, 0.2);
+  color: "#fff";
+  backdrop-filter: blur(45px);
+}

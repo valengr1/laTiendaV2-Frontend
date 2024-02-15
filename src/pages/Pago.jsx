@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
 import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
@@ -16,6 +16,7 @@ import {
   notificacionClienteSeleccionado,
   notificacionDNIInvalido,
 } from "../helpers/notificaciones";
+import { modalConfirmacion } from "../helpers/modales";
 
 function Pago() {
   const navigate = useNavigate();
@@ -93,16 +94,21 @@ function Pago() {
   };
 
   const cancelarVenta = () => {
-    toast.error("Venta cancelada", {
-      duration: 1500,
-      position: "bottom-right",
-      id: "cancelarVenta",
-    });
-    setTimeout(() => {
-      window.localStorage.removeItem("arrayStocks");
-      window.localStorage.removeItem("total");
-      navigate("/ventas");
-    }, 2000);
+    const datos = {
+      titulo: "Volver a nueva venta",
+      texto: "Se perderán los datos de la venta actual",
+      textoBotonConfirmacion: "Volver",
+      textoBotonCancelar: "Cancelar",
+    };
+
+    const accion = () => {
+      setTimeout(() => {
+        window.localStorage.removeItem("arrayStocks");
+        window.localStorage.removeItem("total");
+        navigate("/ventas");
+      }, 200);
+    };
+    modalConfirmacion(datos, accion);
   };
 
   const mostrarPaginaCliente = () => {
@@ -110,13 +116,6 @@ function Pago() {
     setPaginaPago(false);
   };
 
-  // const mostrarPaginaPago = () => {
-  //   setPaginaCliente(false);
-  //   setPaginaPago(true);
-  //   setTablaVenta(false);
-  //   setSelect("tarjeta");
-  // };
-  //plantear si se puede realizar este proceso desde el backend mandando los datos necesarios.
   const validarTarjeta = (e) => {
     e.preventDefault();
     const numeroTarjeta = document.getElementById("numeroTarjeta").value; // "4507990000004905"; //
@@ -132,13 +131,8 @@ function Pago() {
       codigoSeguridad,
     };
     solicitarTokenPago(tarjeta, setSelect);
-    determinarTipoComprobante(
-      cliente.condicionTributaria.id,
-      setTipoComprobanteAEmitir
-    );
   };
 
-  //desde el backend verificar si el cliente ya existe. Si existe, no se registra y se notifica. Si no existe, se registra y se notifica.
   const registroCliente = (e) => {
     e.preventDefault();
     if (
@@ -149,23 +143,6 @@ function Pago() {
     }
   };
 
-  // const handleQuitarArticulo = (id) => {
-  //   let arrayStocksAux = lineasVenta.filter((item) => item.id !== id);
-  //   setLineasVenta(arrayStocksAux);
-  //   toast.error("Artículo eliminado del carrito", {
-  //     duration: 2000,
-  //     position: "bottom-right",
-  //     id: "quitarArticulo",
-  //   });
-  //   setTotal(0);
-  //   if (arrayStocksAux.length === 0) {
-  //     setTablaVenta(false);
-  //     setTimeout(() => {
-  //       cancelarVenta();
-  //     }, 1000);
-  //   }
-  // };
-
   const getTotal = () => {
     let total = 0;
     lineasVenta.forEach((item) => {
@@ -174,12 +151,12 @@ function Pago() {
     setTotal(total);
   };
 
-  // const mostrarTablaVenta = () => {
-  //   setTablaVenta(true);
-  // };
-
   const seleccionarCliente = () => {
     notificacionClienteSeleccionado();
+    determinarTipoComprobante(
+      cliente.condicionTributaria.id,
+      setTipoComprobanteAEmitir
+    );
     setTimeout(() => {
       setPaginaCliente(false);
       setPaginaPago(true);
@@ -525,9 +502,9 @@ function Pago() {
                       <div className={styles.divFinalizarVenta}>
                         <button
                           onClick={cancelarVenta}
-                          className={styles.btnCancelar}
+                          className={styles.btnRealizarVenta}
                         >
-                          Cancelar
+                          Finalizar venta
                         </button>
                       </div>
                     </div>
