@@ -95,3 +95,11 @@ export function notificacionArticuloInexistente() {
     id: "articulo eliminado",
   });
 }
+
+export function notificacionPositiva(texto, id) {
+  toast.success(texto, {
+    position: "bottom-right",
+    duration: 2000,
+    id: id,
+  });
+}
