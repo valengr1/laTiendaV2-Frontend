@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import {
-  articuloEliminadoCorrectamente,
   notificacionArticuloInexistente,
+  notificacionNegativa,
   notificacionPositiva,
 } from "../helpers/notificaciones";
 import { modalConfirmacion } from "../helpers/modales";
 
 function GestionarArticulos() {
   useEffect(() => {
-    setArticuloResponse(null);
     setMostrarRegistroArticulo(false);
+    setMostrarModificarArticulo(false);
 
     const getMarcas = () => {
       axios.get("http://localhost:8080/getMarcas").then((res) => {
@@ -41,15 +41,14 @@ function GestionarArticulos() {
   }, []);
   const navigate = useNavigate();
   const [codigoArticulo, setCodigoArticulo] = useState(0);
-  // const [articuloResponse, setArticuloResponse] = useState({
-  //   codigo: 0,
-  //   descripcion: "",
-  //   marca: "",
-  //   categoria: "",
-  //   precio: 0,
-  //   tipoTalle: "",
-  // });
-  const [articuloResponse, setArticuloResponse] = useState({
+  const [articuloResponse, setArticuloResponse] = useState(null);
+  const [mostrarRegistroArticulo, setMostrarRegistroArticulo] = useState(false);
+  const [mostrarModificarArticulo, setMostrarModificarArticulo] =
+    useState(false);
+  const [marcas, setMarcas] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [tiposTalle, setTiposTalle] = useState([]);
+  const [articuloRegistro, setArticuloRegistro] = useState({
     codigo: 0,
     descripcion: "",
     costo: 0,
@@ -66,13 +65,8 @@ function GestionarArticulos() {
       id: 0,
       descripcion: "",
     },
-    precio: 0,
   });
-  const [mostrarRegistroArticulo, setMostrarRegistroArticulo] = useState(false);
-  const [marcas, setMarcas] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [tiposTalle, setTiposTalle] = useState([]);
-  const [articuloRegistro, setArticuloRegistro] = useState({
+  const [articuloModificacion, setArticuloModificacion] = useState({
     codigo: 0,
     descripcion: "",
     costo: 0,
@@ -110,6 +104,7 @@ function GestionarArticulos() {
         calcularPrecio(res.data);
       });
     setMostrarRegistroArticulo(false);
+    setMostrarModificarArticulo(false);
   };
 
   const calcularPrecio = (articulo) => {
@@ -138,12 +133,22 @@ function GestionarArticulos() {
         };
 
         const accion = () => {
-          articuloEliminadoCorrectamente();
+          notificacionPositiva(
+            "Artículo eliminado correctamente",
+            "articulo eliminado"
+          );
           setTimeout(() => {
             setArticuloResponse(null);
           }, 1000);
         };
         modalConfirmacion(datos, accion);
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          let texto = "No se pudo eliminar el artículo";
+          let id = "error al eliminar";
+          notificacionNegativa(texto, id);
+        }
       });
   };
 
@@ -154,6 +159,7 @@ function GestionarArticulos() {
     inputBuscar.value = "";
     setArticuloResponse(null);
     setCodigoArticulo(null);
+    setMostrarModificarArticulo(false);
   };
 
   const ocultarRegistroArticulo = (e) => {
@@ -170,8 +176,39 @@ function GestionarArticulos() {
           let texto = res.data;
           let id = "articuloAgregado";
           notificacionPositiva(texto, id);
+          setTimeout(() => {
+            setMostrarRegistroArticulo(false);
+          }, 2000);
         }
       });
+  };
+
+  const modificarArticulo = (e) => {
+    e.preventDefault();
+    setMostrarModificarArticulo(true);
+    setArticuloModificacion({
+      ...articuloModificacion,
+      codigo: articuloResponse.codigo,
+    });
+  };
+
+  const solicitarModificarArticulo = (e) => {
+    e.preventDefault();
+
+    console.log(articuloModificacion);
+    setMostrarModificarArticulo(false);
+    axios
+      .put("http://localhost:8080/modificarArticulo", articuloModificacion)
+      .then((res) => {
+        alert(res.data);
+        setArticuloModificacion(null);
+        setArticuloResponse(null);
+      });
+  };
+
+  const ocultarModificarArticulo = (e) => {
+    e.preventDefault();
+    setMostrarModificarArticulo(false);
   };
 
   return (
@@ -206,7 +243,7 @@ function GestionarArticulos() {
                   className={styles.btnAgregarArticulo}
                   onClick={mostrarAñadirArticulo}
                 >
-                  Añadir
+                  Agregar
                 </button>
               </form>
               {articuloResponse ? (
@@ -237,7 +274,9 @@ function GestionarArticulos() {
                     <b>{articuloResponse.tipoTalle.descripcion}</b>
                   </h3>
                   <button
-                    //onClick={seleccionarCliente}
+                    onClick={(e) => {
+                      modificarArticulo(e, articuloResponse.codigo);
+                    }}
                     className={styles.btnModificar}
                   >
                     Modificar
@@ -254,7 +293,8 @@ function GestionarArticulos() {
               )}
               {mostrarRegistroArticulo ? (
                 <div className={styles.divRegistroArticulo}>
-                  <form action="">
+                  <h3 className={styles.H1Articulo}>Agregar</h3>
+                  <form onSubmit={registrarArticulo} action="">
                     <div className={styles.divPares}>
                       <input
                         required
@@ -267,6 +307,7 @@ function GestionarArticulos() {
                             codigo: e.target.value,
                           });
                         }}
+                        id="inputCodigo"
                       />
                       <input
                         required
@@ -346,7 +387,7 @@ function GestionarArticulos() {
                       <input
                         required
                         placeholder="Margen de ganancia"
-                        type="text"
+                        type="number"
                         name="margenGanancia"
                         onChange={(e) => {
                           setArticuloRegistro({
@@ -382,15 +423,155 @@ function GestionarArticulos() {
                       </select>
                     </div>
                     <div className={styles.divBotonera}>
-                      <button
-                        onClick={registrarArticulo}
-                        className={styles.btnRegistrar}
-                      >
+                      <button id="btnRegistrar" className={styles.btnRegistrar}>
                         Registrar
                       </button>
                       <button
                         className={styles.btnCancelar}
                         onClick={ocultarRegistroArticulo}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                <></>
+              )}
+              {mostrarModificarArticulo ? (
+                <div className={styles.divRegistroArticulo}>
+                  <h3 className={styles.H1Articulo}>Modificar</h3>
+                  <form onSubmit={solicitarModificarArticulo} action="">
+                    <div className={styles.divPares}>
+                      <input
+                        required
+                        placeholder="Codigo"
+                        type="number"
+                        name="codigo"
+                        value={articuloResponse.codigo}
+                        id="inputCodigo"
+                        readOnly
+                      />
+                      <input
+                        required
+                        placeholder="Descripcion"
+                        type="text"
+                        name="descripcion"
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            descripcion: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div className={styles.divPares}>
+                      <select
+                        className={styles.selects}
+                        name="marcas"
+                        id="marcas"
+                        required
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            marca: {
+                              id: e.target.value,
+                              descripcion:
+                                e.target.options[e.target.selectedIndex].text,
+                            },
+                          });
+                        }}
+                      >
+                        <option value="">Marca</option>
+                        {marcas.map((marca) => (
+                          <option key={marca.id} value={marca.id}>
+                            {marca.descripcion}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        className={styles.selects}
+                        name="categorias"
+                        id="categorias"
+                        required
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            categoria: {
+                              id: e.target.value,
+                              descripcion:
+                                e.target.options[e.target.selectedIndex].text,
+                            },
+                          });
+                        }}
+                      >
+                        <option value="">Categoría</option>
+                        {categorias.map((categoria) => (
+                          <option key={categoria.id} value={categoria.id}>
+                            {categoria.descripcion}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={styles.divPares}>
+                      <input
+                        required
+                        placeholder="Costo"
+                        type="number"
+                        name="costo"
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            costo: e.target.value,
+                          });
+                        }}
+                      />
+                      <input
+                        required
+                        placeholder="Margen de ganancia"
+                        type="text"
+                        name="margenGanancia"
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            margenGanancia: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div className={styles.divPares}>
+                      <select
+                        className={styles.selects}
+                        name="tiposTalle"
+                        id="tiposTalle"
+                        required
+                        onChange={(e) => {
+                          setArticuloModificacion({
+                            ...articuloModificacion,
+                            tipoTalle: {
+                              id: e.target.value,
+                              descripcion:
+                                e.target.options[e.target.selectedIndex].text,
+                            },
+                          });
+                        }}
+                      >
+                        <option value="">Tipo de talle</option>
+                        {tiposTalle.map((tipoTalle) => (
+                          <option key={tipoTalle.id} value={tipoTalle.id}>
+                            {tipoTalle.descripcion}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={styles.divBotonera}>
+                      <button id="btnModificar" className={styles.btnModificar}>
+                        Confirmar
+                      </button>
+                      <button
+                        className={styles.btnCancelar}
+                        onClick={ocultarModificarArticulo}
                       >
                         Cancelar
                       </button>

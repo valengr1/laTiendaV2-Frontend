@@ -103,3 +103,11 @@ export function notificacionPositiva(texto, id) {
     id: id,
   });
 }
+
+export function notificacionNegativa(texto, id) {
+  toast.error(texto, {
+    position: "bottom-right",
+    duration: 2000,
+    id: id,
+  });
+}
