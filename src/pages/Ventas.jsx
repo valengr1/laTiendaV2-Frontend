@@ -255,22 +255,22 @@ function Ventas() {
                       <h3 className={style.subtituloH3}>Datos del articulo</h3>
                       <div className={style.divDatosArticulo}>
                         <h4 className={style.datoArticuloH4}>
-                          Codigo: {articulo.codigo}
+                          Codigo:<b> {articulo.codigo}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Descripción: {articulo.descripcion}
+                          Descripción: <b> {articulo.descripcion}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Marca: {articulo.marca}
+                          Marca:<b> {articulo.marca}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Categoria: {articulo.categoria}
+                          Categoria:<b> {articulo.categoria}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Precio: ${articulo.precio}
+                          Precio:<b> ${articulo.precio}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Tipo de talle: {articulo.tipoTalle}
+                          Tipo de talle:<b> {articulo.tipoTalle}</b>
                         </h4>
                       </div>
                     </div>

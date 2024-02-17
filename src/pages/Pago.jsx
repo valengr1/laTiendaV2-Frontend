@@ -431,7 +431,7 @@ function Pago() {
                             id="codigoSeguridad"
                           />
                         </div>
-                        <button>Autorizar pago</button>
+                        <button>Autorizar</button>
                       </form>
                     </div>
                   ) : (
@@ -504,7 +504,7 @@ function Pago() {
                           onClick={cancelarVenta}
                           className={styles.btnRealizarVenta}
                         >
-                          Finalizar venta
+                          Finalizar
                         </button>
                       </div>
                     </div>

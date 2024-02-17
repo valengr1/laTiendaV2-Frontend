@@ -267,7 +267,7 @@ function GestionarArticulos() {
                     Margen de ganancia: <b>{articuloResponse.margenGanancia}</b>
                   </h3>
                   <h3>
-                    Precio: <b>{precio}</b>
+                    Precio: <b>${precio}</b>
                   </h3>
                   <h3>
                     Tipo de talle:{" "}
