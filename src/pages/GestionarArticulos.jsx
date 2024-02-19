@@ -58,9 +58,12 @@ function GestionarArticulos() {
   const buscarArticulo = (e) => {
     e.preventDefault();
     axios
-      .get("http://localhost:8080/api/articulo/buscarArticuloByCodigo", {
-        params: { codigo: codigoArticulo },
-      })
+      .get(
+        "http://localhost:8080/api/articulo/buscarArticuloByCodigoAndEstado",
+        {
+          params: { codigo: codigoArticulo },
+        }
+      )
       .then((res) => {
         console.log(res.data);
         if (res.data === "") {
@@ -138,6 +141,7 @@ function GestionarArticulos() {
     axios
       .post("http://localhost:8080/api/articulo/agregar", articuloRegistro)
       .then((res) => {
+        console.log(res.data);
         if (res.data === "Artículo agregado correctamente") {
           let texto = res.data;
           let id = "articuloAgregado";
@@ -145,7 +149,14 @@ function GestionarArticulos() {
           setTimeout(() => {
             setMostrarRegistroArticulo(false);
           }, 2000);
+        } else {
+          let texto = res.data;
+          let id = "error al agregar el articulo";
+          notificacionNegativa(texto, id);
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 

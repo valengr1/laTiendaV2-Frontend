@@ -14,27 +14,8 @@ function Ventas() {
   }, []);
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
-  const [articulo, setArticulo] = useState({
-    codigo: 0,
-    descripcion: "",
-    marca: "",
-    categoria: "",
-    precio: 0.0,
-    tipoTalle: "",
-  });
-  const [stock, setStock] = useState([
-    {
-      id: 0,
-      talle: "",
-      color: "",
-      descripcionArticulo: "",
-      marca: "",
-      cantidadDisponible: 0,
-      precioVenta: 0.0,
-      cantidad: 0,
-      subtotal: 0.0,
-    },
-  ]);
+  const [articulo, setArticulo] = useState(null);
+  const [stock, setStock] = useState([]);
   const [arrayStocks, setArrayStocks] = useState([]);
   const [total, setTotal] = useState(0);
   const [paginaArticulo, setPaginaArticulo] = useState(false);
@@ -109,10 +90,14 @@ function Ventas() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .get("http://localhost:8080/api/articulo/buscarByCodigo", {
-        params: { codigo: codigo },
-      })
+      .get(
+        "http://localhost:8080/api/articulo/buscarArticuloByCodigoAndEstado",
+        {
+          params: { codigo: codigo },
+        }
+      )
       .then((response) => {
+        console.log(response.data);
         if (response.data === "") {
           toast.error("Artículo no encontrado", {
             duration: 2000,
@@ -127,22 +112,25 @@ function Ventas() {
             id: "articuloEncontrado",
           });
           setArticulo(response.data);
-        }
-      });
-    axios
-      .get("http://localhost:8080/api/stock/buscarBySucursal", {
-        params: { codigoArticulo: codigo, legajoVendedor: legajoVendedor },
-      })
-      .then((response) => {
-        setStock(response.data);
-        if (response.data.length === 0) {
-          toast.error("No hay stock disponible", {
-            duration: 2000,
-            position: "bottom-right",
-            id: "errorStock",
-          });
-        } else {
-          setStock(response.data);
+          axios
+            .get("http://localhost:8080/api/stock/buscarBySucursal", {
+              params: {
+                codigoArticulo: codigo,
+                legajoVendedor: legajoVendedor,
+              },
+            })
+            .then((response) => {
+              setStock(response.data);
+              if (response.data.length === 0) {
+                toast.error("No hay stock disponible", {
+                  duration: 2000,
+                  position: "bottom-right",
+                  id: "errorStock",
+                });
+              } else {
+                setStock(response.data);
+              }
+            });
         }
       });
   };
@@ -263,16 +251,16 @@ function Ventas() {
                           Descripción: <b> {articulo.descripcion}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Marca:<b> {articulo.marca}</b>
+                          Marca:<b> {articulo.marca.descripcion}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Categoria:<b> {articulo.categoria}</b>
+                          Categoria:<b> {articulo.categoria.descripcion}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
                           Precio:<b> ${articulo.precio}</b>
                         </h4>
                         <h4 className={style.datoArticuloH4}>
-                          Tipo de talle:<b> {articulo.tipoTalle}</b>
+                          Tipo de talle:<b> {articulo.tipoTalle.descripcion}</b>
                         </h4>
                       </div>
                     </div>
