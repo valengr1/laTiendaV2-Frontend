@@ -125,11 +125,14 @@ export function determinarTipoComprobante(
   setTipoComprobanteAEmitir
 ) {
   axios
-    .get("http://localhost:8080/determinarTipoComprobanteAEmitir", {
-      params: {
-        idCondicionTributariaCliente: idCondicionTributaria,
-      },
-    })
+    .get(
+      "http://localhost:8080/api/comprobante/determinarTipoComprobanteAEmitir",
+      {
+        params: {
+          idCondicionTributariaCliente: idCondicionTributaria,
+        },
+      }
+    )
     .then((res) => {
       setTipoComprobanteAEmitir(res.data);
     });

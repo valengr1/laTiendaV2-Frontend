@@ -109,7 +109,9 @@ function Ventas() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .get("http://localhost:8080/articulo", { params: { codigo: codigo } })
+      .get("http://localhost:8080/api/articulo/buscarByCodigo", {
+        params: { codigo: codigo },
+      })
       .then((response) => {
         if (response.data === "") {
           toast.error("Artículo no encontrado", {
@@ -128,7 +130,7 @@ function Ventas() {
         }
       });
     axios
-      .get("http://localhost:8080/stockBySucursal", {
+      .get("http://localhost:8080/api/stock/buscarBySucursal", {
         params: { codigoArticulo: codigo, legajoVendedor: legajoVendedor },
       })
       .then((response) => {

@@ -16,7 +16,7 @@ function GestionarArticulos() {
     setMostrarModificarArticulo(false);
 
     const getMarcas = () => {
-      axios.get("http://localhost:8080/getMarcas").then((res) => {
+      axios.get("http://localhost:8080/api/marca/listar").then((res) => {
         setMarcas(res.data);
       });
     };
@@ -24,7 +24,7 @@ function GestionarArticulos() {
     getMarcas();
 
     const getCategorias = () => {
-      axios.get("http://localhost:8080/getCategorias").then((res) => {
+      axios.get("http://localhost:8080/api/categoria/listar").then((res) => {
         setCategorias(res.data);
       });
     };
@@ -32,7 +32,7 @@ function GestionarArticulos() {
     getCategorias();
 
     const getTiposTalle = () => {
-      axios.get("http://localhost:8080/getTiposTalle").then((res) => {
+      axios.get("http://localhost:8080/api/tiposTalle/listar").then((res) => {
         setTiposTalle(res.data);
       });
     };
@@ -48,42 +48,8 @@ function GestionarArticulos() {
   const [marcas, setMarcas] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [tiposTalle, setTiposTalle] = useState([]);
-  const [articuloRegistro, setArticuloRegistro] = useState({
-    codigo: 0,
-    descripcion: "",
-    costo: 0,
-    margenGanancia: 0,
-    marca: {
-      id: 0,
-      descripcion: "",
-    },
-    categoria: {
-      id: 0,
-      descripcion: "",
-    },
-    tipoTalle: {
-      id: 0,
-      descripcion: "",
-    },
-  });
-  const [articuloModificacion, setArticuloModificacion] = useState({
-    codigo: 0,
-    descripcion: "",
-    costo: 0,
-    margenGanancia: 0,
-    marca: {
-      id: 0,
-      descripcion: "",
-    },
-    categoria: {
-      id: 0,
-      descripcion: "",
-    },
-    tipoTalle: {
-      id: 0,
-      descripcion: "",
-    },
-  });
+  const [articuloRegistro, setArticuloRegistro] = useState(null);
+  const [articuloModificacion, setArticuloModificacion] = useState(null);
   const [precio, setPrecio] = useState(0);
   const cancelarGestionCliente = () => {
     navigate("/inicio");
@@ -92,7 +58,7 @@ function GestionarArticulos() {
   const buscarArticulo = (e) => {
     e.preventDefault();
     axios
-      .get("http://localhost:8080/getArticuloByCodigo", {
+      .get("http://localhost:8080/api/articulo/buscarArticuloByCodigo", {
         params: { codigo: codigoArticulo },
       })
       .then((res) => {
@@ -121,7 +87,7 @@ function GestionarArticulos() {
     //Revisar clave foranea de articulo en stock a la hora de eliminar
     e.preventDefault();
     axios
-      .delete("http://localhost:8080/eliminarArticulo", {
+      .delete("http://localhost:8080/api/articulo/eliminarArticuloByCodigo", {
         params: { codigo: articuloResponse.codigo },
       })
       .then(() => {
@@ -170,7 +136,7 @@ function GestionarArticulos() {
   const registrarArticulo = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8080/agregarArticulo", articuloRegistro)
+      .post("http://localhost:8080/api/articulo/agregar", articuloRegistro)
       .then((res) => {
         if (res.data === "Artículo agregado correctamente") {
           let texto = res.data;
@@ -198,7 +164,7 @@ function GestionarArticulos() {
     console.log(articuloModificacion);
     setMostrarModificarArticulo(false);
     axios
-      .put("http://localhost:8080/modificarArticulo", articuloModificacion)
+      .put("http://localhost:8080/api/articulo/modificar", articuloModificacion)
       .then((res) => {
         alert(res.data);
         setArticuloModificacion(null);

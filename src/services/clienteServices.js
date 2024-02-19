@@ -7,7 +7,7 @@ import {
 
 export function buscarClientePorDNI(dni, setCliente, setRegistro) {
   axios
-    .get("http://localhost:8080/buscarCliente", {
+    .get("http://localhost:8080/api/cliente/buscarByDNI", {
       params: { DNI: dni },
     })
     .then((response) => {
@@ -32,7 +32,7 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
 
 export function registrarCliente(clienteRegistro, setRegistro) {
   axios
-    .post("http://localhost:8080/registrarCliente", clienteRegistro)
+    .post("http://localhost:8080/api/cliente/registrar", clienteRegistro)
     .then((response) => {
       console.log(response.data);
       if (response.data === "Cliente registrado") {
@@ -45,11 +45,12 @@ export function registrarCliente(clienteRegistro, setRegistro) {
         notificacionClienteYaRegistrado(response);
       }
     });
-  //desde el backend verificar si el cliente ya existe. Si existe, no se registra y se notifica. Si no existe, se registra y se notifica.
 }
 
 export const getCondicionesTributarias = (setCondicionesTributarias) => {
-  axios.get("http://localhost:8080/condicionesTributarias").then((response) => {
-    setCondicionesTributarias(response.data);
-  });
+  axios
+    .get("http://localhost:8080/api/condicionTributaria/listar")
+    .then((response) => {
+      setCondicionesTributarias(response.data);
+    });
 };
