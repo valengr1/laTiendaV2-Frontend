@@ -105,6 +105,7 @@ function Ventas() {
             id: "errorArticulo",
           });
           setArticulo(response.data);
+          setStock([]);
         } else {
           toast.success("Artículo encontrado", {
             duration: 2000,

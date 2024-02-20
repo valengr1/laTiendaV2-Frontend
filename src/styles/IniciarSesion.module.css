@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url(../images/martin-martz-X5fEKadz0Xc-unsplash.jpg);
+  background: url(../images/luke-chesser-IGtutkXikuc-unsplash.jpg);
   background-position: center;
   background-size: cover;
 }
@@ -35,7 +35,6 @@
 .titulo {
   font-size: 2rem;
   margin-top: 40px;
-  margin-bottom: 20px;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
   color: #f5f5f5;
@@ -48,15 +47,15 @@
   justify-content: center;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 .labelLegajo {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #f5f5f5;
   position: absolute;
-  margin-right: 130px;
-  margin-bottom: 70px;
+  margin-right: 138px;
+  margin-bottom: 80px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -65,7 +64,8 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.inputLegajo {
+.inputLegajo,
+.inputContraseña {
   width: 200px;
   height: 35px;
   border-radius: 5px;
@@ -88,18 +88,18 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-bottom: 20px;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .labelContraseña {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #f5f5f5;
   position: absolute;
-  margin-right: 80px;
-  margin-bottom: 57px;
+  margin-right: 90px;
+  margin-bottom: 75px;
 }
 
-.inputContraseña {
+/* .inputContraseña {
   width: 200px;
   height: 35px;
   border-radius: 5px;
@@ -111,7 +111,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 1.1rem;
   background-color: rgb(228, 228, 231);
   text-align: center;
-}
+} */
 
 .buttonIniciarSesion {
   background: transparent;

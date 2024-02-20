@@ -89,19 +89,20 @@ function GestionarArticulos() {
   const eliminarArticulo = (e) => {
     //Revisar clave foranea de articulo en stock a la hora de eliminar
     e.preventDefault();
-    axios
-      .delete("http://localhost:8080/api/articulo/eliminarArticuloByCodigo", {
-        params: { codigo: articuloResponse.codigo },
-      })
-      .then(() => {
-        const datos = {
-          titulo: "Eliminar artículo",
-          texto: "Estás seguro que deseas eliminar el artículo?",
-          textoBotonConfirmacion: "Eliminar",
-          textoBotonCancelar: "Cancelar",
-        };
 
-        const accion = () => {
+    const datos = {
+      titulo: "Eliminar artículo",
+      texto: "Estás seguro que deseas eliminar el artículo?",
+      textoBotonConfirmacion: "Eliminar",
+      textoBotonCancelar: "Cancelar",
+    };
+
+    const accion = () => {
+      axios
+        .delete("http://localhost:8080/api/articulo/eliminarArticuloByCodigo", {
+          params: { codigo: articuloResponse.codigo },
+        })
+        .then(() => {
           notificacionPositiva(
             "Artículo eliminado correctamente",
             "articulo eliminado"
@@ -109,16 +110,16 @@ function GestionarArticulos() {
           setTimeout(() => {
             setArticuloResponse(null);
           }, 1000);
-        };
-        modalConfirmacion(datos, accion);
-      })
-      .catch((err) => {
-        if (err.response.status === 500) {
-          let texto = "No se pudo eliminar el artículo";
-          let id = "error al eliminar";
-          notificacionNegativa(texto, id);
-        }
-      });
+        })
+        .catch((err) => {
+          if (err.response.status === 500) {
+            let texto = "No se pudo eliminar el artículo";
+            let id = "error al eliminar";
+            notificacionNegativa(texto, id);
+          }
+        });
+    };
+    modalConfirmacion(datos, accion);
   };
 
   const mostrarAñadirArticulo = (e) => {
@@ -211,8 +212,8 @@ function GestionarArticulos() {
                 <input
                   onChange={(e) => setCodigoArticulo(e.target.value)}
                   type="number"
-                  placeholder="Código"
                   required
+                  placeholder="Código"
                   id="codigoBuscar"
                 />
                 <button className={styles.btnBuscarArticulo}>Buscar</button>
@@ -270,134 +271,187 @@ function GestionarArticulos() {
               )}
               {mostrarRegistroArticulo ? (
                 <div className={styles.divRegistroArticulo}>
-                  <h3 className={styles.H1Articulo}>Agregar</h3>
+                  <h3 className={styles.h3Modificar}>Agregar</h3>
                   <form onSubmit={registrarArticulo} action="">
                     <div className={styles.divPares}>
-                      <input
-                        required
-                        placeholder="Codigo"
-                        type="number"
-                        name="codigo"
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            codigo: e.target.value,
-                          });
-                        }}
-                        id="inputCodigo"
-                      />
-                      <input
-                        required
-                        placeholder="Descripcion"
-                        type="text"
-                        name="descripcion"
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            descripcion: e.target.value,
-                          });
-                        }}
-                      />
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelCodigo}
+                          htmlFor="inputCodigo"
+                        >
+                          Codigo
+                        </label>
+                        <input
+                          required
+                          // placeholder="Codigo"
+                          type="number"
+                          name="codigo"
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              codigo: e.target.value,
+                            });
+                          }}
+                          id="inputCodigo"
+                        />
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelDescripcion}
+                          htmlFor="inputDescripcion"
+                        >
+                          Descripción
+                        </label>
+                        <input
+                          required
+                          // placeholder="Descripcion"
+                          type="text"
+                          name="descripcion"
+                          id="inputDescripcion"
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              descripcion: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <select
-                        className={styles.selects}
-                        name="marcas"
-                        id="marcas"
-                        required
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            marca: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Marca</option>
-                        {marcas.map((marca) => (
-                          <option key={marca.id} value={marca.id}>
-                            {marca.descripcion}
-                          </option>
-                        ))}
-                      </select>
-
-                      <select
-                        className={styles.selects}
-                        name="categorias"
-                        id="categorias"
-                        required
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            categoria: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Categoría</option>
-                        {categorias.map((categoria) => (
-                          <option key={categoria.id} value={categoria.id}>
-                            {categoria.descripcion}
-                          </option>
-                        ))}
-                      </select>
+                      <div className={styles.divInputs}>
+                        <label className={styles.labelMarca} htmlFor="marcas">
+                          Marca
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="marcas"
+                          id="marcas"
+                          required
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              marca: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {marcas.map((marca) => (
+                            <option key={marca.id} value={marca.id}>
+                              {marca.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelCategoria}
+                          htmlFor="categorias"
+                        >
+                          Categoría
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="categorias"
+                          id="categorias"
+                          required
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              categoria: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {categorias.map((categoria) => (
+                            <option key={categoria.id} value={categoria.id}>
+                              {categoria.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <input
-                        required
-                        placeholder="Costo"
-                        type="number"
-                        name="costo"
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            costo: e.target.value,
-                          });
-                        }}
-                      />
-                      <input
-                        required
-                        placeholder="Margen de ganancia"
-                        type="number"
-                        name="margenGanancia"
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            margenGanancia: e.target.value,
-                          });
-                        }}
-                      />
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelCosto}
+                          htmlFor="inputCosto"
+                        >
+                          Costo
+                        </label>
+                        <input
+                          required
+                          type="number"
+                          name="costo"
+                          id="inputCosto"
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              costo: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelMargenGanancia}
+                          htmlFor="inputMargenGanancia"
+                        >
+                          Margen de ganancia
+                        </label>
+                        <input
+                          required
+                          type="number"
+                          id="inputMargenGanancia"
+                          name="margenGanancia"
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              margenGanancia: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <select
-                        className={styles.selects}
-                        name="tiposTalle"
-                        id="tiposTalle"
-                        required
-                        onChange={(e) => {
-                          setArticuloRegistro({
-                            ...articuloRegistro,
-                            tipoTalle: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Tipo de talle</option>
-                        {tiposTalle.map((tipoTalle) => (
-                          <option key={tipoTalle.id} value={tipoTalle.id}>
-                            {tipoTalle.descripcion}
-                          </option>
-                        ))}
-                      </select>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelTipoTalle}
+                          htmlFor="tiposTalle"
+                        >
+                          Tipo de talle
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="tiposTalle"
+                          id="tiposTalle"
+                          required
+                          onChange={(e) => {
+                            setArticuloRegistro({
+                              ...articuloRegistro,
+                              tipoTalle: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {tiposTalle.map((tipoTalle) => (
+                            <option key={tipoTalle.id} value={tipoTalle.id}>
+                              {tipoTalle.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className={styles.divBotonera}>
                       <button id="btnRegistrar" className={styles.btnRegistrar}>
@@ -417,133 +471,187 @@ function GestionarArticulos() {
               )}
               {mostrarModificarArticulo ? (
                 <div className={styles.divRegistroArticulo}>
-                  <h3 className={styles.H1Articulo}>Modificar</h3>
+                  <h3 className={styles.h3Modificar}>Modificar</h3>
                   <form onSubmit={solicitarModificarArticulo} action="">
                     <div className={styles.divPares}>
-                      <input
-                        required
-                        placeholder="Codigo"
-                        type="number"
-                        name="codigo"
-                        value={articuloResponse.codigo}
-                        id="inputCodigo"
-                        readOnly
-                      />
-                      <input
-                        required
-                        placeholder="Descripcion"
-                        type="text"
-                        name="descripcion"
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            descripcion: e.target.value,
-                          });
-                        }}
-                      />
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelCodigo}
+                          htmlFor="inputCodigoM"
+                        >
+                          Código
+                        </label>
+                        <input
+                          required
+                          type="number"
+                          name="codigo"
+                          value={articuloResponse.codigo}
+                          id="inputCodigoM"
+                          readOnly
+                        />
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelDescripcion}
+                          htmlFor="inputDescripcionM"
+                        >
+                          Descripción
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          name="descripcion"
+                          id="inputDescripcionM"
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              descripcion: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <select
-                        className={styles.selects}
-                        name="marcas"
-                        id="marcas"
-                        required
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            marca: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Marca</option>
-                        {marcas.map((marca) => (
-                          <option key={marca.id} value={marca.id}>
-                            {marca.descripcion}
-                          </option>
-                        ))}
-                      </select>
-
-                      <select
-                        className={styles.selects}
-                        name="categorias"
-                        id="categorias"
-                        required
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            categoria: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Categoría</option>
-                        {categorias.map((categoria) => (
-                          <option key={categoria.id} value={categoria.id}>
-                            {categoria.descripcion}
-                          </option>
-                        ))}
-                      </select>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelDescripcion}
+                          htmlFor="marcasM"
+                        >
+                          Marca
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="marcas"
+                          id="marcasM"
+                          required
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              marca: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {marcas.map((marca) => (
+                            <option key={marca.id} value={marca.id}>
+                              {marca.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelDescripcion}
+                          htmlFor="categoriasM"
+                        >
+                          Categoría
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="categorias"
+                          id="categoriasM"
+                          required
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              categoria: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {categorias.map((categoria) => (
+                            <option key={categoria.id} value={categoria.id}>
+                              {categoria.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <input
-                        required
-                        placeholder="Costo"
-                        type="number"
-                        name="costo"
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            costo: e.target.value,
-                          });
-                        }}
-                      />
-                      <input
-                        required
-                        placeholder="Margen de ganancia"
-                        type="text"
-                        name="margenGanancia"
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            margenGanancia: e.target.value,
-                          });
-                        }}
-                      />
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelDescripcion}
+                          htmlFor="inputCostoM"
+                        >
+                          Costo
+                        </label>
+                        <input
+                          required
+                          type="number"
+                          id="inputCostoM"
+                          name="costo"
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              costo: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelMargenGanancia}
+                          htmlFor="inputMargenGananciaM"
+                        >
+                          Margen de ganancia
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          id="inputMargenGananciaM"
+                          name="margenGanancia"
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              margenGanancia: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className={styles.divPares}>
-                      <select
-                        className={styles.selects}
-                        name="tiposTalle"
-                        id="tiposTalle"
-                        required
-                        onChange={(e) => {
-                          setArticuloModificacion({
-                            ...articuloModificacion,
-                            tipoTalle: {
-                              id: e.target.value,
-                              descripcion:
-                                e.target.options[e.target.selectedIndex].text,
-                            },
-                          });
-                        }}
-                      >
-                        <option value="">Tipo de talle</option>
-                        {tiposTalle.map((tipoTalle) => (
-                          <option key={tipoTalle.id} value={tipoTalle.id}>
-                            {tipoTalle.descripcion}
-                          </option>
-                        ))}
-                      </select>
+                      <div className={styles.divInputs}>
+                        <label
+                          className={styles.labelMargenGanancia}
+                          htmlFor="tiposTalleM"
+                        >
+                          Tipo de talle
+                        </label>
+                        <select
+                          className={styles.selects}
+                          name="tiposTalle"
+                          id="tiposTalleM"
+                          required
+                          onChange={(e) => {
+                            setArticuloModificacion({
+                              ...articuloModificacion,
+                              tipoTalle: {
+                                id: e.target.value,
+                                descripcion:
+                                  e.target.options[e.target.selectedIndex].text,
+                              },
+                            });
+                          }}
+                        >
+                          <option value="">Seleccione</option>
+                          {tiposTalle.map((tipoTalle) => (
+                            <option key={tipoTalle.id} value={tipoTalle.id}>
+                              {tipoTalle.descripcion}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className={styles.divBotonera}>
-                      <button id="btnModificar" className={styles.btnModificar}>
+                      <button id="btnModificar" className={styles.btnRegistrar}>
                         Confirmar
                       </button>
                       <button
