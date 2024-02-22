@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./../styles/Inicio.module.css";
 import { modalConfirmacion } from "../helpers/modales";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 function Inicio() {
   useEffect(() => {
@@ -16,6 +18,7 @@ function Inicio() {
   const [vendedor, setVendedor] = useState(false);
   const [administrativo, setAdministrativo] = useState(false);
   const cerrarSesion = (e) => {
+    let legajo = window.localStorage.getItem("legajoVendedor");
     e.preventDefault();
     const datos = {
       titulo: "Cerrar sesión",
@@ -25,15 +28,37 @@ function Inicio() {
     };
 
     const accion = () => {
-      window.localStorage.clear();
-      setTimeout(() => {
-        navigate("/");
-      }, 200);
+      if (vendedor) {
+        axios
+          .delete(
+            `http://localhost:8080/api/sesion/eliminar?legajo=${legajo}`,
+            {
+              legajo: legajo,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            if (res.data === "Sesión eliminada correctamente") {
+              window.localStorage.clear();
+              setTimeout(() => {
+                navigate("/");
+              }, 200);
+            } else {
+              toast.error(res.data);
+            }
+          });
+      } else {
+        window.localStorage.clear();
+        setTimeout(() => {
+          navigate("/");
+        }, 200);
+      }
     };
     modalConfirmacion(datos, accion);
   };
   return (
     <main className={styles.main}>
+      <Toaster />
       <header>
         <button className={styles.btnCancelar} onClick={cerrarSesion}>
           <i className="fa-regular fa-circle-left"></i>
