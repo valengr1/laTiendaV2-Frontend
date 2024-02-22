@@ -1,72 +1,36 @@
-import axios from "axios";
+// import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import styles from "./../styles/IniciarSesion.module.css";
-import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+// import toast, { Toaster } from "react-hot-toast";
 function IniciarSesion() {
   const [empleado, setEmpleado] = useState(null);
 
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  // const navigate = useNavigate();
+  const iniciarSesion = (e) => {
     e.preventDefault();
-    axios
-      .get(
-        "http://localhost:8080/api/administrativo/buscarByLegajoAndContraseña",
-        {
-          params: { legajo: empleado.legajo, contraseña: empleado.contraseña },
-        }
-      )
-      .then((response) => {
-        if (response.data === "No autorizado") {
-          axios
-            .get(
-              "http://localhost:8080/api/vendedor/buscarByLegajoAndContraseña",
-              {
-                params: {
-                  legajo: empleado.legajo,
-                  contraseña: empleado.contraseña,
-                },
-              }
-            )
-            .then((response) => {
-              if (response.data === "No autorizado") {
-                toast.error("Legajo y/o contraseña incorrecto/a", {
-                  duration: 2000,
-                  id: "error",
-                });
-              } else {
-                localStorage.setItem(
-                  "legajoVendedor",
-                  JSON.stringify(empleado.legajo)
-                );
-                toast.success(response.data, {
-                  duration: 2000,
-                  id: "bienvenido",
-                });
-                setTimeout(() => {
-                  navigate("/inicio");
-                }, 2000);
-              }
-            });
-        } else {
-          localStorage.setItem(
-            "legajoAdministrativo",
-            JSON.stringify(empleado.legajo)
-          );
-          toast.success(response.data, {
-            duration: 2000,
-            id: "bienvenido",
-          });
-          setTimeout(() => {
-            navigate("/inicio");
-          }, 2000);
-        }
-      });
+    let legajo = empleado.legajo;
+    let contrasenia = empleado.contraseña;
+    let legajoInt = parseInt(legajo);
+    console.log(legajoInt);
+    console.log(legajo);
+    console.log(contrasenia);
+    // Enviar una petición POST
+    axios({
+      method: "post",
+      url: `http://localhost:8080/api/sesion/agregar?legajo=${legajoInt}&password=${contrasenia}`,
+    }).then((res) => {
+      console.log(res.data);
+    });
+    // axios.get("http://localhost:8080/api/sesion/listar").then((res) => {
+    //   console.log(res.data);
+    // });
   };
   return (
     <main className={styles.main}>
-      <Toaster />
-      <form onSubmit={handleSubmit} className={styles.formulario}>
+      {/* <Toaster /> */}
+      <form onSubmit={iniciarSesion} className={styles.formulario}>
         <div className={styles.divIniciarSesion}>
           <h1 className={styles.titulo}>Iniciar sesión</h1>
           <div className={styles.divLegajo}>
