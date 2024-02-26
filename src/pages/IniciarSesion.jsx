@@ -32,9 +32,9 @@ function IniciarSesion() {
             .then((res) => {
               if (res.data === "Sesión guardada") {
                 toast.success("Bienvenido");
-                window.localStorage.setItem("legajoVendedor", legajo);
+                // window.localStorage.setItem("legajoVendedor", legajo);
                 setTimeout(() => {
-                  navigate("/inicio");
+                  navigate("/inicio/" + legajo);
                 }, 2000);
               } else {
                 toast.error(res.data);
@@ -42,9 +42,9 @@ function IniciarSesion() {
             });
         } else {
           toast.success(res.data);
-          window.localStorage.setItem("legajoAdministrativo", legajo);
+          // window.localStorage.setItem("legajoAdministrativo", legajo);
           setTimeout(() => {
-            navigate("/inicio");
+            navigate("/inicio/" + legajo);
           }, 2000);
         }
       });

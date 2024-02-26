@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import style from "../styles/Ventas.module.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { modalConfirmacion } from "../helpers/modales";
 function Ventas() {
   useEffect(() => {
@@ -20,7 +20,9 @@ function Ventas() {
   const [total, setTotal] = useState(0);
   const [paginaArticulo, setPaginaArticulo] = useState(false);
   const [paginaCarrito, setPaginaCarrito] = useState(false);
-  const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
+  // const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
+  const location = useLocation();
+  const legajoVendedor = location.pathname.split("/")[2];
 
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
@@ -121,7 +123,6 @@ function Ventas() {
               },
             })
             .then((response) => {
-              setStock(response.data);
               if (response.data.length === 0) {
                 toast.error("No hay stock disponible", {
                   duration: 2000,
@@ -155,7 +156,9 @@ function Ventas() {
       localStorage.setItem("arrayStocks", JSON.stringify(arrayStocks));
       //guardar total en localStorage
       localStorage.setItem("total", total);
-      navigate("/pago", { state: { arrayStocks: arrayStocks, total: total } });
+      navigate("/pago/" + legajoVendedor, {
+        state: { arrayStocks: arrayStocks, total: total },
+      });
     }
   };
 
@@ -188,7 +191,7 @@ function Ventas() {
 
     const accion = () => {
       setTimeout(() => {
-        navigate("/inicio");
+        navigate("/inicio/" + legajoVendedor);
       }, 200);
     };
 

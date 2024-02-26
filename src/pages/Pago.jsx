@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
 import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
 import {
@@ -21,6 +21,8 @@ import {
 import { modalConfirmacion } from "../helpers/modales";
 
 function Pago() {
+  const location = useLocation();
+  const legajoVendedor = location.pathname.split("/")[2];
   useEffect(() => {
     setCliente(null);
     const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
@@ -108,7 +110,7 @@ function Pago() {
       setTimeout(() => {
         window.localStorage.removeItem("arrayStocks");
         window.localStorage.removeItem("total");
-        navigate("/ventas");
+        navigate("/ventas/" + legajoVendedor);
       }, 200);
     };
     modalConfirmacion(datos, accion);

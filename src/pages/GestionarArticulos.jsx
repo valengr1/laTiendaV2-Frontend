@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/GestionarArticulo.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,6 +11,8 @@ import {
 import { modalConfirmacion } from "../helpers/modales";
 
 function GestionarArticulos() {
+  const location = useLocation();
+  const legajo = location.pathname.split("/")[2];
   useEffect(() => {
     setMostrarRegistroArticulo(false);
     setMostrarModificarArticulo(false);
@@ -52,7 +54,7 @@ function GestionarArticulos() {
   const [articuloModificacion, setArticuloModificacion] = useState(null);
   const [precio, setPrecio] = useState(0);
   const cancelarGestionCliente = () => {
-    navigate("/inicio");
+    navigate("/inicio/" + legajo);
   };
 
   const buscarArticulo = (e) => {

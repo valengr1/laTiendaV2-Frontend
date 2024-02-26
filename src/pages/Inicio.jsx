@@ -1,16 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./../styles/Inicio.module.css";
 import { modalConfirmacion } from "../helpers/modales";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Inicio() {
+  const location = useLocation();
+  const legajo = location.pathname.split("/")[2];
   useEffect(() => {
-    let legajoVendedor = window.localStorage.getItem("legajoVendedor");
-    if (legajoVendedor) {
-      setVendedor(true);
-    } else {
-      setAdministrativo(true);
-    }
+    const encargadoLegajo = location.pathname.split("/")[2];
+    const getEmpleado = (legajo) => {
+      axios
+        .get(
+          `http://localhost:8080/api/administrativo/buscarByLegajo?legajo=${legajo}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data === "Existe el administrativo") {
+            setAdministrativo(true);
+          } else {
+            setVendedor(true);
+          }
+        });
+    };
+    getEmpleado(encargadoLegajo);
   }, []);
   const navigate = useNavigate();
   const [vendedor, setVendedor] = useState(false);
@@ -25,10 +39,31 @@ function Inicio() {
     };
 
     const accion = () => {
-      window.localStorage.clear();
-      setTimeout(() => {
-        navigate("/");
-      }, 200);
+      if (vendedor) {
+        axios
+          .delete(
+            `http://localhost:8080/api/sesion/eliminar?legajo=${legajo}`,
+            {
+              legajo: legajo,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            if (res.data === "Sesión eliminada correctamente") {
+              window.localStorage.clear();
+              setTimeout(() => {
+                navigate("/");
+              }, 200);
+            } else {
+              toast.error(res.data);
+            }
+          });
+      } else {
+        window.localStorage.clear();
+        setTimeout(() => {
+          navigate("/");
+        }, 200);
+      }
     };
     modalConfirmacion(datos, accion);
   };
@@ -43,7 +78,7 @@ function Inicio() {
         <div className={styles.divInner}>
           <h1 className={styles.h1Bienvenido}>Bienvenido</h1>
           {vendedor ? (
-            <a className={styles.aNuevaVenta} href="/ventas">
+            <a className={styles.aNuevaVenta} href={"/ventas/" + legajo}>
               Nueva venta
             </a>
           ) : (
@@ -52,7 +87,7 @@ function Inicio() {
           {administrativo ? (
             <a
               className={styles.aGestionarArticulos}
-              href="/gestionarArticulos"
+              href={"/gestionarArticulos/" + legajo}
             >
               Gestionar artículos
             </a>

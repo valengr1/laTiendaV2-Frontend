@@ -10,10 +10,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IniciarSesion />} />
-        <Route path="/inicio" element={<Inicio />} />
-        <Route path="/ventas" element={<Ventas />} />
-        <Route path="/pago" element={<Pago />} />
-        <Route path="/gestionarArticulos" element={<GestionarArticulos />} />
+        <Route path="/inicio/:legajo" element={<Inicio />} />
+        <Route path="/ventas/:legajo" element={<Ventas />} />
+        <Route path="/pago/:legajo" element={<Pago />} />
+        <Route
+          path="/gestionarArticulos/:legajo"
+          element={<GestionarArticulos />}
+        />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </BrowserRouter>
