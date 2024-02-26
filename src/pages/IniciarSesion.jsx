@@ -7,56 +7,42 @@ function IniciarSesion() {
   const [empleado, setEmpleado] = useState(null);
 
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  const iniciarSesion = (e) => {
     e.preventDefault();
+    let legajo = empleado.legajo;
+    let contrasenia = empleado.contraseña;
+    let legajoInt = parseInt(legajo);
     axios
       .get(
         "http://localhost:8080/api/administrativo/buscarByLegajoAndContraseña",
         {
-          params: { legajo: empleado.legajo, contraseña: empleado.contraseña },
+          params: {
+            legajo: legajo,
+            contraseña: contrasenia,
+          },
         }
       )
-      .then((response) => {
-        if (response.data === "No autorizado") {
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === "No autorizado") {
           axios
-            .get(
-              "http://localhost:8080/api/vendedor/buscarByLegajoAndContraseña",
-              {
-                params: {
-                  legajo: empleado.legajo,
-                  contraseña: empleado.contraseña,
-                },
-              }
+            .post(
+              `http://localhost:8080/api/sesion/agregar?legajo=${legajoInt}&password=${contrasenia}`
             )
-            .then((response) => {
-              if (response.data === "No autorizado") {
-                toast.error("Legajo y/o contraseña incorrecto/a", {
-                  duration: 2000,
-                  id: "error",
-                });
-              } else {
-                localStorage.setItem(
-                  "legajoVendedor",
-                  JSON.stringify(empleado.legajo)
-                );
-                toast.success(response.data, {
-                  duration: 2000,
-                  id: "bienvenido",
-                });
+            .then((res) => {
+              if (res.data === "Sesión guardada") {
+                toast.success("Bienvenido");
+                window.localStorage.setItem("legajoVendedor", legajo);
                 setTimeout(() => {
                   navigate("/inicio");
                 }, 2000);
+              } else {
+                toast.error(res.data);
               }
             });
         } else {
-          localStorage.setItem(
-            "legajoAdministrativo",
-            JSON.stringify(empleado.legajo)
-          );
-          toast.success(response.data, {
-            duration: 2000,
-            id: "bienvenido",
-          });
+          toast.success(res.data);
+          window.localStorage.setItem("legajoAdministrativo", legajo);
           setTimeout(() => {
             navigate("/inicio");
           }, 2000);
@@ -66,7 +52,7 @@ function IniciarSesion() {
   return (
     <main className={styles.main}>
       <Toaster />
-      <form onSubmit={handleSubmit} className={styles.formulario}>
+      <form onSubmit={iniciarSesion} className={styles.formulario}>
         <div className={styles.divIniciarSesion}>
           <h1 className={styles.titulo}>Iniciar sesión</h1>
           <div className={styles.divLegajo}>
