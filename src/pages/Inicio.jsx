@@ -50,7 +50,6 @@ function Inicio() {
           .then((res) => {
             console.log(res.data);
             if (res.data === "Sesión eliminada correctamente") {
-              window.localStorage.clear();
               setTimeout(() => {
                 navigate("/");
               }, 200);
@@ -59,7 +58,6 @@ function Inicio() {
             }
           });
       } else {
-        window.localStorage.clear();
         setTimeout(() => {
           navigate("/");
         }, 200);
