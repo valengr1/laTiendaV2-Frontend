@@ -15,10 +15,29 @@ import {
 import {
   notificacionClienteSeleccionado,
   notificacionDNIInvalido,
+  notificacionNegativa,
+  notificacionPositiva,
 } from "../helpers/notificaciones";
 import { modalConfirmacion } from "../helpers/modales";
 
 function Pago() {
+  useEffect(() => {
+    setCliente(null);
+    const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
+    if (lineasVenta) {
+      setLineasVenta(lineasVenta);
+    }
+    const total = localStorage.getItem("total");
+    if (total) {
+      setTotal(total);
+    }
+    setPaginaCliente(true);
+    setPaginaPago(false);
+    getCondicionesTributarias(setCondicionesTributarias);
+    setTablaVenta(true);
+    setSelect("tarjeta");
+    setpagoAutorizado(false);
+  }, []);
   const navigate = useNavigate();
   const [dni, setDni] = useState("");
   const [condicionesTributarias, setCondicionesTributarias] = useState([]);
@@ -52,23 +71,7 @@ function Pago() {
     },
   });
   const [tipoComprobanteAEmitir, setTipoComprobanteAEmitir] = useState("");
-
-  useEffect(() => {
-    setCliente(null);
-    const lineasVenta = JSON.parse(localStorage.getItem("arrayStocks"));
-    if (lineasVenta) {
-      setLineasVenta(lineasVenta);
-    }
-    const total = localStorage.getItem("total");
-    if (total) {
-      setTotal(total);
-    }
-    setPaginaCliente(true);
-    setPaginaPago(false);
-    getCondicionesTributarias(setCondicionesTributarias);
-    setTablaVenta(true);
-    setSelect("tarjeta");
-  }, []);
+  const [pagoAutorizado, setpagoAutorizado] = useState(false);
 
   const buscarCliente = (e) => {
     e.preventDefault();
@@ -118,11 +121,15 @@ function Pago() {
 
   const validarTarjeta = (e) => {
     e.preventDefault();
-    const numeroTarjeta = document.getElementById("numeroTarjeta").value; // "4507990000004905"; //
-    const nombreTitular = document.getElementById("nombreTitular").value; //"John Doe";
-    const fechaVencimiento = document.getElementById("fechaVencimiento").value; // "08/20"; //
-    const codigoSeguridad = document.getElementById("codigoSeguridad").value; // "123"; //
-    const dniTitular = document.getElementById("dniTitular").value; // "25123456"; //
+    const numeroTarjeta = document.getElementById("inputNumeroTarjeta").value; // "4507990000004905"; //
+    const nombreTitular = document.getElementById("inputNombreTitular").value; //"John Doe";
+    const fechaVencimiento = document.getElementById(
+      "inputFechaVencimiento"
+    ).value; // "08/20"; //
+    const codigoSeguridad = document.getElementById(
+      "inputCodigoSeguridad"
+    ).value; // "123"; //
+    const dniTitular = document.getElementById("inputDniTitular").value; // "25123456"; //
     const tarjeta = {
       numeroTarjeta,
       dniTitular,
@@ -130,7 +137,7 @@ function Pago() {
       fechaVencimiento,
       codigoSeguridad,
     };
-    solicitarTokenPago(tarjeta, setSelect);
+    solicitarTokenPago(tarjeta, setSelect, setpagoAutorizado);
   };
 
   const registroCliente = (e) => {
@@ -161,6 +168,29 @@ function Pago() {
       setPaginaCliente(false);
       setPaginaPago(true);
     }, 2000);
+  };
+
+  const finalizarVenta = (e) => {
+    e.preventDefault();
+    if (pagoAutorizado) {
+      const datos = {
+        titulo: "Registrar venta",
+        texto: "Se registrará la venta realizada",
+        textoBotonConfirmacion: "Registrar",
+        textoBotonCancelar: "Cancelar",
+      };
+      const accion = () => {
+        notificacionPositiva("Venta registrada", "venta registrada");
+        // setTimeout(() => {
+        //   window.localStorage.removeItem("arrayStocks");
+        //   window.localStorage.removeItem("total");
+        //   navigate("/ventas");
+        // }, 200);
+      };
+      modalConfirmacion(datos, accion);
+    } else {
+      notificacionNegativa("Pago no autorizado", "pago no autorizado");
+    }
   };
 
   return (
@@ -238,98 +268,146 @@ function Pago() {
                   <div className={styles.divRegistroCliente}>
                     <form onSubmit={registroCliente} action="">
                       <div className={styles.divPares}>
-                        <input
-                          required
-                          placeholder="DNI"
-                          type="number"
-                          name="dni"
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              dni: e.target.value,
-                            });
-                          }}
-                        />
-                        <input
-                          required
-                          placeholder="Nombre"
-                          type="text"
-                          name="nombre"
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              nombre: e.target.value,
-                            });
-                          }}
-                        />
+                        <div className={styles.divInputs}>
+                          <label className={styles.labelDNI} htmlFor="inputDNI">
+                            Dni
+                          </label>
+                          <input
+                            required
+                            type="number"
+                            name="dni"
+                            id="inputDNI"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                dni: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelNombre}
+                            htmlFor="inputNombre"
+                          >
+                            Nombre
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="nombre"
+                            id="inputNombre"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                nombre: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
                       </div>
                       <div className={styles.divPares}>
-                        <input
-                          required
-                          placeholder="Apellido"
-                          type="text"
-                          name="apellido"
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              apellido: e.target.value,
-                            });
-                          }}
-                        />
-                        <input
-                          required
-                          placeholder="Dirección"
-                          type="text"
-                          name="direccion"
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              direccion: e.target.value,
-                            });
-                          }}
-                        />
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelApellido}
+                            htmlFor="inputApellido"
+                          >
+                            Apellido
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="apellido"
+                            id="inputApellido"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                apellido: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelDireccion}
+                            htmlFor="inputDireccion"
+                          >
+                            Dirección
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="direccion"
+                            id="inputDireccion"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                direccion: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
                       </div>
                       <div className={styles.divPares}>
-                        <input
-                          required
-                          placeholder="Teléfono"
-                          type="number"
-                          name="telefono"
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              telefono: e.target.value,
-                            });
-                          }}
-                        />
-                        <select
-                          required
-                          className={styles.divCondicionTributaria}
-                          name="condicion_tributaria_id"
-                          id=""
-                          onChange={(e) => {
-                            setClienteRegistro({
-                              ...clienteRegistro,
-                              condicionTributaria: {
-                                id: e.target.value,
-                                descripcion:
-                                  e.target.options[e.target.selectedIndex].text,
-                              },
-                            });
-                          }}
-                        >
-                          <option value="">Condición tributaria</option>
-                          {condicionesTributarias.map((condicionTributaria) => {
-                            return (
-                              <option
-                                key={condicionTributaria.id}
-                                value={condicionTributaria.id}
-                              >
-                                {condicionTributaria.descripcion}
-                              </option>
-                            );
-                          })}
-                        </select>
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelTelefono}
+                            htmlFor="inputTelefono"
+                          >
+                            Teléfono
+                          </label>
+                          <input
+                            required
+                            type="number"
+                            name="telefono"
+                            id="inputTelefono"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                telefono: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelCondicionTributaria}
+                            htmlFor="inputCondicionTributaria"
+                          >
+                            Condición tributaria
+                          </label>
+                          <select
+                            required
+                            className={styles.divCondicionTributaria}
+                            name="condicion_tributaria_id"
+                            id="inputCondicionTributaria"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                condicionTributaria: {
+                                  id: e.target.value,
+                                  descripcion:
+                                    e.target.options[e.target.selectedIndex]
+                                      .text,
+                                },
+                              });
+                            }}
+                          >
+                            <option value="">Seleccione</option>
+                            {condicionesTributarias.map(
+                              (condicionTributaria) => {
+                                return (
+                                  <option
+                                    key={condicionTributaria.id}
+                                    value={condicionTributaria.id}
+                                  >
+                                    {condicionTributaria.descripcion}
+                                  </option>
+                                );
+                              }
+                            )}
+                          </select>
+                        </div>
                       </div>
                       <div className={styles.divBotonera}>
                         <button className={styles.btnRegistrar}>
@@ -367,6 +445,9 @@ function Pago() {
                         name="pago"
                         id="tarjeta"
                         value={"tarjeta"}
+                        onClick={() => {
+                          setpagoAutorizado(false);
+                        }}
                       />
                     </div>
                     <div className={styles.divEfectivo}>
@@ -379,6 +460,9 @@ function Pago() {
                         name="pago"
                         id="efectivo"
                         value={"efectivo"}
+                        onClick={() => {
+                          setpagoAutorizado(true);
+                        }}
                         placeholder="Efectivo"
                       />
                     </div>
@@ -389,48 +473,86 @@ function Pago() {
                         onSubmit={validarTarjeta}
                         className={styles.formValidarTarjeta}
                       >
-                        <div className={styles.divParesTarjeta}>
-                          <input
-                            required
-                            placeholder="Número de tarjeta"
-                            type="number"
-                            id="numeroTarjeta"
-                            pattern=".{8,}"
-                            title="Eight or more characters"
-                          />
-                          <input
-                            required
-                            placeholder="DNI del titular"
-                            type="text"
-                            id="dniTitular"
-                          />
-                          <input
-                            required
-                            placeholder="Nombre del titular"
-                            type="text"
-                            id="nombreTitular"
-                          />
+                        <div className={styles.divPares}>
+                          <div className={styles.divInputs}>
+                            <label
+                              className={styles.labelNumeroTarjeta}
+                              htmlFor="inputNumeroTarjeta"
+                            >
+                              Número de tarjeta
+                            </label>
+                            <input
+                              required
+                              type="number"
+                              id="inputNumeroTarjeta"
+                              pattern=".{8,}"
+                              className={styles.inputNumeroTarjeta}
+                              title="Eight or more characters"
+                            />
+                          </div>
+                          <div className={styles.divInputs}>
+                            <label
+                              className={styles.labelDniTitular}
+                              htmlFor="dniTitular"
+                            >
+                              Dni del titular
+                            </label>
+                            <input
+                              className={styles.inputDniTitular}
+                              required
+                              type="text"
+                              id="inputDniTitular"
+                            />
+                          </div>
                         </div>
-
-                        <div className={styles.divParesTarjeta}>
-                          <div className={styles.divFechaVencimiento}>
-                            <label htmlFor="">Fecha de vencimiento</label>
+                        <div className={styles.divPares}>
+                          <div className={styles.divInputs}>
+                            <label
+                              className={styles.labelNombre}
+                              htmlFor="inputNombreTitular"
+                            >
+                              Nombre del titular
+                            </label>
+                            <input
+                              className={styles.inputNombreTitular}
+                              required
+                              type="text"
+                              id="inputNombreTitular"
+                            />
+                          </div>
+                          <div className={styles.divInputs}>
+                            <label
+                              className={styles.labelVencimiento}
+                              htmlFor="inputFechaVencimiento"
+                            >
+                              Vencimiento de la tarjeta
+                            </label>
                             <input
                               required
                               className={styles.inputFechaVencimiento}
                               placeholder="mm/aa"
                               type="text"
-                              id="fechaVencimiento"
+                              id="inputFechaVencimiento"
                             />
                           </div>
-                          <input
-                            required
-                            className={styles.inputCodigoSeguridad}
-                            placeholder="Código de seguridad"
-                            type="number"
-                            id="codigoSeguridad"
-                          />
                         </div>
+                        <div className={styles.divPares}>
+                          <div className={styles.divInputs}>
+                            <label
+                              className={styles.labelCodigo}
+                              htmlFor="inputCodigoSeguridad"
+                            >
+                              Codigo de seguridad
+                            </label>
+                            <input
+                              required
+                              className={styles.inputCodigoSeguridad}
+                              type="number"
+                              id="inputCodigoSeguridad"
+                            />
+                          </div>
+                        </div>
+
                         <button>Autorizar</button>
                       </form>
                     </div>
@@ -480,6 +602,9 @@ function Pago() {
                           ))}
                         </tbody>
                       </table>
+                      <h3 className={styles.h3Comprobante}>
+                        Comprobante: {tipoComprobanteAEmitir}
+                      </h3>
                       {total ? (
                         <div className={styles.divTotal}>
                           <p className={styles.pTotal}>
@@ -496,12 +621,9 @@ function Pago() {
                           </button>
                         </div>
                       )}
-                      <h3 className={styles.h3Comprobante}>
-                        Comprobante: {tipoComprobanteAEmitir}
-                      </h3>
                       <div className={styles.divFinalizarVenta}>
                         <button
-                          onClick={cancelarVenta}
+                          onClick={finalizarVenta}
                           className={styles.btnRealizarVenta}
                         >
                           Finalizar

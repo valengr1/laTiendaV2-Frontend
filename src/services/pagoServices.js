@@ -5,8 +5,9 @@ import {
   notificacionDatosDeTarjetaInvalidos,
   notificacionTarjetaNoValida,
 } from "../helpers/notificaciones";
+import { modalConfirmacion } from "../helpers/modales";
 
-export function solicitarTokenPago(tarjeta, setSelect) {
+export function solicitarTokenPago(tarjeta, setSelect, setpagoAutorizado) {
   let fecha = tarjeta.fechaVencimiento;
   let partes = fecha.split("/");
   let year = partes[1];
@@ -35,13 +36,13 @@ export function solicitarTokenPago(tarjeta, setSelect) {
       apikey: "b192e4cb99564b84bf5db5550112adea",
     };
 
-    solicitudTokenPago(data, headers, setSelect);
+    solicitudTokenPago(data, headers, setSelect, setpagoAutorizado);
   } else {
     notificacionDatosDeTarjetaInvalidos();
   }
 }
 
-function solicitudTokenPago(data, headers, setSelect) {
+function solicitudTokenPago(data, headers, setSelect, setpagoAutorizado) {
   axios
     .post("https://developers.decidir.com/api/v2/tokens", data, {
       headers: headers,
@@ -49,7 +50,12 @@ function solicitudTokenPago(data, headers, setSelect) {
     .then((response) => {
       console.log(response.data);
       if (response.data.status === "active") {
-        realizarPago(response.data.id, response.data.bin, setSelect);
+        realizarPago(
+          response.data.id,
+          response.data.bin,
+          setSelect,
+          setpagoAutorizado
+        );
       } else {
         notificacionTarjetaNoValida();
       }
@@ -59,7 +65,7 @@ function solicitudTokenPago(data, headers, setSelect) {
     });
 }
 
-export function realizarPago(id, bin, setSelect) {
+export function realizarPago(id, bin, setSelect, setpagoAutorizado) {
   if (sessionStorage.getItem("counter") == null) {
     sessionStorage.setItem("counter", Math.floor(Math.random() * 1000000) + 1);
   }
@@ -93,10 +99,20 @@ export function realizarPago(id, bin, setSelect) {
       },
     ],
   };
-  solicitudRealizarPago(data, headers, setSelect);
+  const datos = {
+    titulo: "Realizar pago",
+    texto: "Estás seguro que deseas realizar el pago?",
+    textoBotonConfirmacion: "Pagar",
+    textoBotonCancelar: "Cancelar",
+  };
+
+  const accion = () => {
+    solicitudRealizarPago(data, headers, setSelect, setpagoAutorizado);
+  };
+  modalConfirmacion(datos, accion);
 }
 
-function solicitudRealizarPago(data, headers, setSelect) {
+function solicitudRealizarPago(data, headers, setSelect, setpagoAutorizado) {
   axios
     .post("https://developers.decidir.com/api/v2/payments", data, {
       headers: headers,
@@ -104,6 +120,7 @@ function solicitudRealizarPago(data, headers, setSelect) {
     .then((response) => {
       console.log(response.data);
       if (response.data.status === "approved") {
+        setpagoAutorizado(true);
         notificacionPagoRealizado();
         setTimeout(() => {
           setSelect("efectivo");

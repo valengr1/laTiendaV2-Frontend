@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url(../images/luke-chesser-IGtutkXikuc-unsplash.jpg);
+  background: url(../images/martin-martz-X5fEKadz0Xc-unsplash.jpg);
   background-position: center;
   background-size: cover;
 }
@@ -51,7 +51,7 @@
 }
 
 .labelLegajo {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #f5f5f5;
   position: absolute;
   margin-right: 138px;
@@ -92,10 +92,10 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .labelContraseña {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #f5f5f5;
   position: absolute;
-  margin-right: 90px;
+  margin-right: 94px;
   margin-bottom: 75px;
 }
 
