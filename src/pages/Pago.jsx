@@ -8,19 +8,16 @@ import {
   getCondicionesTributarias,
   registrarCliente,
 } from "../services/clienteServices";
+import { determinarTipoComprobante } from "../services/pagoServices";
 import {
-  determinarTipoComprobante,
-  solicitarTokenPago,
-} from "../services/pagoServices";
-import {
-  notificacionClienteSeleccionado,
-  notificacionDNIInvalido,
   notificacionNegativa,
   notificacionPositiva,
 } from "../helpers/notificaciones";
 import { modalConfirmacion } from "../helpers/modales";
+import axios from "axios";
 
 function Pago() {
+  const totalPagar = window.localStorage.getItem("total");
   const location = useLocation();
   const legajoVendedor = location.pathname.split("/")[2];
   useEffect(() => {
@@ -80,7 +77,7 @@ function Pago() {
     if (validaDNI(dni)) {
       buscarClientePorDNI(dni, setCliente, setRegistro);
     } else {
-      notificacionDNIInvalido();
+      notificacionNegativa("Dni no válido", "dni no valido");
     }
   };
 
@@ -139,7 +136,63 @@ function Pago() {
       fechaVencimiento,
       codigoSeguridad,
     };
-    solicitarTokenPago(tarjeta, setSelect, setpagoAutorizado);
+
+    if (
+      tarjeta.fechaVencimiento.match(/^(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/) &&
+      tarjeta.numeroTarjeta.match(/^\d{16}$/) &&
+      tarjeta.codigoSeguridad.match(/^\d{3}$/) &&
+      tarjeta.dniTitular.match(/^\d{8}$/) &&
+      tarjeta.nombreTitular.match(/^[a-zA-Z\s]+$/)
+    ) {
+      let fecha = tarjeta.fechaVencimiento;
+      let partes = fecha.split("/");
+      let anio = partes[1];
+      let mes = partes[0];
+
+      const tarjetaPagar = {
+        numeroTarjeta: tarjeta.numeroTarjeta,
+        mesVencimiento: mes,
+        anioVencimiento: anio,
+        codigoSeguridad: tarjeta.codigoSeguridad,
+        nombreTitular: tarjeta.nombreTitular,
+        dniTitular: tarjeta.dniTitular,
+      };
+
+      const datos = {
+        titulo: "Realizar pago",
+        texto: "Estás seguro que deseas realizar el pago de $" + totalPagar,
+        textoBotonConfirmacion: "Pagar",
+        textoBotonCancelar: "Cancelar",
+      };
+
+      const accion = () => {
+        axios
+          .post(
+            `http://localhost:8080/api/autorizacionPago/solicitarToken?monto=${totalPagar}`,
+            tarjetaPagar
+          )
+          .then((res) => {
+            if (res.data === "Pago aprobado") {
+              notificacionPositiva("Pago aprobado", "Pago aprobado");
+              setpagoAutorizado(true);
+              setTimeout(() => {
+                setSelect("efectivo");
+              }, 2000);
+            } else {
+              notificacionNegativa(
+                "Ingrese datos de tarjeta válidos",
+                "Datos inválidos"
+              );
+            }
+          });
+      };
+      modalConfirmacion(datos, accion);
+    } else {
+      notificacionNegativa(
+        "Ingrese datos de tarjeta válidos",
+        "Datos inválidos"
+      );
+    }
   };
 
   const registroCliente = (e) => {
@@ -161,7 +214,7 @@ function Pago() {
   };
 
   const seleccionarCliente = () => {
-    notificacionClienteSeleccionado();
+    notificacionPositiva("Cliente seleccionado", "cliente seleccionado");
     determinarTipoComprobante(
       cliente.condicionTributaria.id,
       setTipoComprobanteAEmitir
