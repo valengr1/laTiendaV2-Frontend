@@ -3,7 +3,9 @@ import toast from "react-hot-toast";
 import {
   notificacionClienteRegistrado,
   notificacionClienteYaRegistrado,
+  notificacionNegativa,
 } from "../helpers/notificaciones";
+import { modalConfirmacion } from "../helpers/modales";
 
 export function buscarClientePorDNI(dni, setCliente, setRegistro) {
   axios
@@ -31,20 +33,29 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
 }
 
 export function registrarCliente(clienteRegistro, setRegistro) {
-  axios
-    .post("http://localhost:8080/api/cliente/registrar", clienteRegistro)
-    .then((response) => {
-      console.log(response.data);
-      if (response.data === "Cliente registrado") {
-        notificacionClienteRegistrado();
-        setRegistro(false);
-      } else if (
-        response.data ===
-        "El cliente que desea registrar ya se encuentra registrado"
-      ) {
-        notificacionClienteYaRegistrado(response);
-      }
-    });
+  const datos = {
+    titulo: "Modificar artículo",
+    texto: "Estás seguro que deseas modificar el artículo?",
+    textoBotonConfirmacion: "Modificar",
+    textoBotonCancelar: "Cancelar",
+  };
+
+  const accion = () => {
+    axios
+      .post("http://localhost:8080/api/cliente/registrar", clienteRegistro)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === "Cliente registrado") {
+          notificacionClienteRegistrado();
+          setTimeout(() => {
+            setRegistro(false);
+          }, 2000);
+        } else {
+          notificacionNegativa(response.data, "negativo");
+        }
+      });
+  };
+  modalConfirmacion(datos, accion);
 }
 
 export const getCondicionesTributarias = (setCondicionesTributarias) => {

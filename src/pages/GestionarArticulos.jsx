@@ -174,16 +174,35 @@ function GestionarArticulos() {
 
   const solicitarModificarArticulo = (e) => {
     e.preventDefault();
+    const datos = {
+      titulo: "Modificar artículo",
+      texto: "Estás seguro que deseas modificar el artículo?",
+      textoBotonConfirmacion: "Modificar",
+      textoBotonCancelar: "Cancelar",
+    };
 
-    console.log(articuloModificacion);
-    setMostrarModificarArticulo(false);
-    axios
-      .put("http://localhost:8080/api/articulo/modificar", articuloModificacion)
-      .then((res) => {
-        alert(res.data);
-        setArticuloModificacion(null);
-        setArticuloResponse(null);
-      });
+    const accion = () => {
+      axios
+        .put(
+          "http://localhost:8080/api/articulo/modificar",
+          articuloModificacion
+        )
+        .then((res) => {
+          if (res.data === "Articulo modificado correctamente") {
+            notificacionPositiva(res.data, "articulo modificado correctamente");
+            setArticuloModificacion(null);
+
+            setTimeout(() => {
+              setMostrarModificarArticulo(false);
+              setArticuloResponse(null);
+            }, 2000);
+          } else {
+            notificacionNegativa(res.data, "no se pudo modificar");
+          }
+        });
+    };
+
+    modalConfirmacion(datos, accion);
   };
 
   const ocultarModificarArticulo = (e) => {
@@ -206,18 +225,24 @@ function GestionarArticulos() {
           </header>
           <div className={styles.divGestionArticulos}>
             <div className={styles.articuloYRegistro}>
-              <h3 className={styles.H1Articulo}>Artículos</h3>
+              <h3 className={styles.H1Articulo}>Gestionar artículos</h3>
               <form
                 onSubmit={buscarArticulo}
                 className={styles.formBuscarArticulo}
               >
-                <input
-                  onChange={(e) => setCodigoArticulo(e.target.value)}
-                  type="number"
-                  required
-                  placeholder="Código"
-                  id="codigoBuscar"
-                />
+                <div className={styles.divBuscarArticuloInput}>
+                  <label className={styles.labelArticulo} htmlFor="">
+                    Artículo
+                  </label>
+                  <input
+                    onChange={(e) => setCodigoArticulo(e.target.value)}
+                    type="number"
+                    required
+                    placeholder="Código"
+                    id="codigoBuscar"
+                  />
+                </div>
+
                 <button className={styles.btnBuscarArticulo}>Buscar</button>
                 <button
                   className={styles.btnAgregarArticulo}
@@ -228,20 +253,20 @@ function GestionarArticulos() {
               </form>
               {articuloResponse ? (
                 <section className={styles.divArticuloEncontrado}>
+                  {/* <h3>
+                    <b>{articuloResponse.codigo}</b>
+                  </h3> */}
                   <h3>
-                    Codigo: <b>{articuloResponse.codigo}</b>
+                    <b> {articuloResponse.descripcion}</b>
                   </h3>
                   <h3>
-                    Descripcion: <b> {articuloResponse.descripcion}</b>
+                    <b>{articuloResponse.marca.descripcion}</b>
                   </h3>
-                  <h3>
-                    Marca: <b>{articuloResponse.marca.descripcion}</b>
-                  </h3>
-                  <h3>
+                  {/* <h3>
                     Categoria: <b>{articuloResponse.categoria.descripcion}</b>
-                  </h3>
+                  </h3> */}
                   <h3>
-                    Costo: <b>{articuloResponse.costo}</b>
+                    Costo: <b>${articuloResponse.costo}</b>
                   </h3>
                   <h3>
                     Margen de ganancia: <b>{articuloResponse.margenGanancia}</b>
@@ -410,7 +435,7 @@ function GestionarArticulos() {
                         </label>
                         <input
                           required
-                          type="number"
+                          //type="number"
                           id="inputMargenGanancia"
                           name="margenGanancia"
                           onChange={(e) => {
@@ -457,7 +482,7 @@ function GestionarArticulos() {
                     </div>
                     <div className={styles.divBotonera}>
                       <button id="btnRegistrar" className={styles.btnRegistrar}>
-                        Registrar
+                        Confirmar
                       </button>
                       <button
                         className={styles.btnCancelar}

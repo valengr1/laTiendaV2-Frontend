@@ -6,7 +6,7 @@ export function modalConfirmacion(datos, accion) {
     title: datos.titulo,
     text: datos.texto,
     confirmButtonText: datos.textoBotonConfirmacion,
-    confirmButtonColor: "rgb(49, 81, 140)",
+    confirmButtonColor: "rgb(33, 210, 254)",
     showCancelButton: true,
     cancelButtonText: datos.textoBotonCancelar,
     cancelButtonColor: "rgb(255, 0, 60)",

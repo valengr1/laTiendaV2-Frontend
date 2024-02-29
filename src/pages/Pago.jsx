@@ -77,7 +77,7 @@ function Pago() {
     if (validaDNI(dni)) {
       buscarClientePorDNI(dni, setCliente, setRegistro);
     } else {
-      notificacionNegativa("Dni no válido", "dni no valido");
+      setCliente(null);
     }
   };
 
@@ -292,7 +292,7 @@ function Pago() {
                     className={styles.btnRegistrarCliente}
                     onClick={mostrarRegistroCliente}
                   >
-                    Añadir
+                    Agregar
                   </button>
                 </form>
                 {cliente ? (
@@ -322,10 +322,11 @@ function Pago() {
                 {registro ? (
                   <div className={styles.divRegistroCliente}>
                     <form onSubmit={registroCliente} action="">
+                      <h3 className={styles.h3AgregarCliente}>Agregar</h3>
                       <div className={styles.divPares}>
                         <div className={styles.divInputs}>
                           <label className={styles.labelDNI} htmlFor="inputDNI">
-                            Dni
+                            DNI
                           </label>
                           <input
                             required
@@ -466,7 +467,7 @@ function Pago() {
                       </div>
                       <div className={styles.divBotonera}>
                         <button className={styles.btnRegistrar}>
-                          Registrar
+                          Confirmar
                         </button>
                         <button
                           className={styles.btnCancelar}

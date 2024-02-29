@@ -1,7 +1,7 @@
 .main {
   display: flex;
   justify-content: center;
-  background-image: url("../images/martin-martz-X5fEKadz0Xc-unsplash.jpg");
+  background-image: url("../images/neom--RlktmDy3Ec-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -223,26 +223,40 @@
 .barraConsulta {
   text-align: center;
   width: 60%;
-  padding: 10px;
+  padding: 5px;
   margin-top: 5px;
-
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-top-right-radius: 0px;
   border-top-left-radius: 0px;
+  height: 80px;
+  backdrop-filter: blur(7px);
 }
 
 .form {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
-.labelCodigo {
+.divInputArticulo {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 100%;
+}
+
+.labelCodigoArticulo {
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
+  /* position: absolute;
+  margin-bottom: 55px;
+  margin-right: 125px; */
+  margin-right: 125px;
 }
 
 .inputCodigo {
@@ -278,6 +292,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border: 2px solid #fff;
   margin-left: 10px;
+  margin-top: 4px;
 }
 
 .btnConsultarStock:hover {
@@ -405,9 +420,10 @@
   border-radius: 7px;
   overflow-x: auto;
   margin-right: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  height: calc(100vh - 10px);
 }
 
 .h3CarritoCompras {
@@ -425,11 +441,7 @@
 }
 
 .divTableCarritoInner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 80%;
-  border-collapse: collapse;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
   text-align: center;
@@ -438,20 +450,21 @@
   font-family: "Montserrat", sans-serif;
   color: #fff;
   font-size: 1.2rem;
-  margin-top: 5px;
+  height: 100%;
   overflow: auto;
-  padding-top: 5px;
+  padding-top: 10px;
+  margin-top: 5px;
 }
 
 .tableCarrito {
   width: 100%;
   background: transparent;
   text-align: center;
-  border-radius: 7px;
   font-weight: 100;
   font-family: "Montserrat", sans-serif;
   color: #fff;
   font-size: 1.2rem;
+  border-collapse: collapse;
   overflow: auto;
 }
 
@@ -478,7 +491,6 @@
 
 .tableCarrito button:hover {
   background-color: rgb(255, 0, 60);
-
   color: #fff;
 }
 
@@ -544,17 +556,13 @@
   font-weight: 800;
 }
 
-.pArticuloInexistente {
-  color: #fff;
-  font-size: 1.5rem;
-  transition: all 0.1s ease;
-  margin-top: 10px;
-}
-
 @media (max-width: 1275px) {
   .h1,
   .barraConsulta,
-  .divArticuloYTabla {
+  .divArticuloYTabla,
+  .divTotal,
+  .divTableCarritoInner,
+  .h3CarritoCompras {
     width: 100%;
   }
 }

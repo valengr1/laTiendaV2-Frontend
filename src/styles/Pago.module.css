@@ -3,7 +3,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/martin-martz-X5fEKadz0Xc-unsplash.jpg");
+  background-image: url("../images/neom--RlktmDy3Ec-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -278,7 +278,6 @@
   margin-top: 5px;
   width: 60%;
   backdrop-filter: blur(5px);
-
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
@@ -287,6 +286,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.h3AgregarCliente {
+  color: #fff;
+  font-weight: 100;
+  font-size: 1.4rem;
+  font-family: "Montserrat", sans-serif;
 }
 
 .divRegistroCliente form {
@@ -340,7 +346,6 @@
   font-size: 1rem;
   color: #f5f5f5;
   margin-bottom: 3px;
-  margin-top: 5px;
   font-family: "Montserrat", sans-serif;
 }
 

@@ -3,7 +3,8 @@
   color: #fff;
   border-radius: 10px;
   width: 500;
-  background: rgba(70, 110, 145, 0.2);
+  background: transparent;
   color: "#fff";
-  backdrop-filter: blur(45px);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 10px #00000033;
 }

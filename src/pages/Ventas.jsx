@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import style from "../styles/Ventas.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { modalConfirmacion } from "../helpers/modales";
+import { notificacionNegativa } from "../helpers/notificaciones";
 function Ventas() {
   useEffect(() => {
     setArticulo(null);
@@ -68,6 +69,8 @@ function Ventas() {
     if (arrayStocksAux.length === 0) {
       setPaginaCarrito(false);
       setPaginaArticulo(true);
+      setArticulo(null);
+      setStock([]);
     }
   };
 
@@ -101,11 +104,10 @@ function Ventas() {
       .then((response) => {
         console.log(response.data);
         if (response.data === "") {
-          toast.error("Artículo no encontrado", {
-            duration: 2000,
-            position: "bottom-right",
-            id: "errorArticulo",
-          });
+          notificacionNegativa(
+            "Artículo inexistente",
+            "Artículo no encontrado"
+          );
           setArticulo(response.data);
           setStock([]);
         } else {
@@ -124,11 +126,8 @@ function Ventas() {
             })
             .then((response) => {
               if (response.data.length === 0) {
-                toast.error("No hay stock disponible", {
-                  duration: 2000,
-                  position: "bottom-right",
-                  id: "errorStock",
-                });
+                notificacionNegativa("No hay stock disponible", "sin stock");
+                setStock([]);
               } else {
                 setStock(response.data);
               }
@@ -232,14 +231,22 @@ function Ventas() {
                 <h1 className={style.h1}>Nueva venta</h1>
                 <div className={style.barraConsulta}>
                   <form className={style.form} onSubmit={handleSubmit}>
-                    <input
-                      className={style.inputCodigo}
-                      placeholder="Código"
-                      type="number"
-                      required
-                      name="codigo"
-                      onChange={(e) => setCodigo(e.target.value)}
-                    />
+                    <div className={style.divInputArticulo}>
+                      <label
+                        className={style.labelCodigoArticulo}
+                        htmlFor="codigoArticulo"
+                      >
+                        Artículo
+                      </label>
+                      <input
+                        className={style.inputCodigo}
+                        placeholder="Código"
+                        type="number"
+                        required
+                        name="codigo"
+                        onChange={(e) => setCodigo(e.target.value)}
+                      />
+                    </div>
                     <button className={style.btnConsultarStock}>Buscar</button>
                   </form>
                 </div>
