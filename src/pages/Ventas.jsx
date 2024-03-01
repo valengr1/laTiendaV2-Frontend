@@ -5,7 +5,10 @@ import toast, { Toaster } from "react-hot-toast";
 import style from "../styles/Ventas.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { modalConfirmacion } from "../helpers/modales";
-import { notificacionNegativa } from "../helpers/notificaciones";
+import {
+  notificacionNegativa,
+  notificacionPositiva,
+} from "../helpers/notificaciones";
 function Ventas() {
   useEffect(() => {
     setArticulo(null);
@@ -27,25 +30,19 @@ function Ventas() {
 
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
-      toast.error("El artículo ya está en el carrito", {
-        duration: 2000,
-        position: "bottom-right",
-        id: "errorAgregarArticulo",
-      });
+      notificacionNegativa(
+        "El artículo ya está en el carrito",
+        "error al agregar"
+      );
       return;
     } else if (item.talle === "" || item.color === "") {
-      toast.error("No se puede agregar un artículo vacío", {
-        duration: 2000,
-        position: "bottom-right",
-        id: "errorAgregarArticulo",
-      });
+      notificacionNegativa(
+        "No se puede agregar un artículo vacío",
+        "error al agregar"
+      );
       return;
     } else {
-      toast.success("Artículo agregado al carrito", {
-        duration: 2000,
-        position: "bottom-right",
-        id: "agregarArticulo",
-      });
+      notificacionPositiva("Artículo agregado al carrito", "articulo agregado");
       item.cantidad = 1;
       item.subtotal = item.precioVenta * 1;
       if (arrayStocks.length === 0) {
@@ -92,7 +89,7 @@ function Ventas() {
     setTotal(total);
   };
 
-  const handleSubmit = (e) => {
+  const buscarArticulo = (e) => {
     e.preventDefault();
     axios
       .get(
@@ -230,7 +227,7 @@ function Ventas() {
               <div className={style.divConsultaYStock}>
                 <h1 className={style.h1}>Nueva venta</h1>
                 <div className={style.barraConsulta}>
-                  <form className={style.form} onSubmit={handleSubmit}>
+                  <form className={style.form} onSubmit={buscarArticulo}>
                     <div className={style.divInputArticulo}>
                       <label
                         className={style.labelCodigoArticulo}
