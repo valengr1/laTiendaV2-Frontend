@@ -25,6 +25,7 @@ function Inicio() {
         });
     };
     getEmpleado(encargadoLegajo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const navigate = useNavigate();
   const [vendedor, setVendedor] = useState(false);

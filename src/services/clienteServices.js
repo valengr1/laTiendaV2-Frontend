@@ -1,9 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import {
-  notificacionClienteRegistrado,
-  notificacionClienteYaRegistrado,
   notificacionNegativa,
+  notificacionPositiva,
 } from "../helpers/notificaciones";
 import { modalConfirmacion } from "../helpers/modales";
 
@@ -34,9 +33,9 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
 
 export function registrarCliente(clienteRegistro, setRegistro) {
   const datos = {
-    titulo: "Modificar artículo",
-    texto: "Estás seguro que deseas modificar el artículo?",
-    textoBotonConfirmacion: "Modificar",
+    titulo: "Registrar nuevo cliente",
+    texto: "Estás seguro que deseas registrarlo?",
+    textoBotonConfirmacion: "Agregar",
     textoBotonCancelar: "Cancelar",
   };
 
@@ -46,7 +45,7 @@ export function registrarCliente(clienteRegistro, setRegistro) {
       .then((response) => {
         console.log(response.data);
         if (response.data === "Cliente registrado") {
-          notificacionClienteRegistrado();
+          notificacionPositiva(response.data, "positivo");
           setTimeout(() => {
             setRegistro(false);
           }, 2000);

@@ -168,10 +168,11 @@ function Pago() {
       const accion = () => {
         axios
           .post(
-            `http://localhost:8080/api/autorizacionPago/solicitarToken?monto=${totalPagar}`,
+            `http://localhost:8080/api/autorizacionPago/autorizarPago?monto=${totalPagar}`,
             tarjetaPagar
           )
           .then((res) => {
+            console.log(res.data);
             if (res.data === "Pago aprobado") {
               notificacionPositiva("Pago aprobado", "Pago aprobado");
               setpagoAutorizado(true);
@@ -184,6 +185,13 @@ function Pago() {
                 "Datos inválidos"
               );
             }
+          })
+          .catch((error) => {
+            console.log(error);
+            notificacionNegativa(
+              "Error al realizar el pago, intente nuevamente.",
+              "error al pagar"
+            );
           });
       };
       modalConfirmacion(datos, accion);
@@ -227,7 +235,16 @@ function Pago() {
 
   const finalizarVenta = (e) => {
     e.preventDefault();
+
     if (pagoAutorizado) {
+      let stocksYCantidades = [];
+      lineasVenta.forEach((element) => {
+        let stockYCantidad = {
+          stockid: element.id,
+          cantidadRequerida: Number(element.cantidad),
+        };
+        stocksYCantidades.push(stockYCantidad);
+      });
       const datos = {
         titulo: "Registrar venta",
         texto: "Se registrará la venta realizada",
@@ -236,11 +253,19 @@ function Pago() {
       };
       const accion = () => {
         notificacionPositiva("Venta registrada", "venta registrada");
-        // setTimeout(() => {
-        //   window.localStorage.removeItem("arrayStocks");
-        //   window.localStorage.removeItem("total");
-        //   navigate("/ventas");
-        // }, 200);
+        axios
+          .post(
+            `http://localhost:8080/api/venta/registrarNuevaVenta?legajoVendedor=${legajoVendedor}&numeroDocumento=${cliente.dni}`,
+            stocksYCantidades
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
+        setTimeout(() => {
+          window.localStorage.removeItem("arrayStocks");
+          window.localStorage.removeItem("total");
+          navigate("/ventas/" + legajoVendedor);
+        }, 200);
       };
       modalConfirmacion(datos, accion);
     } else {

@@ -5,7 +5,6 @@ import styles from "./../styles/IniciarSesion.module.css";
 import toast, { Toaster } from "react-hot-toast";
 function IniciarSesion() {
   const [empleado, setEmpleado] = useState(null);
-
   const navigate = useNavigate();
   const iniciarSesion = (e) => {
     e.preventDefault();
@@ -42,13 +41,13 @@ function IniciarSesion() {
             });
         } else {
           toast.success(res.data);
-          // window.localStorage.setItem("legajoAdministrativo", legajo);
           setTimeout(() => {
             navigate("/inicio/" + legajo);
           }, 2000);
         }
       });
   };
+
   return (
     <main className={styles.main}>
       <Toaster />

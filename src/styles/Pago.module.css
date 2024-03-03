@@ -3,7 +3,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/neom--RlktmDy3Ec-unsplash.jpg");
+  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -288,6 +288,24 @@
   align-items: center;
 }
 
+@media (max-width: 1275px) {
+  .divRegistroCliente {
+    width: 100%;
+  }
+
+  .divClienteEncontrado {
+    width: 100%;
+  }
+
+  .formBuscarCliente {
+    width: 100%;
+  }
+
+  .H1Cliente {
+    width: 100%;
+  }
+}
+
 .h3AgregarCliente {
   color: #fff;
   font-weight: 100;
@@ -561,13 +579,6 @@
 }
 
 @media (max-width: 1275px) {
-  .divParesTarjeta {
-    flex-direction: column;
-  }
-  .divPares {
-    flex-direction: column;
-  }
-
   .inputCodigoSeguridad {
     margin-top: 0;
   }
@@ -576,6 +587,12 @@
 @media (max-width: 765px) {
   .divFormaPagoInner {
     width: 100%;
+  }
+  .divParesTarjeta {
+    flex-direction: column;
+  }
+  .divPares {
+    flex-direction: column;
   }
 }
 
@@ -634,7 +651,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  border-collapse: collapse;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
   text-align: center;
@@ -644,9 +660,10 @@
   color: #fff;
   font-size: 1.2rem;
   margin-top: 10px;
-  overflow: auto;
   padding-top: 5px;
   border-radius: 5px;
+  overflow: auto;
+  border-collapse: collapse;
 }
 
 .tableCarrito {
@@ -657,11 +674,17 @@
   font-family: "Montserrat", sans-serif;
   color: #fff;
   font-size: 1.2rem;
-  overflow: auto;
+  overflow: scroll;
+  border-collapse: separate;
 }
 
-.tableCarrito td {
-  padding: 10px;
+@media (max-width: 1275px) {
+  .divFormaPagoInner {
+    width: 100%;
+  }
+  .h3Pago {
+    width: 100%;
+  }
 }
 
 /* .tableCarrito button {
