@@ -72,7 +72,15 @@ function Ventas() {
   };
 
   const handleCantidadChange = (e, item) => {
-    //let cantidad = e.target.value;
+    //verificar que la cantidad no supere el stock disponible
+    if (e.target.value > item.cantidadDisponible) {
+      e.target.value = item.cantidadDisponible;
+      getTotal();
+    }
+    //verificar que la cantidad ingresada no sea 0 o negativa o vacia
+    if (e.target.value === "") {
+      e.target.value = 1;
+    }
     item.cantidad = e.target.value;
     let subtotal = item.cantidad * item.precioVenta;
     item.subtotal = subtotal;

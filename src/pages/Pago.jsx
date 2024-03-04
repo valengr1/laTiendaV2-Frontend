@@ -252,7 +252,6 @@ function Pago() {
         textoBotonCancelar: "Cancelar",
       };
       const accion = () => {
-        notificacionPositiva("Venta registrada", "venta registrada");
         axios
           .post(
             `http://localhost:8080/api/venta/registrarNuevaVenta?legajoVendedor=${legajoVendedor}&numeroDocumento=${cliente.dni}`,
@@ -260,12 +259,17 @@ function Pago() {
           )
           .then((res) => {
             console.log(res.data);
+            if (res.data === "Venta registrada con éxito") {
+              notificacionPositiva(res.data, "positivo");
+              setTimeout(() => {
+                window.localStorage.removeItem("arrayStocks");
+                window.localStorage.removeItem("total");
+                navigate("/ventas/" + legajoVendedor);
+              }, 200);
+            } else {
+              notificacionNegativa(res.data, "negativo");
+            }
           });
-        setTimeout(() => {
-          window.localStorage.removeItem("arrayStocks");
-          window.localStorage.removeItem("total");
-          navigate("/ventas/" + legajoVendedor);
-        }, 200);
       };
       modalConfirmacion(datos, accion);
     } else {
