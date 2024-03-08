@@ -3,7 +3,7 @@
 }
 
 .divPrincipal {
-  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
+  background-image: url("../images/martin-martz-X5fEKadz0Xc-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -63,11 +63,11 @@
 }
 
 .divClienteYRegistro {
-  width: 100%;
+  width: 60%;
   height: calc(100vh - 15px);
   text-align: center;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
   border-top-left-radius: none;
   margin-top: 5px;
   margin-right: 5px;
@@ -84,7 +84,7 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
@@ -94,7 +94,7 @@
 
 .formBuscarCliente {
   text-align: center;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   margin-top: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -255,7 +255,7 @@
 }
 
 .divClienteEncontrado {
-  width: 60%;
+  width: 100%;
   margin-top: 5px;
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
@@ -276,7 +276,7 @@
 
 .divRegistroCliente {
   margin-top: 5px;
-  width: 60%;
+  width: 100%;
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
@@ -398,7 +398,7 @@
   height: calc(100vh - 10px);
   text-align: center;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
   border-top-left-radius: none;
   margin-top: 5px;
   margin-right: 5px;
@@ -443,7 +443,7 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
@@ -453,7 +453,7 @@
 
 .divFormaPagoInner {
   text-align: center;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   margin-top: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -663,7 +663,7 @@
   padding-top: 5px;
   border-radius: 5px;
   overflow: auto;
-  border-collapse: collapse;
+  border-collapse: separate;
 }
 
 .tableCarrito {
@@ -674,8 +674,12 @@
   font-family: "Montserrat", sans-serif;
   color: #fff;
   font-size: 1.2rem;
-  overflow: scroll;
-  border-collapse: separate;
+  overflow: auto;
+  border-collapse: collapse;
+}
+
+.tableCarrito td {
+  padding: 10px;
 }
 
 @media (max-width: 1275px) {
@@ -725,6 +729,8 @@
   width: 100%;
   color: #fff;
   font-weight: 100;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .btnRealizarVenta {

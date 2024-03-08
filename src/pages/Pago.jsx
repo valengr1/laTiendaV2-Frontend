@@ -31,7 +31,7 @@ function Pago() {
       setTotal(total);
     }
     setPaginaCliente(true);
-    setPaginaPago(false);
+    setPaginaPago(true);
     getCondicionesTributarias(setCondicionesTributarias);
     setTablaVenta(true);
     setSelect("tarjeta");
@@ -74,18 +74,19 @@ function Pago() {
 
   const buscarCliente = (e) => {
     e.preventDefault();
+    setTipoComprobanteAEmitir("");
     if (validaDNI(dni)) {
-      buscarClientePorDNI(dni, setCliente, setRegistro);
+      buscarClientePorDNI(dni, setCliente, setRegistro, registro);
     } else {
       setCliente(null);
     }
   };
 
-  const mostrarRegistroCliente = (e) => {
-    e.preventDefault();
-    setCliente(null);
-    setRegistro(true);
-  };
+  // const mostrarRegistroCliente = (e) => {
+  //   e.preventDefault();
+  //   setCliente(null);
+  //   setRegistro(true);
+  // };
 
   const ocultarRegistroCliente = () => {
     setRegistro(false);
@@ -115,7 +116,7 @@ function Pago() {
 
   const mostrarPaginaCliente = () => {
     setPaginaCliente(true);
-    setPaginaPago(false);
+    // setPaginaPago(false);
   };
 
   const validarTarjeta = (e) => {
@@ -166,6 +167,10 @@ function Pago() {
       };
 
       const accion = () => {
+        determinarTipoComprobante(
+          cliente.condicionTributaria.id,
+          setTipoComprobanteAEmitir
+        );
         axios
           .post(
             `http://localhost:8080/api/autorizacionPago/autorizarPago?monto=${totalPagar}`,
@@ -227,10 +232,7 @@ function Pago() {
       cliente.condicionTributaria.id,
       setTipoComprobanteAEmitir
     );
-    setTimeout(() => {
-      setPaginaCliente(false);
-      setPaginaPago(true);
-    }, 2000);
+    setPaginaCliente(false);
   };
 
   const finalizarVenta = (e) => {
@@ -317,12 +319,12 @@ function Pago() {
                   >
                     Buscar
                   </button>
-                  <button
+                  {/* <button
                     className={styles.btnRegistrarCliente}
                     onClick={mostrarRegistroCliente}
                   >
                     Agregar
-                  </button>
+                  </button> */}
                 </form>
                 {cliente ? (
                   <section className={styles.divClienteEncontrado}>
@@ -372,6 +374,28 @@ function Pago() {
                         </div>
                         <div className={styles.divInputs}>
                           <label
+                            className={styles.labelDireccion}
+                            htmlFor="inputDireccion"
+                          >
+                            Dirección
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="direccion"
+                            id="inputDireccion"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                direccion: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.divPares}>
+                        <div className={styles.divInputs}>
+                          <label
                             className={styles.labelNombre}
                             htmlFor="inputNombre"
                           >
@@ -390,8 +414,6 @@ function Pago() {
                             }}
                           />
                         </div>
-                      </div>
-                      <div className={styles.divPares}>
                         <div className={styles.divInputs}>
                           <label
                             className={styles.labelApellido}
@@ -408,26 +430,6 @@ function Pago() {
                               setClienteRegistro({
                                 ...clienteRegistro,
                                 apellido: e.target.value,
-                              });
-                            }}
-                          />
-                        </div>
-                        <div className={styles.divInputs}>
-                          <label
-                            className={styles.labelDireccion}
-                            htmlFor="inputDireccion"
-                          >
-                            Dirección
-                          </label>
-                          <input
-                            required
-                            type="text"
-                            name="direccion"
-                            id="inputDireccion"
-                            onChange={(e) => {
-                              setClienteRegistro({
-                                ...clienteRegistro,
-                                direccion: e.target.value,
                               });
                             }}
                           />
@@ -687,9 +689,21 @@ function Pago() {
                           ))}
                         </tbody>
                       </table>
-                      <h3 className={styles.h3Comprobante}>
-                        Comprobante: {tipoComprobanteAEmitir}
-                      </h3>
+                      {cliente ? (
+                        <h3 className={styles.h3Comprobante}>
+                          Cliente: {cliente.nombre} {cliente.apellido}
+                        </h3>
+                      ) : (
+                        <></>
+                      )}
+                      {tipoComprobanteAEmitir ? (
+                        <h3 className={styles.h3Comprobante}>
+                          Comprobante: {tipoComprobanteAEmitir}
+                        </h3>
+                      ) : (
+                        <> </>
+                      )}
+
                       {total ? (
                         <div className={styles.divTotal}>
                           <p className={styles.pTotal}>

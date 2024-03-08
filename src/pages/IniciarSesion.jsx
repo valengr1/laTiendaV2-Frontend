@@ -3,49 +3,63 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./../styles/IniciarSesion.module.css";
 import toast, { Toaster } from "react-hot-toast";
+import { notificacionNegativa } from "../helpers/notificaciones";
+
 function IniciarSesion() {
   const [empleado, setEmpleado] = useState(null);
   const navigate = useNavigate();
+
   const iniciarSesion = (e) => {
     e.preventDefault();
     let legajo = empleado.legajo;
     let contrasenia = empleado.contraseña;
     let legajoInt = parseInt(legajo);
-    axios
-      .get(
-        "http://localhost:8080/api/administrativo/buscarByLegajoAndContraseña",
-        {
-          params: {
-            legajo: legajo,
-            contraseña: contrasenia,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res.data);
-        if (res.data === "No autorizado") {
-          axios
-            .post(
-              `http://localhost:8080/api/sesion/agregar?legajo=${legajoInt}&password=${contrasenia}`
-            )
-            .then((res) => {
-              if (res.data === "Sesión guardada") {
-                toast.success("Bienvenido");
-                // window.localStorage.setItem("legajoVendedor", legajo);
-                setTimeout(() => {
-                  navigate("/inicio/" + legajo);
-                }, 2000);
-              } else {
-                toast.error(res.data);
-              }
-            });
-        } else {
-          toast.success(res.data);
-          setTimeout(() => {
-            navigate("/inicio/" + legajo);
-          }, 2000);
-        }
-      });
+    const data = {
+      legajo: legajoInt,
+      contraseña: contrasenia,
+    };
+    axios.post("http://localhost:8080/api/administrativo", data).then((res) => {
+      console.log(res.data);
+      if (res.data === "") {
+        axios
+          .post("http://localhost:8080/api/vendedor", data)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data === "") {
+              notificacionNegativa(
+                "Legajo y/o contraseña incorrectos",
+                "incorrecto"
+              );
+            } else {
+              axios
+                .post("http://localhost:8080/api/sesion", data)
+                .then((res) => {
+                  console.log(res.data);
+                  if (res.data === "Sesión guardada") {
+                    toast.success("Bienvenido");
+                    setTimeout(() => {
+                      navigate("/inicio/" + legajo);
+                    }, 2000);
+                  } else {
+                    toast.error(res.data);
+                  }
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            notificacionNegativa(
+              "Legajo y/o contraseña incorrectos",
+              "incorrecto"
+            );
+          });
+      } else {
+        toast.success("Bienvenido");
+        setTimeout(() => {
+          navigate("/inicio/" + legajo);
+        }, 2000);
+      }
+    });
   };
 
   return (

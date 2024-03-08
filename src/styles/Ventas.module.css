@@ -1,7 +1,7 @@
 .main {
   display: flex;
   justify-content: center;
-  background-image: url("../images/uran-wang-xuR2mL6UqPc-unsplash.jpg");
+  background-image: url("../images/martin-martz-X5fEKadz0Xc-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -11,15 +11,16 @@
 
 .divPrincipal {
   height: 100%;
-  width: 80%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
 .divVentaOuter {
   width: 100vw;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .divHeader {
@@ -153,20 +154,18 @@
 }
 
 .divPaginaArticulo {
-  width: 100%;
+  width: 60%;
   height: calc(100vh - 20px);
   text-align: center;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-top-left-radius: none;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: none; */
   margin-top: 5px;
   margin-right: 5px;
   overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
 }
 
 .divPaginaArticulo::-webkit-scrollbar {
@@ -210,7 +209,7 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -222,7 +221,7 @@
 
 .barraConsulta {
   text-align: center;
-  width: 60%;
+  width: 100%;
   padding: 5px;
   margin-top: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -302,7 +301,7 @@
 }
 
 .divArticuloYTabla {
-  width: 60%;
+  width: 100%;
   margin-top: 5px;
   gap: 50px;
 }
@@ -415,7 +414,7 @@
   width: 100%;
   margin-top: 5px;
   border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
   padding: 10px;
   border-radius: 7px;
   overflow-x: auto;
@@ -431,7 +430,7 @@
   font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  width: 80%;
+  width: 100%;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
@@ -441,7 +440,7 @@
 }
 
 .divTableCarritoInner {
-  width: 80%;
+  width: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
   text-align: center;
@@ -510,7 +509,7 @@
 }
 
 .divTotal {
-  width: 80%;
+  width: 100%;
   margin-top: 5px;
   display: flex;
   justify-content: center;

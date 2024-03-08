@@ -8,19 +8,30 @@ import toast from "react-hot-toast";
 function Inicio() {
   const location = useLocation();
   const legajo = location.pathname.split("/")[2];
+
   useEffect(() => {
     const encargadoLegajo = location.pathname.split("/")[2];
     const getEmpleado = (legajo) => {
       axios
-        .get(
-          `http://localhost:8080/api/administrativo/buscarByLegajo?legajo=${legajo}`
-        )
+        .post("http://localhost:8080/api/administrativo/" + legajo)
         .then((res) => {
           console.log(res.data);
-          if (res.data === "Existe el administrativo") {
-            setAdministrativo(true);
+
+          if (res.data === "") {
+            axios
+              .post("http://localhost:8080/api/vendedor/" + legajo)
+              .then((res) => {
+                console.log(res.data);
+                if (res.data === "") {
+                  toast.error("No se encontró el empleado");
+                } else {
+                  setUsuario(res.data);
+                  setVendedor(true);
+                }
+              });
           } else {
-            setVendedor(true);
+            setUsuario(res.data);
+            setAdministrativo(true);
           }
         });
     };
@@ -30,6 +41,7 @@ function Inicio() {
   const navigate = useNavigate();
   const [vendedor, setVendedor] = useState(false);
   const [administrativo, setAdministrativo] = useState(false);
+  const [usuario, setUsuario] = useState(null);
   const cerrarSesion = (e) => {
     e.preventDefault();
     const datos = {
@@ -69,6 +81,16 @@ function Inicio() {
   return (
     <main className={styles.main}>
       <header>
+        {usuario ? (
+          <div className={styles.divUsuario}>
+            <i className="fa-regular fa-user"></i>
+            <h5 className={styles.h5Usuario}>
+              {usuario.nombre} {usuario.apellido}
+            </h5>
+          </div>
+        ) : (
+          <></>
+        )}
         <button className={styles.btnCancelar} onClick={cerrarSesion}>
           <i className="fa-regular fa-circle-left"></i>
         </button>

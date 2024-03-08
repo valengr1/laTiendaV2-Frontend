@@ -6,7 +6,7 @@ import {
 } from "../helpers/notificaciones";
 import { modalConfirmacion } from "../helpers/modales";
 
-export function buscarClientePorDNI(dni, setCliente, setRegistro) {
+export function buscarClientePorDNI(dni, setCliente, setRegistro, registro) {
   axios
     .get("http://localhost:8080/api/cliente/buscarByDNI", {
       params: { DNI: dni },
@@ -19,6 +19,11 @@ export function buscarClientePorDNI(dni, setCliente, setRegistro) {
           duration: 2000,
           id: "error",
         });
+        setRegistro(true);
+        if (registro) {
+          let input = document.getElementById("inputDNI");
+          input.value = dni;
+        }
       } else {
         toast.success("Cliente existente", {
           position: "bottom-right",

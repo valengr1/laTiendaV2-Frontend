@@ -14,7 +14,6 @@ function Ventas() {
     setArticulo(null);
     setStock([]);
     setPaginaArticulo(true);
-    setPaginaCarrito(false);
   }, []);
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
@@ -23,7 +22,7 @@ function Ventas() {
   const [arrayStocks, setArrayStocks] = useState([]);
   const [total, setTotal] = useState(0);
   const [paginaArticulo, setPaginaArticulo] = useState(false);
-  const [paginaCarrito, setPaginaCarrito] = useState(false);
+
   // const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
   const location = useLocation();
   const legajoVendedor = location.pathname.split("/")[2];
@@ -31,7 +30,7 @@ function Ventas() {
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
       notificacionNegativa(
-        "El artículo ya está en el carrito",
+        "El artículo ya está seleccionado",
         "error al agregar"
       );
       return;
@@ -42,7 +41,7 @@ function Ventas() {
       );
       return;
     } else {
-      notificacionPositiva("Artículo agregado al carrito", "articulo agregado");
+      notificacionPositiva("Artículo seleccionado", "articulo agregado");
       item.cantidad = 1;
       item.subtotal = item.precioVenta * 1;
       if (arrayStocks.length === 0) {
@@ -64,7 +63,6 @@ function Ventas() {
       id: "quitarArticulo",
     });
     if (arrayStocksAux.length === 0) {
-      setPaginaCarrito(false);
       setPaginaArticulo(true);
       setArticulo(null);
       setStock([]);
@@ -116,7 +114,7 @@ function Ventas() {
           setArticulo(response.data);
           setStock([]);
         } else {
-          toast.success("Artículo encontrado", {
+          toast.success("Artículo existente", {
             duration: 2000,
             position: "bottom-right",
             id: "articuloEncontrado",
@@ -143,7 +141,7 @@ function Ventas() {
 
   const goToPago = () => {
     if (arrayStocks.length === 0) {
-      toast.error("No hay artículos en el carrito", {
+      toast.error("No hay artículos seleccionados", {
         duration: 2000,
         position: "bottom-right",
         id: "errorPago",
@@ -166,23 +164,23 @@ function Ventas() {
     }
   };
 
-  const mostrarCarrito = () => {
-    if (arrayStocks.length === 0) {
-      toast.error("No hay artículos en el carrito", {
-        duration: 2000,
-        position: "bottom-right",
-        id: "errorCarrito",
-      });
-      return;
-    }
-    setPaginaCarrito(true);
-    setPaginaArticulo(false);
-  };
+  // const mostrarCarrito = () => {
+  //   if (arrayStocks.length === 0) {
+  //     toast.error("No hay artículos en el carrito", {
+  //       duration: 2000,
+  //       position: "bottom-right",
+  //       id: "errorCarrito",
+  //     });
+  //     return;
+  //   }
+  //   setPaginaCarrito(true);
+  //   setPaginaArticulo(false);
+  // };
 
-  const mostrarPaginaArticulo = () => {
-    setPaginaArticulo(true);
-    setPaginaCarrito(false);
-  };
+  // const mostrarPaginaArticulo = () => {
+  //   setPaginaArticulo(true);
+  //   setPaginaCarrito(true);
+  // };
 
   const volverAInicio = (e) => {
     e.preventDefault();
@@ -206,18 +204,17 @@ function Ventas() {
     <main className={style.main}>
       <div className={style.divPrincipal}>
         <Toaster />
-        <div className={style.divVentaOuter}>
-          <div className={style.divHeader}>
-            <button className={style.btnVolverAInicio} onClick={volverAInicio}>
-              <i className="fa-regular fa-circle-left"></i>
-            </button>
-            <button
+        <div className={style.divHeader}>
+          <button className={style.btnVolverAInicio} onClick={volverAInicio}>
+            <i className="fa-regular fa-circle-left"></i>
+          </button>
+          {/* <button
               className={style.btnBuscarArticulo}
               onClick={mostrarPaginaArticulo}
             >
               <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
-            <div className={style.divICarritoCompra}>
+            </button> */}
+          {/* <div className={style.divICarritoCompra}>
               <button
                 onClick={mostrarCarrito}
                 className={style.btnCarritoCompra}
@@ -225,15 +222,16 @@ function Ventas() {
                 <i className="fa-solid fa-cart-shopping"></i>
               </button>
               <h3 className={style.cantidadCarrito}>{arrayStocks.length}</h3>
-            </div>
-            <button onClick={goToPago} className={style.btnFinalizar}>
-              <i className="fa-brands fa-shopify"></i>
-            </button>
-          </div>
+            </div> */}
+          <button onClick={goToPago} className={style.btnFinalizar}>
+            <i className="fa-brands fa-shopify"></i>
+          </button>
+        </div>
+        <div className={style.divVentaOuter}>
           {paginaArticulo ? (
             <div className={style.divPaginaArticulo}>
               <div className={style.divConsultaYStock}>
-                <h1 className={style.h1}>Nueva venta</h1>
+                <h1 className={style.h1}>Buscar artículos</h1>
                 <div className={style.barraConsulta}>
                   <form className={style.form} onSubmit={buscarArticulo}>
                     <div className={style.divInputArticulo}>
@@ -328,9 +326,11 @@ function Ventas() {
             <></>
           )}
 
-          {paginaCarrito ? (
+          {arrayStocks.length > 0 ? (
             <div className={style.divTableCarrito}>
-              <h3 className={style.h3CarritoCompras}>Venta</h3>
+              <h3 className={style.h3CarritoCompras}>
+                Artículos seleccionados
+              </h3>
               <div className={style.divTableCarritoInner}>
                 <table className={style.tableCarrito}>
                   <thead>
