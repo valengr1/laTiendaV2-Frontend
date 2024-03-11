@@ -384,7 +384,6 @@
   border-radius: 7px;
   border-bottom-right-radius: 0px;
   backdrop-filter: blur(5px);
-
   border-bottom-left-radius: 0px;
 }
 
@@ -451,7 +450,6 @@
   height: 100vh;
   padding: 5px;
   backdrop-filter: blur(5px);
-  margin-top: 5px;
   margin-left: 5px;
 }
 
