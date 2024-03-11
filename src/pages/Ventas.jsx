@@ -77,11 +77,11 @@ function Ventas() {
       position: "bottom-right",
       id: "quitarArticulo",
     });
-    if (arrayStocksAux.length === 0) {
-      setPaginaArticulo(true);
-      setArticulo(null);
-      setStock([]);
-    }
+    // if (arrayStocksAux.length === 0) {
+    //   setPaginaArticulo(true);
+    //   // setArticulo(null);
+    //   // setStock([]);
+    // }
   };
 
   const handleCantidadChange = (e, item) => {
@@ -121,15 +121,15 @@ function Ventas() {
             "Artículo inexistente",
             "Artículo no encontrado"
           );
-          setArticulo(response.data);
+          setArticulo(null);
           setStock([]);
         } else {
-          toast.success("Artículo existente", {
-            duration: 2000,
-            position: "bottom-right",
-            id: "articuloEncontrado",
-          });
-          setArticulo(response.data);
+          // toast.success("Artículo existente", {
+          //   duration: 2000,
+          //   position: "bottom-right",
+          //   id: "articuloEncontrado",
+          // });
+          // setArticulo(response.data);
           axios
             .get(
               "http://localhost:8080/api/stocks/" +
@@ -137,12 +137,14 @@ function Ventas() {
                 "/" +
                 legajoVendedor
             )
-            .then((response) => {
-              if (response.data.length === 0) {
+            .then((res) => {
+              if (res.data.length === 0) {
                 notificacionNegativa("No hay stock disponible", "sin stock");
+                setArticulo(null);
                 setStock([]);
               } else {
-                setStock(response.data);
+                setStock(res.data);
+                setArticulo(response.data);
               }
             });
         }
@@ -209,17 +211,19 @@ function Ventas() {
           {paginaArticulo ? (
             <div className={style.divPaginaArticulo}>
               {usuario ? (
-                <div className={style.divUsuario}>
-                  <i className="fa-regular fa-user"></i>
-                  <h5 className={style.h5Usuario}>
-                    {usuario.nombre} {usuario.apellido}
-                  </h5>
+                <div className={style.divTituloSuperior}>
+                  <h1 className={style.h1}>Buscar artículos</h1>
+                  <div className={style.divUsuario}>
+                    <i className="fa-regular fa-user"></i>
+                    <h5 className={style.h5Usuario}>
+                      {usuario.nombre} {usuario.apellido}
+                    </h5>
+                  </div>
                 </div>
               ) : (
                 <></>
               )}
               <div className={style.divConsultaYStock}>
-                <h1 className={style.h1}>Buscar artículos</h1>
                 <div className={style.barraConsulta}>
                   <form className={style.form} onSubmit={buscarArticulo}>
                     <div className={style.divInputArticulo}>
@@ -244,7 +248,7 @@ function Ventas() {
                 <div className={style.divArticuloYTabla}>
                   {articulo ? (
                     <div className={style.divArticulo}>
-                      <h3 className={style.subtituloH3}>Datos del articulo</h3>
+                      <h3 className={style.subtituloH3}>Datos del artículo</h3>
                       <div className={style.divDatosArticulo}>
                         <h4 className={style.datoArticuloH4}>
                           Codigo:<b> {articulo.codigo}</b>
@@ -317,7 +321,7 @@ function Ventas() {
           {arrayStocks.length > 0 ? (
             <div className={style.divTableCarrito}>
               <h3 className={style.h3CarritoCompras}>
-                Artículos seleccionados
+                Artículos seleccionados: {arrayStocks.length}
               </h3>
               <div className={style.divTableCarritoInner}>
                 <table className={style.tableCarrito}>

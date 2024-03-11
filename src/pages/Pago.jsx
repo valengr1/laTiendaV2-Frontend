@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
 import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
@@ -113,6 +113,10 @@ function Pago() {
 
   const validarTarjeta = (e) => {
     e.preventDefault();
+    if (!cliente || !tipoComprobanteAEmitir) {
+      notificacionNegativa("Seleccione un cliente", "cliente no seleccionado");
+      return;
+    }
     const numeroTarjeta = document.getElementById("inputNumeroTarjeta").value; // "4507990000004905"; //
     const nombreTitular = document.getElementById("inputNombreTitular").value; //"John Doe";
     const fechaVencimiento = document.getElementById(
@@ -281,6 +285,22 @@ function Pago() {
     }
   };
 
+  const handleQuitarArticulo = (id) => {
+    let lineasVentaAux = lineasVenta.filter((item) => item.id !== id);
+    setLineasVenta(lineasVentaAux);
+    setTotal(0);
+    toast.error("Artículo eliminado del carrito", {
+      duration: 2000,
+      position: "bottom-right",
+      id: "quitarArticulo",
+    });
+    // if (lineasVenta.length === 0) {
+    //   setPaginaArticulo(true);
+    //   // setArticulo(null);
+    //   // setStock([]);
+    // }
+  };
+
   return (
     <main className={styles.main}>
       <Toaster />
@@ -300,8 +320,8 @@ function Pago() {
           <div className={styles.divRegistroYVenta}>
             {paginaCliente ? (
               <div className={styles.divClienteYRegistro}>
-                <h3 className={styles.H1Cliente}>Cliente</h3>
                 <form className={styles.formBuscarCliente}>
+                  <h3 className={styles.H1Cliente}>Cliente</h3>
                   <input
                     onChange={(e) => setDni(e.target.value)}
                     type="number"
@@ -508,8 +528,8 @@ function Pago() {
             )}
             {paginaPago ? (
               <div className={styles.divFormaPago}>
-                <h3 className={styles.h3Pago}>Pago</h3>
                 <div className={styles.divFormaPagoInner}>
+                  <h3 className={styles.h3Pago}>Pago</h3>
                   <div className={styles.divSelección}>
                     <div className={styles.divTarjeta}>
                       <label className={styles.iconoLabel} htmlFor="tarjeta">
@@ -653,6 +673,15 @@ function Pago() {
                               <td>${item.precioVenta}</td>
                               <td>
                                 <b>${item.subtotal}</b>
+                              </td>
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    handleQuitarArticulo(item.id);
+                                  }}
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
                               </td>
                             </tr>
                           ))}

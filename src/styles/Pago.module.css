@@ -63,14 +63,12 @@
 }
 
 .divClienteYRegistro {
-  width: 60%;
-  height: calc(100vh - 15px);
+  width: 100%;
+  height: calc(100vh - 10px);
   text-align: center;
-  padding: 10px;
   /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
   border-top-left-radius: none;
   margin-top: 5px;
-  margin-right: 5px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -86,7 +84,6 @@
   font-weight: 100;
   width: 100%;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -95,11 +92,12 @@
 .formBuscarCliente {
   text-align: center;
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding-bottom: 10px;
   border-radius: 7px;
-  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px #00000033;
   border-top-left-radius: 0px;
 }
 
@@ -260,6 +258,8 @@
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
   padding-top: 2px;
   padding-bottom: 10px;
   padding-left: 10px;
@@ -280,6 +280,8 @@
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
   padding-top: 2px;
   padding-left: 10px;
   padding-right: 10px;
@@ -397,8 +399,8 @@
   width: 100%;
   height: calc(100vh - 10px);
   text-align: center;
-  padding: 10px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-left: 5px;
   border-top-left-radius: none;
   margin-top: 5px;
   margin-right: 5px;
@@ -445,8 +447,8 @@
   font-weight: 100;
   width: 100%;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
+  backdrop-filter: blur(5px);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
@@ -455,8 +457,8 @@
   text-align: center;
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
   border-radius: 7px;
   border-top-right-radius: 0px;
   border-top-left-radius: 0px;
@@ -564,7 +566,6 @@
 .divValidarTarjeta {
   margin-top: 10px;
   backdrop-filter: blur(5px);
-  box-shadow: 0 0 10px #00000033;
   border-radius: 7px;
   padding-top: 2px;
   padding-bottom: 10px;
@@ -625,24 +626,12 @@
 .h4Venta {
   color: #fff;
   font-size: 1.5rem;
-  margin-top: 5px;
   margin-bottom: 5px;
   font-weight: 100;
   font-family: "Montserrat", sans-serif;
-}
-
-.h3CarritoCompras {
-  color: #fff;
-  font-size: 1.5rem;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 100;
-  width: 80%;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 7px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  text-align: center;
+  border-top: 1px solid #fff;
+  width: 100%;
+  padding-top: 15px;
 }
 
 .divTableCarritoInner {
@@ -651,7 +640,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
   text-align: center;
   border-radius: 0;
@@ -691,7 +679,7 @@
   }
 }
 
-/* .tableCarrito button {
+.tableCarrito button {
   border-radius: 7px;
   font-weight: 100;
   font-size: 1.1rem;
@@ -708,15 +696,13 @@
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border: 2px solid rgb(255, 0, 60);
-  margin-bottom: 5px;
-  margin-top: 5px;
 }
 
 .tableCarrito button:hover {
   background-color: rgb(255, 0, 60);
 
   color: #fff;
-} */
+}
 
 .divTotal {
   font-family: "Montserrat", sans-serif;
