@@ -10,10 +10,26 @@ import {
   notificacionPositiva,
 } from "../helpers/notificaciones";
 function Ventas() {
+  const location = useLocation();
+  const legajoVendedor = location.pathname.split("/")[2];
   useEffect(() => {
     setArticulo(null);
     setStock([]);
     setPaginaArticulo(true);
+    const getEmpleado = (legajo) => {
+      axios
+        .get("http://localhost:8080/api/vendedores/" + legajo)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data === "") {
+            toast.error("No se encontró el empleado");
+          } else {
+            setUsuario(res.data);
+          }
+        });
+    };
+    getEmpleado(legajoVendedor);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState(0);
@@ -22,10 +38,9 @@ function Ventas() {
   const [arrayStocks, setArrayStocks] = useState([]);
   const [total, setTotal] = useState(0);
   const [paginaArticulo, setPaginaArticulo] = useState(false);
+  const [usuario, setUsuario] = useState(null);
 
   // const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
-  const location = useLocation();
-  const legajoVendedor = location.pathname.split("/")[2];
 
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
@@ -98,12 +113,7 @@ function Ventas() {
   const buscarArticulo = (e) => {
     e.preventDefault();
     axios
-      .get(
-        "http://localhost:8080/api/articulo/buscarArticuloByCodigoAndEstado",
-        {
-          params: { codigo: codigo },
-        }
-      )
+      .get("http://localhost:8080/api/articulos/" + codigo)
       .then((response) => {
         console.log(response.data);
         if (response.data === "") {
@@ -121,12 +131,12 @@ function Ventas() {
           });
           setArticulo(response.data);
           axios
-            .get("http://localhost:8080/api/stock/buscarBySucursal", {
-              params: {
-                codigoArticulo: codigo,
-                legajoVendedor: legajoVendedor,
-              },
-            })
+            .get(
+              "http://localhost:8080/api/stocks/" +
+                codigo +
+                "/" +
+                legajoVendedor
+            )
             .then((response) => {
               if (response.data.length === 0) {
                 notificacionNegativa("No hay stock disponible", "sin stock");
@@ -164,24 +174,6 @@ function Ventas() {
     }
   };
 
-  // const mostrarCarrito = () => {
-  //   if (arrayStocks.length === 0) {
-  //     toast.error("No hay artículos en el carrito", {
-  //       duration: 2000,
-  //       position: "bottom-right",
-  //       id: "errorCarrito",
-  //     });
-  //     return;
-  //   }
-  //   setPaginaCarrito(true);
-  //   setPaginaArticulo(false);
-  // };
-
-  // const mostrarPaginaArticulo = () => {
-  //   setPaginaArticulo(true);
-  //   setPaginaCarrito(true);
-  // };
-
   const volverAInicio = (e) => {
     e.preventDefault();
     const datos = {
@@ -204,25 +196,11 @@ function Ventas() {
     <main className={style.main}>
       <div className={style.divPrincipal}>
         <Toaster />
+
         <div className={style.divHeader}>
           <button className={style.btnVolverAInicio} onClick={volverAInicio}>
             <i className="fa-regular fa-circle-left"></i>
           </button>
-          {/* <button
-              className={style.btnBuscarArticulo}
-              onClick={mostrarPaginaArticulo}
-            >
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button> */}
-          {/* <div className={style.divICarritoCompra}>
-              <button
-                onClick={mostrarCarrito}
-                className={style.btnCarritoCompra}
-              >
-                <i className="fa-solid fa-cart-shopping"></i>
-              </button>
-              <h3 className={style.cantidadCarrito}>{arrayStocks.length}</h3>
-            </div> */}
           <button onClick={goToPago} className={style.btnFinalizar}>
             <i className="fa-brands fa-shopify"></i>
           </button>
@@ -230,6 +208,16 @@ function Ventas() {
         <div className={style.divVentaOuter}>
           {paginaArticulo ? (
             <div className={style.divPaginaArticulo}>
+              {usuario ? (
+                <div className={style.divUsuario}>
+                  <i className="fa-regular fa-user"></i>
+                  <h5 className={style.h5Usuario}>
+                    {usuario.nombre} {usuario.apellido}
+                  </h5>
+                </div>
+              ) : (
+                <></>
+              )}
               <div className={style.divConsultaYStock}>
                 <h1 className={style.h1}>Buscar artículos</h1>
                 <div className={style.barraConsulta}>

@@ -7,33 +7,29 @@ import {
 import { modalConfirmacion } from "../helpers/modales";
 
 export function buscarClientePorDNI(dni, setCliente, setRegistro, registro) {
-  axios
-    .get("http://localhost:8080/api/cliente/buscarByDNI", {
-      params: { DNI: dni },
-    })
-    .then((response) => {
-      if (response.data === "") {
-        setCliente(null);
-        toast.error("Cliente inexistente", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "error",
-        });
-        setRegistro(true);
-        if (registro) {
-          let input = document.getElementById("inputDNI");
-          input.value = dni;
-        }
-      } else {
-        toast.success("Cliente existente", {
-          position: "bottom-right",
-          duration: 2000,
-          id: "Cliente encontrado",
-        });
-        setCliente(response.data);
-        setRegistro(false);
+  axios.get("http://localhost:8080/api/clientes/" + dni).then((response) => {
+    if (response.data === "") {
+      setCliente(null);
+      toast.error("Cliente inexistente", {
+        position: "bottom-right",
+        duration: 2000,
+        id: "error",
+      });
+      setRegistro(true);
+      if (registro) {
+        let input = document.getElementById("inputDNI");
+        input.value = dni;
       }
-    });
+    } else {
+      toast.success("Cliente existente", {
+        position: "bottom-right",
+        duration: 2000,
+        id: "Cliente encontrado",
+      });
+      setCliente(response.data);
+      setRegistro(false);
+    }
+  });
 }
 
 export function registrarCliente(clienteRegistro, setRegistro) {
@@ -46,7 +42,7 @@ export function registrarCliente(clienteRegistro, setRegistro) {
 
   const accion = () => {
     axios
-      .post("http://localhost:8080/api/cliente/registrar", clienteRegistro)
+      .post("http://localhost:8080/api/clientes", clienteRegistro)
       .then((response) => {
         console.log(response.data);
         if (response.data === "Cliente registrado") {
@@ -64,7 +60,7 @@ export function registrarCliente(clienteRegistro, setRegistro) {
 
 export const getCondicionesTributarias = (setCondicionesTributarias) => {
   axios
-    .get("http://localhost:8080/api/condicionTributaria/listar")
+    .get("http://localhost:8080/api/condicionesTributarias")
     .then((response) => {
       setCondicionesTributarias(response.data);
     });

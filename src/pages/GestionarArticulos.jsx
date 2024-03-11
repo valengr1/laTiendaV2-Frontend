@@ -18,7 +18,7 @@ function GestionarArticulos() {
     setMostrarModificarArticulo(false);
 
     const getMarcas = () => {
-      axios.get("http://localhost:8080/api/marca/listar").then((res) => {
+      axios.get("http://localhost:8080/api/marcas").then((res) => {
         setMarcas(res.data);
       });
     };
@@ -26,7 +26,7 @@ function GestionarArticulos() {
     getMarcas();
 
     const getCategorias = () => {
-      axios.get("http://localhost:8080/api/categoria/listar").then((res) => {
+      axios.get("http://localhost:8080/api/categorias").then((res) => {
         setCategorias(res.data);
       });
     };
@@ -34,7 +34,7 @@ function GestionarArticulos() {
     getCategorias();
 
     const getTiposTalle = () => {
-      axios.get("http://localhost:8080/api/tiposTalle/listar").then((res) => {
+      axios.get("http://localhost:8080/api/tiposTalle").then((res) => {
         setTiposTalle(res.data);
       });
     };
@@ -60,12 +60,7 @@ function GestionarArticulos() {
   const buscarArticulo = (e) => {
     e.preventDefault();
     axios
-      .get(
-        "http://localhost:8080/api/articulo/buscarArticuloByCodigoAndEstado",
-        {
-          params: { codigo: codigoArticulo },
-        }
-      )
+      .get("http://localhost:8080/api/articulos/" + codigoArticulo)
       .then((res) => {
         console.log(res.data);
         if (res.data === "") {
@@ -101,9 +96,9 @@ function GestionarArticulos() {
 
     const accion = () => {
       axios
-        .delete("http://localhost:8080/api/articulo/eliminarArticuloByCodigo", {
-          params: { codigo: articuloResponse.codigo },
-        })
+        .delete(
+          "http://localhost:8080/api/articulos/" + articuloResponse.codigo
+        )
         .then(() => {
           notificacionPositiva(
             "Artículo eliminado correctamente",
@@ -142,7 +137,7 @@ function GestionarArticulos() {
   const registrarArticulo = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8080/api/articulo/agregar", articuloRegistro)
+      .post("http://localhost:8080/api/articulos", articuloRegistro)
       .then((res) => {
         console.log(res.data);
         if (res.data === "Artículo agregado correctamente") {
@@ -183,10 +178,7 @@ function GestionarArticulos() {
 
     const accion = () => {
       axios
-        .put(
-          "http://localhost:8080/api/articulo/modificar",
-          articuloModificacion
-        )
+        .put("http://localhost:8080/api/articulos", articuloModificacion)
         .then((res) => {
           if (res.data === "Articulo modificado correctamente") {
             notificacionPositiva(res.data, "articulo modificado correctamente");

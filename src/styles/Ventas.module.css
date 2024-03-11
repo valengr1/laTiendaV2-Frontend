@@ -168,6 +168,22 @@
   align-items: center;
 }
 
+.divUsuario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.h5Usuario {
+  font-size: 1.2rem;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+}
+
 .divPaginaArticulo::-webkit-scrollbar {
   -webkit-appearance: none;
 }

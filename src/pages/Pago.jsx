@@ -8,7 +8,6 @@ import {
   getCondicionesTributarias,
   registrarCliente,
 } from "../services/clienteServices";
-import { determinarTipoComprobante } from "../services/pagoServices";
 import {
   notificacionNegativa,
   notificacionPositiva,
@@ -82,12 +81,6 @@ function Pago() {
     }
   };
 
-  // const mostrarRegistroCliente = (e) => {
-  //   e.preventDefault();
-  //   setCliente(null);
-  //   setRegistro(true);
-  // };
-
   const ocultarRegistroCliente = () => {
     setRegistro(false);
   };
@@ -116,7 +109,6 @@ function Pago() {
 
   const mostrarPaginaCliente = () => {
     setPaginaCliente(true);
-    // setPaginaPago(false);
   };
 
   const validarTarjeta = (e) => {
@@ -167,13 +159,18 @@ function Pago() {
       };
 
       const accion = () => {
-        determinarTipoComprobante(
-          cliente.condicionTributaria.id,
-          setTipoComprobanteAEmitir
-        );
+        axios
+          .get(
+            "http://localhost:8080/api/comprobantes/" +
+              cliente.condicionTributaria.id
+          )
+          .then((res) => {
+            console.log(res.data);
+            setTipoComprobanteAEmitir(res.data);
+          });
         axios
           .post(
-            `http://localhost:8080/api/autorizacionPago/autorizarPago?monto=${totalPagar}`,
+            "http://localhost:8080/api/autorizacionesPagoTarjeta/" + totalPagar,
             tarjetaPagar
           )
           .then((res) => {
@@ -228,10 +225,15 @@ function Pago() {
 
   const seleccionarCliente = () => {
     notificacionPositiva("Cliente seleccionado", "cliente seleccionado");
-    determinarTipoComprobante(
-      cliente.condicionTributaria.id,
-      setTipoComprobanteAEmitir
-    );
+    axios
+      .get(
+        "http://localhost:8080/api/comprobantes/" +
+          cliente.condicionTributaria.id
+      )
+      .then((res) => {
+        console.log(res.data);
+        setTipoComprobanteAEmitir(res.data);
+      });
     setPaginaCliente(false);
   };
 
@@ -294,12 +296,6 @@ function Pago() {
             >
               <i className="fa-regular fa-user"></i>
             </button>
-            {/* <button className={styles.buttonHeader} onClick={mostrarPaginaPago}>
-              <i className="fa-solid fa-money-check-dollar"></i>
-            </button>
-            <button className={styles.buttonHeader} onClick={mostrarTablaVenta}>
-              <i className="fa-solid fa-bag-shopping"></i>
-            </button> */}
           </header>
           <div className={styles.divRegistroYVenta}>
             {paginaCliente ? (
@@ -319,12 +315,6 @@ function Pago() {
                   >
                     Buscar
                   </button>
-                  {/* <button
-                    className={styles.btnRegistrarCliente}
-                    onClick={mostrarRegistroCliente}
-                  >
-                    Agregar
-                  </button> */}
                 </form>
                 {cliente ? (
                   <section className={styles.divClienteEncontrado}>
@@ -652,18 +642,6 @@ function Pago() {
                       <h4 className={styles.h4Venta}>Venta</h4>
 
                       <table className={styles.tableCarrito}>
-                        {/* <thead>
-                          <tr>
-                            <th>Descripcion</th>
-                            <th>Marca</th>
-                            <th>Talle</th>
-                            <th>Color</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Subtotal</th>
-                            <th>Quitar</th>
-                          </tr>
-                        </thead> */}
                         <tbody>
                           {lineasVenta.map((item) => (
                             <tr key={item.id}>
@@ -676,15 +654,6 @@ function Pago() {
                               <td>
                                 <b>${item.subtotal}</b>
                               </td>
-                              {/* <td>
-                                <button
-                                  onClick={() => {
-                                    handleQuitarArticulo(item.id);
-                                  }}
-                                >
-                                  <i className="fa-solid fa-trash"></i>
-                                </button>
-                              </td> */}
                             </tr>
                           ))}
                         </tbody>

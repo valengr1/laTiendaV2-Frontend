@@ -13,13 +13,12 @@ function Inicio() {
     const encargadoLegajo = location.pathname.split("/")[2];
     const getEmpleado = (legajo) => {
       axios
-        .post("http://localhost:8080/api/administrativo/" + legajo)
+        .get("http://localhost:8080/api/administrativos/" + legajo)
         .then((res) => {
           console.log(res.data);
-
           if (res.data === "") {
             axios
-              .post("http://localhost:8080/api/vendedor/" + legajo)
+              .get("http://localhost:8080/api/vendedores/" + legajo)
               .then((res) => {
                 console.log(res.data);
                 if (res.data === "") {
@@ -54,14 +53,9 @@ function Inicio() {
     const accion = () => {
       if (vendedor) {
         axios
-          .delete(
-            `http://localhost:8080/api/sesion/eliminar?legajo=${legajo}`,
-            {
-              legajo: legajo,
-            }
-          )
+          .delete("http://localhost:8080/api/sesiones/" + legajo)
           .then((res) => {
-            console.log(res.data);
+            console.log(res);
             if (res.data === "Sesión eliminada correctamente") {
               setTimeout(() => {
                 navigate("/");

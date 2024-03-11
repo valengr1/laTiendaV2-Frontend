@@ -18,48 +18,50 @@ function IniciarSesion() {
       legajo: legajoInt,
       contraseña: contrasenia,
     };
-    axios.post("http://localhost:8080/api/administrativo", data).then((res) => {
-      console.log(res.data);
-      if (res.data === "") {
-        axios
-          .post("http://localhost:8080/api/vendedor", data)
-          .then((res) => {
-            console.log(res.data);
-            if (res.data === "") {
+    axios
+      .post("http://localhost:8080/api/administrativos", data)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === "") {
+          axios
+            .post("http://localhost:8080/api/vendedores", data)
+            .then((res) => {
+              console.log(res.data);
+              if (res.data === "") {
+                notificacionNegativa(
+                  "Legajo y/o contraseña incorrectos",
+                  "incorrecto"
+                );
+              } else {
+                axios
+                  .post("http://localhost:8080/api/sesiones", data)
+                  .then((res) => {
+                    console.log(res.data);
+                    if (res.data === "Sesión guardada") {
+                      toast.success("Bienvenido");
+                      setTimeout(() => {
+                        navigate("/inicio/" + legajo);
+                      }, 2000);
+                    } else {
+                      toast.error(res.data);
+                    }
+                  });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
               notificacionNegativa(
                 "Legajo y/o contraseña incorrectos",
                 "incorrecto"
               );
-            } else {
-              axios
-                .post("http://localhost:8080/api/sesion", data)
-                .then((res) => {
-                  console.log(res.data);
-                  if (res.data === "Sesión guardada") {
-                    toast.success("Bienvenido");
-                    setTimeout(() => {
-                      navigate("/inicio/" + legajo);
-                    }, 2000);
-                  } else {
-                    toast.error(res.data);
-                  }
-                });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            notificacionNegativa(
-              "Legajo y/o contraseña incorrectos",
-              "incorrecto"
-            );
-          });
-      } else {
-        toast.success("Bienvenido");
-        setTimeout(() => {
-          navigate("/inicio/" + legajo);
-        }, 2000);
-      }
-    });
+            });
+        } else {
+          toast.success("Bienvenido");
+          setTimeout(() => {
+            navigate("/inicio/" + legajo);
+          }, 2000);
+        }
+      });
   };
 
   return (
