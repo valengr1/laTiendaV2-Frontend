@@ -85,9 +85,9 @@ function Pago() {
     setRegistro(false);
   };
 
-  const handleSelectionFormaPago = (e) => {
-    setSelect(e.target.value);
-  };
+  // const handleSelectionFormaPago = (e) => {
+  //   setSelect(e.target.value);
+  // };
 
   const cancelarVenta = () => {
     const datos = {
@@ -243,45 +243,51 @@ function Pago() {
 
   const finalizarVenta = (e) => {
     e.preventDefault();
-
-    if (pagoAutorizado) {
-      let stocksYCantidades = [];
-      lineasVenta.forEach((element) => {
-        let stockYCantidad = {
-          stockid: element.id,
-          cantidadRequerida: Number(element.cantidad),
+    if (tipoComprobanteAEmitir && cliente) {
+      if (pagoAutorizado) {
+        let stocksYCantidades = [];
+        lineasVenta.forEach((element) => {
+          let stockYCantidad = {
+            stockid: element.id,
+            cantidadRequerida: Number(element.cantidad),
+          };
+          stocksYCantidades.push(stockYCantidad);
+        });
+        const datos = {
+          titulo: "Registrar venta",
+          texto: "Se registrará la venta realizada",
+          textoBotonConfirmacion: "Registrar",
+          textoBotonCancelar: "Cancelar",
         };
-        stocksYCantidades.push(stockYCantidad);
-      });
-      const datos = {
-        titulo: "Registrar venta",
-        texto: "Se registrará la venta realizada",
-        textoBotonConfirmacion: "Registrar",
-        textoBotonCancelar: "Cancelar",
-      };
-      const accion = () => {
-        axios
-          .post(
-            `http://localhost:8080/api/venta/registrarNuevaVenta?legajoVendedor=${legajoVendedor}&numeroDocumento=${cliente.dni}`,
-            stocksYCantidades
-          )
-          .then((res) => {
-            console.log(res.data);
-            if (res.data === "Venta registrada con éxito") {
-              notificacionPositiva(res.data, "positivo");
-              setTimeout(() => {
-                window.localStorage.removeItem("arrayStocks");
-                window.localStorage.removeItem("total");
-                navigate("/ventas/" + legajoVendedor);
-              }, 200);
-            } else {
-              notificacionNegativa(res.data, "negativo");
-            }
-          });
-      };
-      modalConfirmacion(datos, accion);
+        const accion = () => {
+          axios
+            .post(
+              "http://localhost:8080/api/ventas/" +
+                legajoVendedor +
+                "/" +
+                cliente.dni,
+              stocksYCantidades
+            )
+            .then((res) => {
+              console.log(res.data);
+              if (res.data === "Venta registrada con éxito") {
+                notificacionPositiva(res.data, "positivo");
+                setTimeout(() => {
+                  window.localStorage.removeItem("arrayStocks");
+                  window.localStorage.removeItem("total");
+                  navigate("/ventas/" + legajoVendedor);
+                }, 200);
+              } else {
+                notificacionNegativa(res.data, "negativo");
+              }
+            });
+        };
+        modalConfirmacion(datos, accion);
+      } else {
+        notificacionNegativa("Autorice el pago", "pago no autorizado");
+      }
     } else {
-      notificacionNegativa("Pago no autorizado", "pago no autorizado");
+      notificacionNegativa("Seleccione un cliente", "cliente no seleccionado");
     }
   };
 
@@ -526,42 +532,86 @@ function Pago() {
             ) : (
               <></>
             )}
+
             {paginaPago ? (
               <div className={styles.divFormaPago}>
                 <div className={styles.divFormaPagoInner}>
-                  <h3 className={styles.h3Pago}>Pago</h3>
+                  <h3 className={styles.h3Pago}>Método de pago</h3>
                   <div className={styles.divSelección}>
-                    <div className={styles.divTarjeta}>
+                    <div
+                      onClick={() => {
+                        setpagoAutorizado(false);
+                        setSelect("tarjeta");
+                        document.getElementById(
+                          "divTarjeta"
+                        ).style.backgroundColor = "#fff";
+                        document.getElementById("divTarjeta").style.color =
+                          "#000";
+                        document.getElementById(
+                          "divTarjeta"
+                        ).style.fontWeight = 600;
+                        document.getElementById(
+                          "divEfectivo"
+                        ).style.background = "transparent";
+                        document.getElementById("divEfectivo").style.color =
+                          "#fff";
+                        document.getElementById(
+                          "divEfectivo"
+                        ).style.fontWeight = 100;
+                      }}
+                      className={styles.divTarjeta}
+                      id="divTarjeta"
+                    >
                       <label className={styles.iconoLabel} htmlFor="tarjeta">
                         <i className="fa-regular fa-credit-card"></i>
+                        Tarjeta
                       </label>
 
-                      <input
+                      {/* <input
                         onChange={handleSelectionFormaPago}
                         type="radio"
                         name="pago"
                         id="tarjeta"
                         value={"tarjeta"}
-                        onClick={() => {
-                          setpagoAutorizado(false);
-                        }}
-                      />
+                        
+                      /> */}
                     </div>
-                    <div className={styles.divEfectivo}>
+                    <div
+                      onClick={() => {
+                        setpagoAutorizado(true);
+                        setSelect("efectivo");
+                        document.getElementById(
+                          "divEfectivo"
+                        ).style.backgroundColor = "#fff";
+                        document.getElementById("divEfectivo").style.color =
+                          "#000";
+                        document.getElementById(
+                          "divEfectivo"
+                        ).style.fontWeight = 600;
+                        document.getElementById("divTarjeta").style.background =
+                          "transparent";
+                        document.getElementById("divTarjeta").style.color =
+                          "#fff";
+                        document.getElementById(
+                          "divTarjeta"
+                        ).style.fontWeight = 100;
+                      }}
+                      className={styles.divEfectivo}
+                      id="divEfectivo"
+                    >
                       <label className={styles.iconoLabel} htmlFor="efectivo">
                         <i className="fa-regular fa-money-bill-1"></i>
+                        Efectivo
                       </label>
-                      <input
+                      {/* <input
                         onChange={handleSelectionFormaPago}
                         type="radio"
                         name="pago"
                         id="efectivo"
                         value={"efectivo"}
-                        onClick={() => {
-                          setpagoAutorizado(true);
-                        }}
+                        
                         placeholder="Efectivo"
-                      />
+                      /> */}
                     </div>
                   </div>
                   {select === "tarjeta" ? (
@@ -650,7 +700,7 @@ function Pago() {
                           </div>
                         </div>
 
-                        <button>Autorizar</button>
+                        <button>Autorizar pago</button>
                       </form>
                     </div>
                   ) : (
@@ -723,7 +773,7 @@ function Pago() {
                           onClick={finalizarVenta}
                           className={styles.btnRealizarVenta}
                         >
-                          Finalizar
+                          Finalizar venta
                         </button>
                       </div>
                     </div>
