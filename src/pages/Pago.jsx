@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/Pago.module.css";
-import { validaDNI, validaTelefono } from "../helpers/validacionesCliente";
+import { validaTelefono } from "../helpers/validacionesCliente";
 import {
-  buscarClientePorDNI,
+  buscarClienteByNumeroDocumento,
   getCondicionesTributarias,
   registrarCliente,
 } from "../services/clienteServices";
@@ -37,7 +37,7 @@ function Pago() {
     setpagoAutorizado(false);
   }, []);
   const navigate = useNavigate();
-  const [dni, setDni] = useState("");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
   const [condicionesTributarias, setCondicionesTributarias] = useState([]);
   const [paginaCliente, setPaginaCliente] = useState(false);
   const [paginaPago, setPaginaPago] = useState(false);
@@ -58,15 +58,16 @@ function Pago() {
     },
   });
   const [clienteRegistro, setClienteRegistro] = useState({
-    dni: "",
+    numeroDocumento: 0,
     nombre: "",
     apellido: "",
     direccion: "",
     telefono: "",
     condicionTributaria: {
-      descripcion: "",
       id: 0,
+      descripcion: "",
     },
+    tipoDocumento: "",
   });
   const [tipoComprobanteAEmitir, setTipoComprobanteAEmitir] = useState("");
   const [pagoAutorizado, setpagoAutorizado] = useState(false);
@@ -74,11 +75,15 @@ function Pago() {
   const buscarCliente = (e) => {
     e.preventDefault();
     setTipoComprobanteAEmitir("");
-    if (validaDNI(dni)) {
-      buscarClientePorDNI(dni, setCliente, setRegistro, registro);
-    } else {
-      setCliente(null);
-    }
+
+    buscarClienteByNumeroDocumento(
+      numeroDocumento,
+      setCliente,
+      setRegistro,
+      registro,
+      clienteRegistro,
+      setClienteRegistro
+    );
   };
 
   const ocultarRegistroCliente = () => {
@@ -212,7 +217,7 @@ function Pago() {
   const registroCliente = (e) => {
     e.preventDefault();
     if (
-      validaDNI(clienteRegistro.dni) &&
+      // validaDNI(clienteRegistro.dni) &&
       validaTelefono(clienteRegistro.telefono)
     ) {
       registrarCliente(clienteRegistro, setRegistro);
@@ -245,6 +250,10 @@ function Pago() {
     e.preventDefault();
     if (tipoComprobanteAEmitir && cliente) {
       if (pagoAutorizado) {
+        if (total === null) {
+          notificacionNegativa("Calcule el total", "sin total");
+          return;
+        }
         let stocksYCantidades = [];
         lineasVenta.forEach((element) => {
           let stockYCantidad = {
@@ -265,7 +274,7 @@ function Pago() {
               "http://localhost:8080/api/ventas/" +
                 legajoVendedor +
                 "/" +
-                cliente.dni,
+                cliente.numeroDocumento,
               stocksYCantidades
             )
             .then((res) => {
@@ -292,19 +301,31 @@ function Pago() {
   };
 
   const handleQuitarArticulo = (id) => {
-    let lineasVentaAux = lineasVenta.filter((item) => item.id !== id);
-    setLineasVenta(lineasVentaAux);
-    setTotal(0);
-    toast.error("Artículo eliminado del carrito", {
-      duration: 2000,
-      position: "bottom-right",
-      id: "quitarArticulo",
-    });
-    // if (lineasVenta.length === 0) {
-    //   setPaginaArticulo(true);
-    //   // setArticulo(null);
-    //   // setStock([]);
-    // }
+    const datos = {
+      titulo: "Quitar artículo",
+      texto: "Estás seguro que deseas quitar el artículo de la venta",
+      textoBotonConfirmacion: "Quitar",
+      textoBotonCancelar: "Cancelar",
+    };
+
+    const accion = () => {
+      if (lineasVenta.length === 1) {
+        localStorage.removeItem("arrayStocks");
+        localStorage.removeItem("total");
+        setTimeout(() => {
+          notificacionPositiva("Venta cancelada", "positivo");
+        }, 2000);
+        setTimeout(() => {
+          navigate("/ventas/" + legajoVendedor);
+        }, 5000);
+      }
+      let lineasVentaAux = lineasVenta.filter((item) => item.id !== id);
+      setLineasVenta(lineasVentaAux);
+      localStorage.setItem("arrayStocks", JSON.stringify(lineasVentaAux));
+      notificacionPositiva("Artículo eliminado de la venta", "positivo");
+      setTotal(null);
+    };
+    modalConfirmacion(datos, accion);
   };
 
   return (
@@ -328,13 +349,20 @@ function Pago() {
               <div className={styles.divClienteYRegistro}>
                 <form className={styles.formBuscarCliente}>
                   <h3 className={styles.H1Cliente}>Cliente</h3>
-                  <input
-                    onChange={(e) => setDni(e.target.value)}
-                    type="number"
-                    placeholder="DNI"
-                    required
-                    id="dni"
-                  />
+                  <div className={styles.divInputNumeroDocumento}>
+                    <label
+                      className={styles.labelDNI}
+                      htmlFor="numeroDocumento"
+                    >
+                      Número de documento
+                    </label>
+                    <input
+                      onChange={(e) => setNumeroDocumento(e.target.value)}
+                      type="number"
+                      required
+                      id="numeroDocumento"
+                    />
+                  </div>
                   <button
                     className={styles.btnBuscarCliente}
                     onClick={buscarCliente}
@@ -349,12 +377,21 @@ function Pago() {
                         {cliente.nombre} {cliente.apellido}
                       </b>
                     </h3>
-                    <h3>DNI: {cliente.dni}</h3>
-                    <h3>Dirección: {cliente.direccion}</h3>
-                    <h3>Teléfono: {cliente.telefono}</h3>
+                    <h3>
+                      Número de documento: <b>{cliente.numeroDocumento}</b>
+                    </h3>
+                    <h3>
+                      Tipo de documento: <b>{cliente.tipoDocumento}</b>
+                    </h3>
+                    <h3>
+                      Dirección: <b>{cliente.direccion}</b>
+                    </h3>
+                    <h3>
+                      Teléfono: <b>{cliente.telefono}</b>
+                    </h3>
                     <h3>
                       Condición tributaria:{" "}
-                      {cliente.condicionTributaria.descripcion}
+                      <b>{cliente.condicionTributaria.descripcion}</b>
                     </h3>
                     <button
                       onClick={seleccionarCliente}
@@ -373,7 +410,7 @@ function Pago() {
                       <div className={styles.divPares}>
                         <div className={styles.divInputs}>
                           <label className={styles.labelDNI} htmlFor="inputDNI">
-                            DNI
+                            Número de documento
                           </label>
                           <input
                             required
@@ -383,31 +420,37 @@ function Pago() {
                             onChange={(e) => {
                               setClienteRegistro({
                                 ...clienteRegistro,
-                                dni: e.target.value,
+                                numeroDocumento: e.target.value,
                               });
                             }}
                           />
                         </div>
                         <div className={styles.divInputs}>
                           <label
-                            className={styles.labelDireccion}
-                            htmlFor="inputDireccion"
+                            className={styles.labelCondicionTributaria}
+                            htmlFor="inputTipoDocumento"
                           >
-                            Dirección
+                            Tipo de documento
                           </label>
-                          <input
+                          <select
                             required
-                            type="text"
-                            name="direccion"
-                            id="inputDireccion"
+                            className={styles.divCondicionTributaria}
+                            name="tipoDocumento"
+                            id="inputTipoDocumento"
                             onChange={(e) => {
                               setClienteRegistro({
                                 ...clienteRegistro,
-                                direccion: e.target.value,
+                                tipoDocumento: e.target.value,
                               });
                             }}
-                          />
+                          >
+                            <option value="">Seleccione</option>
+                            <option value="DNI">DNI</option>
+                            <option value="CUIT">CUIT</option>
+                            <option value="CUIL">CUIL</option>
+                          </select>
                         </div>
+                        {/* div tipo dni */}
                       </div>
                       <div className={styles.divPares}>
                         <div className={styles.divInputs}>
@@ -472,6 +515,28 @@ function Pago() {
                             }}
                           />
                         </div>
+                        <div className={styles.divInputs}>
+                          <label
+                            className={styles.labelDireccion}
+                            htmlFor="inputDireccion"
+                          >
+                            Dirección
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="direccion"
+                            id="inputDireccion"
+                            onChange={(e) => {
+                              setClienteRegistro({
+                                ...clienteRegistro,
+                                direccion: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.divPares}>
                         <div className={styles.divInputs}>
                           <label
                             className={styles.labelCondicionTributaria}

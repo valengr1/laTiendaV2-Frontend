@@ -69,14 +69,25 @@ function Ventas() {
   };
 
   const handleQuitarArticulo = (id) => {
-    let arrayStocksAux = arrayStocks.filter((item) => item.id !== id);
-    setArrayStocks(arrayStocksAux);
-    setTotal(0);
-    toast.error("Artículo eliminado del carrito", {
-      duration: 2000,
-      position: "bottom-right",
-      id: "quitarArticulo",
-    });
+    const datos = {
+      titulo: "Quitar artículo",
+      texto: "¿Está seguro que desea quitar el artículo de la venta?",
+      textoBotonConfirmacion: "Quitar",
+      textoBotonCancelar: "Cancelar",
+    };
+
+    const accion = () => {
+      let arrayStocksAux = arrayStocks.filter((item) => item.id !== id);
+      setArrayStocks(arrayStocksAux);
+      setTotal(0);
+      toast.error("Artículo eliminado de la venta", {
+        duration: 2000,
+        position: "bottom-right",
+        id: "quitarArticulo",
+      });
+    };
+    modalConfirmacion(datos, accion);
+
     // if (arrayStocksAux.length === 0) {
     //   setPaginaArticulo(true);
     //   // setArticulo(null);

@@ -21,7 +21,7 @@ function IniciarSesion() {
     axios
       .post("http://localhost:8080/api/administrativos", data)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         if (res.data === "") {
           axios
             .post("http://localhost:8080/api/vendedores", data)

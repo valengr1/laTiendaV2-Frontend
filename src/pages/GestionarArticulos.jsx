@@ -180,6 +180,7 @@ function GestionarArticulos() {
       axios
         .put("http://localhost:8080/api/articulos", articuloModificacion)
         .then((res) => {
+          console.log(res);
           if (res.data === "Articulo modificado correctamente") {
             notificacionPositiva(res.data, "articulo modificado correctamente");
             setArticuloModificacion(null);
