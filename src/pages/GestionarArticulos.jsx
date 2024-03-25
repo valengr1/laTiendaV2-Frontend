@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import {
-  notificacionArticuloInexistente,
   notificacionNegativa,
   notificacionPositiva,
 } from "../helpers/notificaciones";
@@ -53,21 +52,29 @@ function GestionarArticulos() {
   const [articuloRegistro, setArticuloRegistro] = useState(null);
   const [articuloModificacion, setArticuloModificacion] = useState(null);
   const [precio, setPrecio] = useState(0);
+
   const cancelarGestionCliente = () => {
     navigate("/inicio/" + legajo);
   };
 
   const buscarArticulo = (e) => {
     e.preventDefault();
+
     axios
       .get("http://localhost:8080/api/articulos/" + codigoArticulo)
       .then((res) => {
-        console.log(res.data);
-        if (res.data === "") {
-          notificacionArticuloInexistente();
+        const status = res.status;
+        if (status === 200) {
+          setArticuloResponse(res.data);
+          calcularPrecio(res.data);
         }
-        setArticuloResponse(res.data);
-        calcularPrecio(res.data);
+      })
+      .catch((err) => {
+        setArticuloResponse(null);
+        const status = err.response.status;
+        if (status === 404) {
+          notificacionNegativa("No se encontró el artículo", "not found");
+        }
       });
     setMostrarRegistroArticulo(false);
     setMostrarModificarArticulo(false);
@@ -84,9 +91,8 @@ function GestionarArticulos() {
   };
 
   const eliminarArticulo = (e) => {
-    //Revisar clave foranea de articulo en stock a la hora de eliminar
     e.preventDefault();
-
+    setMostrarModificarArticulo(false);
     const datos = {
       titulo: "Eliminar artículo",
       texto: "Estás seguro que deseas eliminar el artículo?",
@@ -99,21 +105,20 @@ function GestionarArticulos() {
         .delete(
           "http://localhost:8080/api/articulos/" + articuloResponse.codigo
         )
-        .then(() => {
-          notificacionPositiva(
-            "Artículo eliminado correctamente",
-            "articulo eliminado"
-          );
-          setTimeout(() => {
-            setArticuloResponse(null);
-          }, 1000);
-        })
-        .catch((err) => {
-          if (err.response.status === 500) {
-            let texto = "No se pudo eliminar el artículo";
-            let id = "error al eliminar";
-            notificacionNegativa(texto, id);
+        .then((res) => {
+          const status = res.status;
+          if (status === 200) {
+            notificacionPositiva(
+              "Artículo eliminado correctamente",
+              "articulo eliminado"
+            );
+            setTimeout(() => {
+              setArticuloResponse(null);
+            }, 1000);
           }
+        })
+        .catch(() => {
+          notificacionNegativa("No se pudo eliminar el artículo", "error");
         });
     };
     modalConfirmacion(datos, accion);
@@ -181,17 +186,17 @@ function GestionarArticulos() {
         .put("http://localhost:8080/api/articulos", articuloModificacion)
         .then((res) => {
           console.log(res);
-          if (res.data === "Articulo modificado correctamente") {
-            notificacionPositiva(res.data, "articulo modificado correctamente");
-            setArticuloModificacion(null);
-
-            setTimeout(() => {
-              setMostrarModificarArticulo(false);
-              setArticuloResponse(null);
-            }, 2000);
-          } else {
-            notificacionNegativa(res.data, "no se pudo modificar");
-          }
+          notificacionPositiva("Artículo modificado correctamente");
+          setArticuloModificacion(null);
+          setTimeout(() => {
+            setMostrarModificarArticulo(false);
+            setArticuloResponse(null);
+            buscarArticulo(e);
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          notificacionNegativa(err.response.data);
         });
     };
 
@@ -262,7 +267,8 @@ function GestionarArticulos() {
                     Costo: <b>${articuloResponse.costo}</b>
                   </h3>
                   <h3>
-                    Margen de ganancia: <b>{articuloResponse.margenGanancia}</b>
+                    Margen de ganancia:{" "}
+                    <b>{articuloResponse.margenGanancia * 100}%</b>
                   </h3>
                   <h3>
                     Precio: <b>${precio}</b>

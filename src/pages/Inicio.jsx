@@ -41,6 +41,7 @@ function Inicio() {
   const [vendedor, setVendedor] = useState(false);
   const [administrativo, setAdministrativo] = useState(false);
   const [usuario, setUsuario] = useState(null);
+
   const cerrarSesion = (e) => {
     e.preventDefault();
     const datos = {
@@ -72,6 +73,7 @@ function Inicio() {
     };
     modalConfirmacion(datos, accion);
   };
+
   return (
     <main className={styles.main}>
       <header>

@@ -40,8 +40,6 @@ function Ventas() {
   const [paginaArticulo, setPaginaArticulo] = useState(false);
   const [usuario, setUsuario] = useState(null);
 
-  // const legajoVendedor = JSON.parse(localStorage.getItem("legajoVendedor"));
-
   const agregarArticulo = (item) => {
     if (arrayStocks.find((element) => element.id === item.id)) {
       notificacionNegativa(
@@ -126,39 +124,27 @@ function Ventas() {
     axios
       .get("http://localhost:8080/api/articulos/" + codigo)
       .then((response) => {
-        console.log(response.data);
-        if (response.data === "") {
-          notificacionNegativa(
-            "Artículo inexistente",
-            "Artículo no encontrado"
-          );
-          setArticulo(null);
-          setStock([]);
-        } else {
-          // toast.success("Artículo existente", {
-          //   duration: 2000,
-          //   position: "bottom-right",
-          //   id: "articuloEncontrado",
-          // });
-          // setArticulo(response.data);
-          axios
-            .get(
-              "http://localhost:8080/api/stocks/" +
-                codigo +
-                "/" +
-                legajoVendedor
-            )
-            .then((res) => {
-              if (res.data.length === 0) {
-                notificacionNegativa("No hay stock disponible", "sin stock");
-                setArticulo(null);
-                setStock([]);
-              } else {
-                setStock(res.data);
-                setArticulo(response.data);
-              }
-            });
-        }
+        console.log(response);
+        setArticulo(response.data);
+        axios
+          .get(
+            "http://localhost:8080/api/stocks/" + codigo + "/" + legajoVendedor
+          )
+          .then((res) => {
+            if (res.data.length === 0) {
+              notificacionNegativa("No hay stock disponible", "sin stock");
+              setArticulo(null);
+              setStock([]);
+            } else {
+              setStock(res.data);
+              setArticulo(response.data);
+            }
+          });
+      })
+      .catch((err) => {
+        notificacionNegativa(err.response.data);
+        setArticulo(null);
+        setStock([]);
       });
   };
 

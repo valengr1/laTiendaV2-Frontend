@@ -71,7 +71,7 @@ function Pago() {
   });
   const [tipoComprobanteAEmitir, setTipoComprobanteAEmitir] = useState("");
   const [pagoAutorizado, setpagoAutorizado] = useState(false);
-
+  let stocksYCantidades = [];
   const buscarCliente = (e) => {
     e.preventDefault();
     setTipoComprobanteAEmitir("");
@@ -89,10 +89,6 @@ function Pago() {
   const ocultarRegistroCliente = () => {
     setRegistro(false);
   };
-
-  // const handleSelectionFormaPago = (e) => {
-  //   setSelect(e.target.value);
-  // };
 
   const cancelarVenta = () => {
     const datos = {
@@ -169,40 +165,21 @@ function Pago() {
 
       const accion = () => {
         axios
-          .get(
-            "http://localhost:8080/api/comprobantes/" +
-              cliente.condicionTributaria.id
-          )
-          .then((res) => {
-            console.log(res.data);
-            setTipoComprobanteAEmitir(res.data);
-          });
-        axios
           .post(
             "http://localhost:8080/api/autorizacionesPagoTarjeta/" + totalPagar,
             tarjetaPagar
           )
           .then((res) => {
             console.log(res.data);
-            if (res.data === "Pago aprobado") {
-              notificacionPositiva("Pago aprobado", "Pago aprobado");
-              setpagoAutorizado(true);
-              setTimeout(() => {
-                setSelect("efectivo");
-              }, 2000);
-            } else {
-              notificacionNegativa(
-                "Ingrese datos de tarjeta válidos",
-                "Datos inválidos"
-              );
-            }
+            notificacionPositiva("Pago aprobado", "approved");
+            setpagoAutorizado(true);
+            setTimeout(() => {
+              setSelect("efectivo");
+            }, 2000);
           })
           .catch((error) => {
             console.log(error);
-            notificacionNegativa(
-              "Error al realizar el pago, intente nuevamente.",
-              "error al pagar"
-            );
+            notificacionNegativa(error.response.data, "error al pagar");
           });
       };
       modalConfirmacion(datos, accion);
@@ -254,41 +231,36 @@ function Pago() {
           notificacionNegativa("Calcule el total", "sin total");
           return;
         }
-        let stocksYCantidades = [];
-        lineasVenta.forEach((element) => {
-          let stockYCantidad = {
-            stockid: element.id,
-            cantidadRequerida: Number(element.cantidad),
-          };
-          stocksYCantidades.push(stockYCantidad);
-        });
+        crearListaDeIdStocksYCantidades();
         const datos = {
           titulo: "Registrar venta",
-          texto: "Se registrará la venta realizada",
+          texto: "Se registrará la venta",
           textoBotonConfirmacion: "Registrar",
           textoBotonCancelar: "Cancelar",
         };
         const accion = () => {
+          console.log(Number(legajoVendedor));
+          console.log(cliente.numeroDocumento);
+
           axios
             .post(
               "http://localhost:8080/api/ventas/" +
-                legajoVendedor +
+                Number(legajoVendedor) +
                 "/" +
                 cliente.numeroDocumento,
               stocksYCantidades
             )
             .then((res) => {
               console.log(res.data);
-              if (res.data === "Venta registrada con éxito") {
-                notificacionPositiva(res.data, "positivo");
-                setTimeout(() => {
-                  window.localStorage.removeItem("arrayStocks");
-                  window.localStorage.removeItem("total");
-                  navigate("/ventas/" + legajoVendedor);
-                }, 200);
-              } else {
-                notificacionNegativa(res.data, "negativo");
-              }
+              notificacionPositiva(res.data, "positivo");
+              setTimeout(() => {
+                window.localStorage.removeItem("arrayStocks");
+                window.localStorage.removeItem("total");
+                navigate("/ventas/" + legajoVendedor);
+              }, 200);
+            })
+            .catch((err) => {
+              notificacionNegativa(err.response.data);
             });
         };
         modalConfirmacion(datos, accion);
@@ -298,6 +270,16 @@ function Pago() {
     } else {
       notificacionNegativa("Seleccione un cliente", "cliente no seleccionado");
     }
+  };
+
+  const crearListaDeIdStocksYCantidades = () => {
+    lineasVenta.forEach((element) => {
+      let stockYCantidad = {
+        stockid: element.id,
+        cantidadRequerida: Number(element.cantidad),
+      };
+      stocksYCantidades.push(stockYCantidad);
+    });
   };
 
   const handleQuitarArticulo = (id) => {
