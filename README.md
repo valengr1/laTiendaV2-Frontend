@@ -1,6 +1,4 @@
-# La tienda
-
-Sistema de ventas de prendas deportivas
+# Sistema de ventas de prendas deportivas
 
 Aplicacion web desarrollada para la materia Ingeniería de Software que permite la gestion del stock de prendas, el registro de las ventas realizadas y la validacion del pago realizado por parte de los clientes a través de un endpoint SOAP dispuesto por el profesor que se conectaba al Sistema de AFIP.
 
@@ -12,6 +10,6 @@ Aplicacion web desarrollada para la materia Ingeniería de Software que permite 
 ![Screenshot 2024-02-29 160809](https://github.com/user-attachments/assets/49d62b38-c39d-4881-bb36-598a665061a0)
 
 ## Stack tecnológico utilizado:
-Frontend: Vite + React
-Backend: Java + Springboot + MySQL
-Deploy: Railway + Vercel
+### Frontend: Vite + React
+### Backend: Java + Springboot + MySQL
+### Deploy: Railway + Vercel
